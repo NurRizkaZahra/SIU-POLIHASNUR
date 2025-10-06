@@ -22,9 +22,18 @@ class RoleSeeder extends Seeder
                 'name' => 'Administrator',
                 'password' => Hash::make('polhas116'),
             ]
-        );
+             );
+        $camaba = User::firstOrcreate(
+            ['email' => 'camaba@gmail.com'],
+            [
+                'name' => 'camaba',
+                'password' => Hash::make('camaba123'),
+            ]
+            );
+        
 
         // kasih role admin
         $admin->assignRole($adminRole);
+        $camaba->assignRole($camabaRole);
     }
 }
