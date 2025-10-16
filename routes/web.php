@@ -33,6 +33,10 @@ Route::middleware(['auth', 'role:camaba'])->group(function () {
     Route::get('/dashboard/camaba', function () {
         return view('camaba.dashboard'); // bikin file: resources/views/camaba/dashboard.blade.php
     })->name('dashboard.camaba');
+
+    Route::get('/camaba/pendaftaran', function(){
+        return view('camaba.pendaftaran');
+    })->name('pendaftaran');
 });
 
 // ================== PROFILE ==================

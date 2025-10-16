@@ -436,7 +436,7 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="#" class="menu-link">
+                    <a href="{{ route('pendaftaran') }}" class="menu-link">
                         <span class="menu-icon">📋</span>
                         <span>PENDAFTARAN</span>
                     </a>
@@ -452,13 +452,7 @@
                         <span class="menu-icon">📝</span>
                         <span>UJIAN</span>
                     </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <span class="menu-icon">🚪</span>
-                        <span>LOGOUT</span>
-                    </a>
-                </li>
+        
             </ul>
         </div>
 
@@ -498,7 +492,7 @@
                         </p>
                         <div class="hero-buttons">
                             <a href="#" class="btn-primary">Pilih Jadwal</a>
-                            <a href="#" class="btn-secondary">Lengkapi Data Diri</a>
+                            <a href="{{ route('pendaftaran') }}" class="btn-secondary">Lengkapi Data Diri</a>
                         </div>
                     </div>
                 </div>
