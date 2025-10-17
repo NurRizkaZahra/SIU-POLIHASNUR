@@ -8,7 +8,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Dashboard universal → redirect sesuai role
+// ================== DASHBOARD UNIVERSAL ==================
 Route::get('/dashboard', function () {
     $user = auth()->user();
 
@@ -25,14 +25,14 @@ Route::get('/dashboard', function () {
 // ================== ADMIN ==================
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard/admin', function () {
-        return view('admin.dashboard'); // bikin file: resources/views/admin/dashboard.blade.php
+        return view('admin.dashboard'); // file: resources/views/admin/dashboard.blade.php
     })->name('dashboard.admin');
 });
 
 // ================== CAMABA ==================
 Route::middleware(['auth', 'role:camaba'])->group(function () {
     Route::get('/dashboard/camaba', function () {
-        return view('camaba.dashboard'); // bikin file: resources/views/camaba/dashboard.blade.php
+        return view('camaba.dashboard'); // file: resources/views/camaba/dashboard.blade.php
     })->name('dashboard.camaba');
 
     //halaman form pertama
@@ -52,8 +52,6 @@ Route::middleware(['auth', 'role:camaba'])->group(function () {
     Route::post('/camaba/pendaftaran-lanjutan', function () {
         return back()->with('success', 'Data berhasil disimpan (dummy).');
     })->name('pendaftaran-lanjutan.store');
-});
-
 
 // ================== PROFILE ==================
 Route::middleware('auth')->group(function () {
