@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CamabaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,10 +35,25 @@ Route::middleware(['auth', 'role:camaba'])->group(function () {
         return view('camaba.dashboard'); // bikin file: resources/views/camaba/dashboard.blade.php
     })->name('dashboard.camaba');
 
+    //halaman form pertama
     Route::get('/camaba/pendaftaran', function(){
         return view('camaba.pendaftaran');
     })->name('pendaftaran');
+
+    //proses simpan sementara ke session
+    Route::post('/camaba/pendaftaran', [CamabaController::class, 'simpanSementara'])
+    ->name('pendaftaran.simpan');
+
+    //halaman kedua (Lanjutan)
+    Route::get('/camaba/pendaftaran-lanjutan', [CamabaController::class, 'pendaftaranLanjutan'])
+    ->name('pendaftaran-lanjutan');
+
+    // Tambahkan route POST biar form-nya gak error
+    Route::post('/camaba/pendaftaran-lanjutan', function () {
+        return back()->with('success', 'Data berhasil disimpan (dummy).');
+    })->name('pendaftaran-lanjutan.store');
 });
+
 
 // ================== PROFILE ==================
 Route::middleware('auth')->group(function () {

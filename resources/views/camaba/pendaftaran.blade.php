@@ -523,7 +523,7 @@
                     </div>
                     @endif
 
-                    <form action="{{ route('pendaftaran') }}" method="POST">
+                    <form action="{{ route('pendaftaran.simpan') }}" method="POST">
                         @csrf
 
                         <!-- DATA DIRI -->

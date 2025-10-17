@@ -77,6 +77,19 @@ class CamabaController extends Controller
         return view('camaba.pendaftaran');
     }
 
+    public function simpanSementara(Request $request)
+    {
+        session(['data_pendaftaran' => $request->all()]);
+        return redirect()->route('pendaftaran-lanjutan');
+    }
+
+    public function pendaftaranLanjutan()
+    {
+        $data = session('data_pendaftaran', []);
+
+        return view('camaba.pendaftaran-lanjutan', compact('data'));
+    }
+
     // Halaman Jadwal Ujian
     public function jadwalUjian()
     {
