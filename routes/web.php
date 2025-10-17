@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CamabaController;
+use App\Http\Controllers\Camaba\JadwalUjianController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,40 +19,44 @@ Route::get('/dashboard', function () {
         return redirect()->route('dashboard.camaba');
     }
 
-    // fallback kalau user belum punya role
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // ================== ADMIN ==================
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard/admin', function () {
-        return view('admin.dashboard'); // file: resources/views/admin/dashboard.blade.php
+        return view('admin.dashboard');
     })->name('dashboard.admin');
 });
 
 // ================== CAMABA ==================
 Route::middleware(['auth', 'role:camaba'])->group(function () {
     Route::get('/dashboard/camaba', function () {
-        return view('camaba.dashboard'); // file: resources/views/camaba/dashboard.blade.php
+        return view('camaba.dashboard');
     })->name('dashboard.camaba');
 
-    //halaman form pertama
-    Route::get('/camaba/pendaftaran', function(){
+    // Halaman form pertama
+    Route::get('/camaba/pendaftaran', function () {
         return view('camaba.pendaftaran');
     })->name('pendaftaran');
 
-    //proses simpan sementara ke session
+    // Proses simpan sementara ke session
     Route::post('/camaba/pendaftaran', [CamabaController::class, 'simpanSementara'])
-    ->name('pendaftaran.simpan');
+        ->name('pendaftaran.simpan');
 
-    //halaman kedua (Lanjutan)
+    // Halaman kedua (lanjutan)
     Route::get('/camaba/pendaftaran-lanjutan', [CamabaController::class, 'pendaftaranLanjutan'])
-    ->name('pendaftaran-lanjutan');
+        ->name('pendaftaran-lanjutan');
 
-    // Tambahkan route POST biar form-nya gak error
+    // Simpan form lanjutan
     Route::post('/camaba/pendaftaran-lanjutan', function () {
         return back()->with('success', 'Data berhasil disimpan (dummy).');
     })->name('pendaftaran-lanjutan.store');
+
+    // Jadwal ujian
+    Route::get('/jadwal-ujian', [JadwalUjianController::class, 'index'])
+        ->name('jadwal.ujian');
+});
 
 // ================== PROFILE ==================
 Route::middleware('auth')->group(function () {
@@ -60,4 +65,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
