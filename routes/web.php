@@ -52,7 +52,6 @@ Route::middleware(['auth', 'role:camaba'])->group(function () {
     Route::post('/camaba/pendaftaran-lanjutan', function () {
         return back()->with('success', 'Data berhasil disimpan (dummy).');
     })->name('pendaftaran-lanjutan.store');
-}); // <-- ini kurung penutup yang hilang tadi!
 
     // Jadwal ujian
     Route::get('/jadwal-ujian', [JadwalUjianController::class, 'index'])
