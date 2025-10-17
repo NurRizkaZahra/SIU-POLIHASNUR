@@ -330,13 +330,13 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{ route('pendaftaran') }}" class="menu-link active">
+                    <a href="{{ route('pendaftaran') }}" class="menu-link">
                         <span class="menu-icon">📋</span>
                         <span>PENDAFTARAN</span>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{ route('jadwal.ujian') }}" class="menu-link">
+                    <a href="{{ route('jadwal.ujian') }}" class="menu-link active">
                         <span class="menu-icon">📅</span>
                         <span>JADWAL UJIAN</span>
                     </a>
@@ -345,12 +345,6 @@
                     <a href="#" class="menu-link">
                         <span class="menu-icon">📝</span>
                         <span>UJIAN</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <span class="menu-icon">🚪</span>
-                        <span>LOGOUT</span>
                     </a>
                 </li>
             </ul>

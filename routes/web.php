@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CamabaController;
+use App\Http\Controllers\Camaba\JadwalUjianController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,21 +19,20 @@ Route::get('/dashboard', function () {
         return redirect()->route('dashboard.camaba');
     }
 
-    // fallback kalau user belum punya role
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // ================== ADMIN ==================
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard/admin', function () {
-        return view('admin.dashboard'); // file: resources/views/admin/dashboard.blade.php
+        return view('admin.dashboard');
     })->name('dashboard.admin');
 });
 
 // ================== CAMABA ==================
 Route::middleware(['auth', 'role:camaba'])->group(function () {
     Route::get('/dashboard/camaba', function () {
-        return view('camaba.dashboard'); // file: resources/views/camaba/dashboard.blade.php
+        return view('camaba.dashboard');
     })->name('dashboard.camaba');
 
     // Halaman form pertama
@@ -53,6 +53,11 @@ Route::middleware(['auth', 'role:camaba'])->group(function () {
         return back()->with('success', 'Data berhasil disimpan (dummy).');
     })->name('pendaftaran-lanjutan.store');
 }); // <-- ini kurung penutup yang hilang tadi!
+
+    // Jadwal ujian
+    Route::get('/jadwal-ujian', [JadwalUjianController::class, 'index'])
+        ->name('jadwal.ujian');
+});
 
 // ================== PROFILE ==================
 Route::middleware('auth')->group(function () {
