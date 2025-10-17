@@ -35,23 +35,24 @@ Route::middleware(['auth', 'role:camaba'])->group(function () {
         return view('camaba.dashboard'); // file: resources/views/camaba/dashboard.blade.php
     })->name('dashboard.camaba');
 
-    //halaman form pertama
-    Route::get('/camaba/pendaftaran', function(){
+    // Halaman form pertama
+    Route::get('/camaba/pendaftaran', function () {
         return view('camaba.pendaftaran');
     })->name('pendaftaran');
 
-    //proses simpan sementara ke session
+    // Proses simpan sementara ke session
     Route::post('/camaba/pendaftaran', [CamabaController::class, 'simpanSementara'])
-    ->name('pendaftaran.simpan');
+        ->name('pendaftaran.simpan');
 
-    //halaman kedua (Lanjutan)
+    // Halaman kedua (lanjutan)
     Route::get('/camaba/pendaftaran-lanjutan', [CamabaController::class, 'pendaftaranLanjutan'])
-    ->name('pendaftaran-lanjutan');
+        ->name('pendaftaran-lanjutan');
 
-    // Tambahkan route POST biar form-nya gak error
+    // Simpan form lanjutan
     Route::post('/camaba/pendaftaran-lanjutan', function () {
         return back()->with('success', 'Data berhasil disimpan (dummy).');
     })->name('pendaftaran-lanjutan.store');
+}); // <-- ini kurung penutup yang hilang tadi!
 
 // ================== PROFILE ==================
 Route::middleware('auth')->group(function () {
@@ -60,4 +61,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

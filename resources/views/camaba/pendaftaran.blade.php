@@ -468,7 +468,7 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{ route('jadwal.ujian') }}" class="menu-link">
+                    <a href="#" class="menu-link">
                         <span class="menu-icon">📅</span>
                         <span>JADWAL UJIAN</span>
                     </a>
