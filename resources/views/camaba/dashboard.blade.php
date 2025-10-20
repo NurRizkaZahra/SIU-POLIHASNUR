@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'SIU-POLIHASNUR - Beranda')
-@section('header-title', 'BERANDA')
+@section('page-title', 'BERANDA') 
+
 
 @section('content')
     <div class="hero-section">

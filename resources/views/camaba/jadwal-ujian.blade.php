@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'PMB-POLHAS - Jadwal Ujian')
-@section('header-title', 'JADWAL UJIAN')
+
+@section('page-title', 'JADWAL UJIAN') 
 
 @section('content')
 <style>
