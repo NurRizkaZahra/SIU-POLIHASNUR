@@ -1,464 +1,215 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIU-POLIHASNUR - Jadwal Ujian</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+@extends('layouts.app')
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
-        }
+@section('title', 'PMB-POLHAS - Jadwal Ujian')
+@section('header-title', 'JADWAL UJIAN')
 
-        .container {
-            display: flex;
-            height: 100vh;
-        }
+@section('content')
+<style>
+    .content {
+        flex: 1;
+        padding: 40px 50px;
+        overflow-y: auto;
+        background-color: #f8f9fa;
+    }
 
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background: linear-gradient(180deg, #1e5a96 0%, #0d3d6b 100%);
-            color: white;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease;
-            position: fixed;
-            left: 0;
-            top: 0;
-            height: 100vh;
-            z-index: 1000;
-        }
+    .gelombang-container {
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
 
-        .sidebar.closed {
-            transform: translateX(-250px);
-        }
+    .gelombang-item {
+        background: white;
+        border: 2.5px solid #1e5a96;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(30, 90, 150, 0.1);
+        transition: all 0.3s;
+    }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 30px;
-            font-weight: 600;
-            font-size: 16px;
-        }
+    .gelombang-item:hover {
+        box-shadow: 0 4px 15px rgba(30, 90, 150, 0.15);
+        transform: translateY(-2px);
+    }
 
-        .profile {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+    .gelombang-header {
+        border-bottom: 2px solid #1e5a96;
+        padding: 15px 20px;
+    }
 
-        .profile-icon {
-            width: 80px;
-            height: 80px;
-            background: white;
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    .gelombang-title {
+        color: #1e5a96;
+        font-weight: 600;
+        font-size: 14px;
+        margin: 0;
+    }
 
-        .profile-icon svg {
-            width: 50px;
-            height: 50px;
-            fill: #1e5a96;
-        }
+    .gelombang-content {
+        padding: 20px;
+    }
 
-        .badge {
-            background: #ffd700;
-            color: #1e5a96;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            display: inline-block;
-            margin-bottom: 8px;
-        }
+    .gelombang-input-group {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        justify-content: space-between;
+    }
 
-        .profile-name {
-            font-size: 14px;
-            color: #cfe2f3;
-        }
+    .input-wrapper {
+        flex: 0 0 220px;
+        display: flex;
+        align-items: center;
+        background: white;
+        border: 2.5px solid #1e5a96;
+        border-radius: 25px;
+        padding: 12px 20px;
+        transition: all 0.3s;
+    }
 
-        .menu {
-            list-style: none;
-        }
+    .input-wrapper:focus-within {
+        border-color: #ffd700;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        background: #fffef0;
+    }
 
-        .menu-item {
-            margin-bottom: 5px;
-        }
+    .input-wrapper input {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        background: transparent;
+        color: #333;
+        font-weight: 500;
+        width: 100%;
+    }
 
-        .menu-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 15px;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s;
-            font-size: 15px;
-        }
+    .input-wrapper input::placeholder {
+        color: #999;
+    }
 
-        .menu-link:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
+    .input-wrapper input::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+        filter: invert(0.8) sepia(0.5) saturate(1.5) hue-rotate(190deg);
+    }
 
-        .menu-link.active {
-            background: rgba(255, 255, 255, 0.15);
-        }
+    .input-icon {
+        width: 20px;
+        height: 20px;
+        color: #1e5a96;
+        margin-right: 10px;
+        flex-shrink: 0;
+    }
 
-        .menu-icon {
-            width: 20px;
-            height: 20px;
-            font-size: 18px;
-        }
+    .btn-ajukan {
+        background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+        color: #1e5a96;
+        padding: 11px 35px;
+        border-radius: 25px;
+        border: none;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        white-space: nowrap;
+        box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            margin-left: 250px;
-            transition: margin-left 0.3s ease;
-        }
+    .btn-ajukan:hover {
+        background: linear-gradient(135deg, #ffed4e 0%, #ffffe0 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(255, 215, 0, 0.4);
+    }
 
-        .main-content.expanded {
-            margin-left: 0;
-        }
+    .btn-ajukan:active {
+        transform: translateY(-1px);
+    }
 
-        .header {
-            background: linear-gradient(90deg, #1e5a96 0%, #0d3d6b 100%);
-            color: white;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .menu-toggle {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 5px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .menu-toggle span {
-            width: 24px;
-            height: 2px;
-            background: white;
-            transition: transform 0.3s ease;
-        }
-
-        .header-title {
-            font-size: 22px;
-            font-weight: 600;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .icon-btn {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .close-btn {
-            font-size: 32px;
-            font-weight: 300;
-            line-height: 1;
-        }
-
+    @media (max-width: 768px) {
         .content {
-            flex: 1;
-            padding: 40px 30px;
-            overflow-y: auto;
-        }
-
-        /* Jadwal Ujian Styles */
-        .jadwal-title {
-            text-align: center;
-            color: #1e5a96;
-            font-weight: 600;
-            font-size: 18px;
-            margin-bottom: 30px;
-        }
-
-        .gelombang-container {
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .gelombang-item {
-            background: white;
-            border: 2px solid #87ceeb;
-            border-radius: 12px;
-            padding: 20px;
-            transition: all 0.3s;
-        }
-
-        .gelombang-item:hover {
-            box-shadow: 0 4px 12px rgba(30, 90, 150, 0.15);
-        }
-
-        .gelombang-title {
-            color: #1e5a96;
-            font-weight: 600;
-            font-size: 15px;
-            margin-bottom: 15px;
+            padding: 30px 20px;
         }
 
         .gelombang-input-group {
-            display: flex;
-            gap: 12px;
-            align-items: center;
+            flex-direction: column;
+            align-items: flex-start;
         }
 
         .input-wrapper {
             flex: 1;
-            display: flex;
-            align-items: center;
-            background: white;
-            border: 2px solid #87ceeb;
-            border-radius: 20px;
-            padding: 10px 15px;
-            transition: all 0.3s;
-        }
-
-        .input-wrapper:focus-within {
-            border-color: #1e5a96;
-            box-shadow: 0 0 8px rgba(30, 90, 150, 0.2);
-        }
-
-        .input-wrapper input {
-            flex: 1;
-            border: none;
-            outline: none;
-            font-size: 14px;
-            background: transparent;
-            color: #333;
-        }
-
-        .input-wrapper input::-webkit-calendar-picker-indicator {
-            cursor: pointer;
-        }
-
-        .input-icon {
-            width: 18px;
-            height: 18px;
-            color: #1e5a96;
-            margin-right: 8px;
+            width: 100%;
         }
 
         .btn-ajukan {
-            background: #ffd700;
-            color: #1e5a96;
-            padding: 10px 28px;
-            border-radius: 20px;
-            border: none;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            white-space: nowrap;
+            width: 100%;
         }
+    }
+</style>
 
-        .btn-ajukan:hover {
-            background: #ffed4e;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
-        }
-
-        .btn-ajukan:active {
-            transform: translateY(0);
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar" id="sidebar">
-            <div class="logo">
-                <span>SIU-POLIHASNUR</span>
+<div class="content">
+    <div class="gelombang-container">
+        @forelse($gelombang as $item)
+        <div class="gelombang-item">
+            <div class="gelombang-header">
+                <h3 class="gelombang-title">{{ $item->nama }} ({{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d-m-Y') }} - {{ \Carbon\Carbon::parse($item->tanggal_akhir)->format('d-m-Y') }})</h3>
             </div>
-
-            <div class="profile">
-                <div class="profile-icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                    </svg>
-                </div>
-                <div class="badge">camaba</div>
-                <div class="profile-name">Nur Rizka Zahra</div>
-            </div>
-
-            <ul class="menu">
-                <li class="menu-item">
-                    <a href="{{ route('dashboard') }}" class="menu-link">
-                        <span class="menu-icon">🏠</span>
-                        <span>BERANDA</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('pendaftaran') }}" class="menu-link">
-                        <span class="menu-icon">📋</span>
-                        <span>PENDAFTARAN</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('jadwal.ujian') }}" class="menu-link active">
-                        <span class="menu-icon">📅</span>
-                        <span>JADWAL UJIAN</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <span class="menu-icon">📝</span>
-                        <span>UJIAN</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Main Content -->
-        <div class="main-content" id="mainContent">
-            <div class="header">
-                <div class="header-left">
-                    <button class="menu-toggle" onclick="toggleSidebar()">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                    <h1 class="header-title">JADWAL UJIAN</h1>
-                </div>
-                <div class="header-actions">
-                    <button class="icon-btn">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                            <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+            <div class="gelombang-content">
+                <div class="gelombang-input-group">
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
                         </svg>
-                    </button>
-                    <button class="icon-btn">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-                        </svg>
-                    </button>
-                    <button class="icon-btn close-btn">×</button>
-                </div>
-            </div>
-
-            <div class="content">
-                <h2 class="jadwal-title">Jadwal Ujian Anda</h2>
-                
-                <div class="gelombang-container">
-                    <!-- Gelombang 1 -->
-                    <div class="gelombang-item">
-                        <div class="gelombang-title">Gelombang 1 (21-25 Juli 2025)</div>
-                        <div class="gelombang-input-group">
-                            <div class="input-wrapper">
-                                <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
-                                </svg>
-                                <input type="date" placeholder="Pilih Tanggal">
-                            </div>
-                            <button class="btn-ajukan">Ajukan</button>
-                        </div>
+                        <input type="date" class="input-jadwal" data-gelombang-id="{{ $item->id }}">
                     </div>
-
-                    <!-- Gelombang 2 -->
-                    <div class="gelombang-item">
-                        <div class="gelombang-title">Gelombang 2 (1-15 Agustus 2025)</div>
-                        <div class="gelombang-input-group">
-                            <div class="input-wrapper">
-                                <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
-                                </svg>
-                                <input type="date" placeholder="Pilih Tanggal">
-                            </div>
-                            <button class="btn-ajukan">Ajukan</button>
-                        </div>
-                    </div>
-
-                    <!-- Gelombang 3 -->
-                    <div class="gelombang-item">
-                        <div class="gelombang-title">Gelombang 3 (20-31 Agustus 2025)</div>
-                        <div class="gelombang-input-group">
-                            <div class="input-wrapper">
-                                <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
-                                </svg>
-                                <input type="date" placeholder="Pilih Tanggal">
-                            </div>
-                            <button class="btn-ajukan">Ajukan</button>
-                        </div>
-                    </div>
-
-                    <!-- Gelombang 4 -->
-                    <div class="gelombang-item">
-                        <div class="gelombang-title">Gelombang 4 (1-15 September 2025)</div>
-                        <div class="gelombang-input-group">
-                            <div class="input-wrapper">
-                                <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
-                                </svg>
-                                <input type="date" placeholder="Pilih Tanggal">
-                            </div>
-                            <button class="btn-ajukan">Ajukan</button>
-                        </div>
-                    </div>
+                    <button class="btn-ajukan" onclick="ajukanJadwal({{ $item->id }})">Ajukan</button>
                 </div>
             </div>
         </div>
+        @empty
+        <div style="text-align: center; padding: 40px; color: #999;">
+            <p>Belum ada jadwal ujian yang tersedia</p>
+        </div>
+        @endforelse
     </div>
+</div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContent');
-            sidebar.classList.toggle('closed');
-            mainContent.classList.toggle('expanded');
+<script>
+    function ajukanJadwal(gelombangId) {
+        const dateInput = document.querySelector(`input[data-gelombang-id="${gelombangId}"]`);
+        if (!dateInput.value) {
+            alert('Silahkan pilih tanggal terlebih dahulu');
+            return;
         }
 
-        // Event listener untuk tombol Ajukan
-        document.querySelectorAll('.btn-ajukan').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const dateInput = this.previousElementSibling.querySelector('input[type="date"]');
-                if (dateInput.value) {
-                    alert('Jadwal ujian untuk tanggal ' + dateInput.value + ' telah diajukan!');
-                } else {
-                    alert('Silahkan pilih tanggal terlebih dahulu');
-                }
-            });
+        // Kirim data ke server
+        fetch('{{ route("jadwal.store") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                gelombang_id: gelombangId,
+                tanggal: dateInput.value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Jadwal ujian untuk tanggal ' + dateInput.value + ' telah diajukan!');
+                dateInput.value = '';
+            } else {
+                alert(data.message || 'Gagal mengajukan jadwal');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat mengajukan jadwal');
         });
-    </script>
-</body>
-</html>
+    }
+</script>
+
+@endsection

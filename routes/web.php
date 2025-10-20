@@ -53,6 +53,8 @@ Route::middleware(['auth', 'role:camaba'])->group(function () {
         return back()->with('success', 'Data berhasil disimpan (dummy).');
     })->name('pendaftaran-lanjutan.store');
 
+    Route::post('/jadwal-ujian/store', [App\Http\Controllers\Camaba\JadwalUjianController::class, 'store'])->name('jadwal.store')->middleware('auth');
+
     // Jadwal ujian
     Route::get('/jadwal-ujian', [JadwalUjianController::class, 'index'])
         ->name('jadwal.ujian');
