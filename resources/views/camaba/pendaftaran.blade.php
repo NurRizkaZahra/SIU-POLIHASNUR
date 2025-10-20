@@ -2,6 +2,8 @@
 
 @section('title', 'Form Pendaftaran')
 
+@section('page-title', 'PENDAFTARAN') 
+
 @section('content')
 <style>
     /* Form Pendaftaran Styles */

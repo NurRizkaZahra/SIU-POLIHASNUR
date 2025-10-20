@@ -5,7 +5,7 @@
             <span></span>
             <span></span>
         </button>
-        <h1 class="header-title">@yield('header-title', 'DASHBOARD')</h1>
+        <h1 class="header-title">@yield('page-title', 'DASHBOARD')</h1>
     </div>
     <div class="header-actions">
         <button class="icon-btn">
