@@ -43,7 +43,154 @@
 
         /* Gaya untuk Footer */
         .footer-link {
-            @apply text-white text-opacity-80 hover:text-white transition-colors duration-200;
+            color: rgba(255, 255, 255, 0.8);
+            transition: color 0.2s;
+        }
+        .footer-link:hover {
+            color: white;
+        }
+
+        /* CSS untuk Slider Jalur Masuk */
+        .jalur-slider-container {
+            position: relative;
+            overflow: hidden;
+            padding: 0 60px;
+        }
+
+        .jalur-slider-wrapper {
+            display: flex;
+            transition: transform 0.5s ease;
+            gap: 20px;
+        }
+
+        .jalur-card {
+            min-width: calc(25% - 15px);
+            background: white;
+            border-radius: 15px;
+            padding: 30px 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            height: 280px;
+        }
+
+        .jalur-card-header {
+            background: #1e5a96;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 25px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .jalur-card-content {
+            color: #1e5a96;
+            line-height: 1.6;
+            text-align: center;
+            font-size: 1rem;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .jalur-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1.8rem;
+            color: #1e5a96;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .jalur-nav-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .jalur-nav-btn:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .jalur-nav-btn.prev {
+            left: 5px;
+        }
+
+        .jalur-nav-btn.next {
+            right: 5px;
+        }
+
+        .jalur-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 25px;
+        }
+
+        .jalur-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(30, 90, 150, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .jalur-dot.active {
+            background: #1e5a96;
+            width: 10px;
+            height: 10px;
+        }
+
+        @media (max-width: 1200px) {
+            .jalur-card {
+                min-width: calc(33.333% - 14px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .jalur-slider-container {
+                padding: 0 50px;
+            }
+
+            .jalur-card {
+                min-width: calc(50% - 10px);
+                height: 260px;
+            }
+
+            .jalur-card-header {
+                font-size: 1rem;
+                padding: 10px 15px;
+            }
+
+            .jalur-card-content {
+                font-size: 0.88rem;
+            }
+
+            .jalur-nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .jalur-card {
+                min-width: calc(100% - 20px);
+            }
         }
     </style>
 </head>
@@ -97,7 +244,7 @@
         <div class="p-8 mt-6 mb-12 bg-white border border-gray-200 rounded-lg shadow-xl md:p-12">
             <div class="mb-8 text-center">
                 <h2 class="mb-1 text-xl font-bold text-polihasnur-blue">VISI</h2>
-                <p class="max-w-4xl mx-auto text-base text-gray-700 whitespace-nowrap">Menjadikan Politeknik yang Unggul Berbasis Kompetensi Kerja dan Berkarakter Kewirausahaan serta Profesional di Bidangnya.</p>
+                <p class="max-w-4xl mx-auto text-base text-gray-700">Menjadikan Politeknik yang Unggul Berbasis Kompetensi Kerja dan Berkarakter Kewirausahaan serta Profesional di Bidangnya.</p>
             </div>
             <hr class="my-6 border-gray-200">
             <div>
@@ -113,29 +260,141 @@
         </div>
         
         <div class="mb-12">
-            <h2 class="mb-10 text-3xl font-extrabold text-center text-polihasnur-blue">7 Program Studi Unggulan</h2>
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-                <a href="#" class="study-card" style="background-image: url('{{ asset('images/TO.jpg') }}');">
-                    <div class="study-card-content"><span class="text-xl font-semibold">Teknik Otomotif</span><div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div></div>
+    <h2 class="mb-10 text-3xl font-extrabold text-center text-polihasnur-blue">7 Program Studi Unggulan</h2>
+
+    <!-- Slider container -->
+    <div class="relative max-w-full mx-auto">
+
+        <!-- tombol prev -->
+        <button id="progPrev" aria-label="Prev program" class="absolute z-20 hidden md:flex items-center justify-center left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-md text-polihasnur-blue">
+            ‹
+        </button>
+
+        <!-- viewport slider -->
+        <div id="programViewport" class="overflow-x-auto scroll-smooth no-scrollbar px-4 md:px-6">
+            <div id="programSlider" class="flex gap-6 items-stretch py-4">
+
+                <a href="#" class="study-card min-w-[320px] md:min-w-[320px] lg:min-w-[320px]" style="background-image: url('{{ asset('images/TO.jpg') }}');">
+                    <div class="study-card-content">
+                        <span class="text-xl font-semibold">Teknik Otomotif</span>
+                        <div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
                 </a>
-                <a href="#" class="study-card" style="background-image: url('{{ asset('images/btp.jpg') }}');">
-                    <div class="study-card-content"><span class="text-xl font-semibold">Budidaya Tanaman Perkebunan</span><div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div></div>
+
+                <a href="#" class="study-card min-w-[320px]" style="background-image: url('{{ asset('images/btp.jpg') }}');">
+                    <div class="study-card-content"><span class="text-xl font-semibold">Budidaya Tanaman Perkebunan</span>
+                        <div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
                 </a>
-                <a href="#" class="study-card" style="background-image: url('{{ asset('images/TI.jpg') }}');">
-                    <div class="study-card-content"><span class="text-xl font-semibold">Teknik Informatika</span><div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div></div>
+
+                <a href="#" class="study-card min-w-[320px]" style="background-image: url('{{ asset('images/TI.jpg') }}');">
+                    <div class="study-card-content"><span class="text-xl font-semibold">Teknik Informatika</span>
+                        <div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
                 </a>
+
+                <a href="#" class="study-card min-w-[320px]" style="background-image: url('{{ asset('images/BD.jpg') }}');">
+                    <div class="study-card-content"><span class="text-xl font-semibold">Bisnis Digital</span>
+                        <div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="#" class="study-card min-w-[320px]" style="background-image: url('{{ asset('images/ABD.jpg') }}');">
+                    <div class="study-card-content"><span class="text-xl font-semibold">Akuntansi Bisnis Digital</span>
+                        <div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="#" class="study-card min-w-[320px]" style="background-image: url('{{ asset('images/MPI.jpg') }}');">
+                    <div class="study-card-content"><span class="text-xl font-semibold">Manajemen Pemasaran Internasional</span>
+                        <div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="#" class="study-card min-w-[320px]" style="background-image: url('{{ asset('images/TRM.jpg') }}');">
+                    <div class="study-card-content"><span class="text-xl font-semibold">Teknologi Rekayasa Multimedia</span>
+                        <div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+
             </div>
         </div>
+
+    </div>
+</div>
+
         
-        <div class="py-16 mb-12 rounded-lg shadow-xl bg-dark-blue">
-            <h2 class="mb-4 text-3xl font-extrabold text-center text-white">Apa kata Alumni?</h2>
-            <p class="max-w-2xl mx-auto mb-10 text-center text-white text-opacity-80">Kisah nyata dari mereka yang telah merasakan pelayanan terbaik dari tim kami</p>
-            <div class="grid grid-cols-1 gap-6 px-8 md:grid-cols-3">
-                <div class="overflow-hidden bg-white rounded-lg shadow-lg"><img src="{{ asset('images/1.jpg') }}" alt="Testimoni Alumni 1" class="object-cover w-full h-40"><div class="p-6"><p class="italic text-gray-700">"Dosennya asik"</p></div></div>
-                <div class="overflow-hidden bg-white rounded-lg shadow-lg"><img src="{{ asset('images/2.jpg') }}" alt="Testimoni Alumni 2" class="object-cover w-full h-40"><div class="p-6"><p class="italic text-gray-700">"Pelayanannya sangat ramah dan dokternya sangat sabar menjelaskan. Saya merasa tenang selama perawatan. Sangat direkomendasikan!"</p></div></div>
-                <div class="overflow-hidden bg-white rounded-lg shadow-lg"><img src="{{ asset('images/3.jpg') }}" alt="Testimoni Alumni 3" class="object-cover w-full h-40"><div class="p-6"><p class="italic text-gray-700">"Pelayanannya sangat ramah dan dokternya sangat sabar menjelaskan. Saya merasa tenang selama perawatan. Sangat direkomendasikan!"</p></div></div>
+        <!-- Section Jalur Masuk -->
+        <section class="mb-12">
+            <h2 class="mb-2 text-3xl font-extrabold text-center text-polihasnur-blue">Jalur Masuk</h2>
+            <p class="mb-10 text-center text-gray-600">Politeknik Hasnur menyediakan berbagai macam jalur masuk</p>
+            
+            <div class="jalur-slider-container">
+                <button class="jalur-nav-btn prev" id="jalurPrevBtn">‹</button>
+                
+                <div class="jalur-slider-wrapper" id="jalurSlider">
+                    <div class="jalur-card">
+                        <div class="jalur-card-header">Mandiri</div>
+                        <div class="jalur-card-content">
+                            Jalur masuk dengan biaya kuliah sesuai dengan ketentuan, dan biaya pendidikan dapat diangsur dalam beberapa kali pembayaran.
+                        </div>
+                    </div>
+
+                    <div class="jalur-card">
+                        <div class="jalur-card-header">Beasiswa Unggulan</div>
+                        <div class="jalur-card-content">
+                            Jalur masuk dengan biaya kuliah sesuai dengan ketentuan, dan biaya pendidikan dapat diangsur dalam beberapa kali pembayaran.
+                        </div>
+                    </div>
+
+                    <div class="jalur-card">
+                        <div class="jalur-card-header">Berdikari</div>
+                        <div class="jalur-card-content">
+                            Jalur masuk dengan biaya kuliah sesuai dengan ketentuan, dan biaya pendidikan dapat diangsur dalam beberapa kali pembayaran.
+                        </div>
+                    </div>
+
+                    <div class="jalur-card">
+                        <div class="jalur-card-header">KIP Kuliah</div>
+                        <div class="jalur-card-content">
+                            Jalur masuk dengan biaya kuliah sesuai dengan ketentuan, dan biaya pendidikan dapat diangsur dalam beberapa kali pembayaran.
+                        </div>
+                    </div>
+                </div>
+
+                <button class="jalur-nav-btn next" id="jalurNextBtn">›</button>
             </div>
-        </div>
+
+            <div class="jalur-dots" id="jalurDots"></div>
+        </section>
 
     </main>
     
@@ -179,9 +438,9 @@
             <div class="grid grid-cols-2 gap-8 text-sm md:grid-cols-4">
                 
                 <div class="pr-4">
-                    <h3 class="mb-4 text-base font-bold">Fallow</h3>
+                    <h3 class="mb-4 text-base font-bold">Follow</h3>
                     <p class="mb-4 text-white text-opacity-80">
-                        We work with passion of taking challenges and creating new ones in advertising sector
+                        We believe every challenge is a chance to innovate, inspire, and create a brighter future for education.
                     </p>
                     <div class="flex space-x-3">
                         <a href="https://facebook.com/polihasnur" target="_blank" class="flex items-center justify-center w-8 h-8 bg-white rounded-full bg-opacity-20 hover:bg-opacity-40">F</a>
@@ -197,10 +456,10 @@
                         <li><a href="#" class="footer-link">D3 Teknik Otomotif</a></li>
                         <li><a href="#" class="footer-link">D3 Teknik Informatika</a></li>
                         <li><a href="#" class="footer-link">D3 Budidaya Tanaman Perkebunan</a></li>
-                        <li><a href="#" class="footer-link">Sarjana Terapan Bisnis Digital (D4)</a></li>
-                        <li><a href="#" class="footer-link">Sarjana Terapan Manajemen Pemasaran Internasional (D4)</a></li>
-                        <li><a href="#" class="footer-link">Sarjana Terapan Akuntansi Bisnis Digital</a></li>
-                        <li><a href="#" class="footer-link">Program Studi Teknologi Rekayasa Multimedia</a></li>
+                        <li><a href="#" class="footer-link">D4 Bisnis Digital</a></li>
+                        <li><a href="#" class="footer-link">D4 Manajemen Pemasaran Internasional</a></li>
+                        <li><a href="#" class="footer-link">D4 Akuntansi Bisnis Digital</a></li>
+                        <li><a href="#" class="footer-link">D4 Teknologi Rekayasa Multimedia</a></li>
                     </ul>
                 </div>
                 
@@ -227,5 +486,78 @@
         </div>
     </footer>
 
-</body>
-</html>
+   <script>
+    const jalurSlider = document.getElementById('jalurSlider');
+    const jalurPrevBtn = document.getElementById('jalurPrevBtn');
+    const jalurNextBtn = document.getElementById('jalurNextBtn');
+    const jalurDotsContainer = document.getElementById('jalurDots');
+    const jalurCards = jalurSlider.querySelectorAll('.jalur-card');
+    
+    let jalurCurrentIndex = 0;
+    let jalurCardsToShow = 4;
+
+    function updateJalurCardsToShow() {
+        if (window.innerWidth <= 480) jalurCardsToShow = 1;
+        else if (window.innerWidth <= 768) jalurCardsToShow = 2;
+        else if (window.innerWidth <= 1200) jalurCardsToShow = 3;
+        else jalurCardsToShow = 4;
+        updateJalurSlider();
+        createJalurDots();
+    }
+
+    function createJalurDots() {
+        const totalDots = Math.max(1, jalurCards.length - jalurCardsToShow + 1);
+        jalurDotsContainer.innerHTML = '';
+        for (let i = 0; i < totalDots; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('jalur-dot');
+            if (i === jalurCurrentIndex) dot.classList.add('active');
+            dot.addEventListener('click', () => goToJalurSlide(i));
+            jalurDotsContainer.appendChild(dot);
+        }
+    }
+
+    function updateJalurDots() {
+        const dots = jalurDotsContainer.querySelectorAll('.jalur-dot');
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === jalurCurrentIndex);
+        });
+    }
+
+    function updateJalurSlider() {
+        const cardWidth = jalurCards[0].offsetWidth;
+        const gap = 20;
+        const offset = -(jalurCurrentIndex * (cardWidth + gap));
+        jalurSlider.style.transform = `translateX(${offset}px)`;
+        updateJalurDots();
+    }
+
+    function goToJalurSlide(index) {
+        const maxIndex = Math.max(0, jalurCards.length - jalurCardsToShow);
+        jalurCurrentIndex = Math.max(0, Math.min(index, maxIndex));
+        updateJalurSlider();
+    }
+
+    function nextJalurSlide() {
+        const maxIndex = Math.max(0, jalurCards.length - jalurCardsToShow);
+        if (jalurCurrentIndex < maxIndex) {
+            jalurCurrentIndex++;
+            updateJalurSlider();
+        }
+    }
+
+    function prevJalurSlide() {
+        if (jalurCurrentIndex > 0) {
+            jalurCurrentIndex--;
+            updateJalurSlider();
+        }
+    }
+
+    // ✅ Event listeners lengkap
+    jalurPrevBtn.addEventListener('click', prevJalurSlide);
+    jalurNextBtn.addEventListener('click', nextJalurSlide);
+    window.addEventListener('resize', updateJalurCardsToShow);
+
+    // ✅ Inisialisasi awal
+    updateJalurCardsToShow();
+</script>
