@@ -66,7 +66,7 @@
     }
 
     .section-body.open {
-        max-height: 2500px;
+        max-height: none; /* Ubah dari 2500px ke none */
         padding: 30px 25px;
     }
 
@@ -111,11 +111,37 @@
         accent-color: #1e5a96;
     }
 
+    /* Perbaikan untuk checkbox container */
+    .checkbox-container {
+        max-height: 300px; /* Batasi tinggi */
+        overflow-y: auto; /* Enable scroll */
+        padding-right: 10px;
+        margin-top: 8px;
+    }
+
+    /* Custom scrollbar */
+    .checkbox-container::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .checkbox-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    .checkbox-container::-webkit-scrollbar-thumb {
+        background: #1e5a96;
+        border-radius: 10px;
+    }
+
+    .checkbox-container::-webkit-scrollbar-thumb:hover {
+        background: #0d3d6b;
+    }
+
     .checkbox-group {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 15px;
-        margin-top: 8px;
     }
 
     .checkbox-group label {
@@ -140,6 +166,7 @@
         height: 18px;
         cursor: pointer;
         accent-color: #1e5a96;
+        flex-shrink: 0; /* Prevent checkbox from shrinking */
     }
 
     .pilihan-section {
@@ -174,26 +201,33 @@
         box-shadow: 0 6px 12px rgba(30, 90, 150, 0.3);
     }
 
+    .done-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+        padding-bottom: 50px;
+    }
+
     .done-btn {
         background: white;
         color: #009347;
         border: 3px solid #009347;
-        padding: 15px 50px;
+        padding: 12px 60px;
         border-radius: 8px;
         cursor: pointer;
         font-weight: 600;
-        font-size: 18px;
-        display: block;
-        margin: 30px auto 0;
+        font-size: 16px;
         transition: all 0.3s;
-        box-shadow: 0 4px 8px rgba(30, 90, 150, 0.2);
+        text-decoration: none;
+        display: inline-block;
+        box-shadow: 0 4px 8px rgba(0, 153, 71, 0.2);
     }
 
     .done-btn:hover {
         background: #009347;
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(30, 90, 150, 0.3);
+        box-shadow: 0 6px 12px rgba(0, 153, 71, 0.3);
     }
 
     .alert {
@@ -228,6 +262,11 @@
         .pendaftaran-container {
             padding: 15px;
         }
+
+        .done-btn {
+            padding: 12px 40px;
+            font-size: 16px;
+        }
     }
 </style>
 
@@ -244,7 +283,7 @@
     </div>
     @endif
 
-    <form action="{{ route('pendaftaran-lanjutan.store') }}" method="POST">
+    <form action="{{ route('camaba.data-jalur.simpan') }}" method="POST">
         @csrf
 
         <!-- JALUR MASUK -->
@@ -275,12 +314,14 @@
                     </div>
                 </div>
 
-                <button type="button" class="save-btn" onclick="saveSection('Jalur Masuk')">Save</button>
-                <div style="clear: both;"></div>
+                <button type="submit" class="save-btn">Save</button>
             </div>
         </div>
+    </form>
 
-        <!-- PILIHAN JURUSAN -->
+    <!-- PILIHAN JURUSAN -->
+    <form action="{{ route('camaba.data-prodi.simpan') }}" method="POST">
+        @csrf
         <div class="form-section">
             <div class="section-header" onclick="toggleFormSection(this)">
                 <span>PILIHAN JURUSAN</span>
@@ -290,80 +331,86 @@
                 <!-- Pilihan 1 -->
                 <div class="pilihan-section">
                     <h3 class="pilihan-title">Pilihan 1 <span style="color: red;">*</span></h3>
-                    <div class="checkbox-group" id="pilihan1-group">
-                        <label>
-                            <input type="checkbox" name="pilihan_1" value="D4 Bisnis Digital">
-                            D4 Bisnis Digital
-                        </label>
-                        <label>
-                            <input type="checkbox" name="pilihan_1" value="D3 Teknik Informatika">
-                            D3 Teknik Informatika
-                        </label>
-                        <label>
-                            <input type="checkbox" name="pilihan_1" value="D4 Akuntansi Bisnis Digital">
-                            D4 Akuntansi Bisnis Digital
-                        </label>
-                        <label>
-                            <input type="checkbox" name="pilihan_1" value="D3 Teknik Otomotif">
-                            D3 Teknik Otomotif
-                        </label>
-                        <label>
-                            <input type="checkbox" name="pilihan_1" value="D4 Manajemen Pemasaran Internasional">
-                            D4 Manajemen Pemasaran Internasional
-                        </label>
-                        <label>
-                            <input type="checkbox" name="pilihan_1" value="D3 Budidaya Tanaman Perkebunan">
-                            D3 Budidaya Tanaman Perkebunan
-                        </label>
-                        <label>
-                            <input type="checkbox" name="pilihan_1" value="D4 Teknologi Rekayasa Multimedia">
-                            D4 Teknologi Rekayasa Multimedia
-                        </label>
+                    <div class="checkbox-container">
+                        <div class="checkbox-group" id="pilihan1-group">
+                            <label>
+                                <input type="checkbox" name="pilihan_1" value="D4 Bisnis Digital">
+                                D4 Bisnis Digital
+                            </label>
+                            <label>
+                                <input type="checkbox" name="pilihan_1" value="D3 Teknik Informatika">
+                                D3 Teknik Informatika
+                            </label>
+                            <label>
+                                <input type="checkbox" name="pilihan_1" value="D4 Akuntansi Bisnis Digital">
+                                D4 Akuntansi Bisnis Digital
+                            </label>
+                            <label>
+                                <input type="checkbox" name="pilihan_1" value="D3 Teknik Otomotif">
+                                D3 Teknik Otomotif
+                            </label>
+                            <label>
+                                <input type="checkbox" name="pilihan_1" value="D4 Manajemen Pemasaran Internasional">
+                                D4 Manajemen Pemasaran Internasional
+                            </label>
+                            <label>
+                                <input type="checkbox" name="pilihan_1" value="D3 Budidaya Tanaman Perkebunan">
+                                D3 Budidaya Tanaman Perkebunan
+                            </label>
+                            <label>
+                                <input type="checkbox" name="pilihan_1" value="D4 Teknologi Rekayasa Multimedia">
+                                D4 Teknologi Rekayasa Multimedia
+                            </label>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Pilihan 2 -->
                 <div class="pilihan-section">
                     <h3 class="pilihan-title">Pilihan 2 <span style="color: red;">*</span></h3>
-                    <div class="checkbox-group" id="pilihan2-group">
-                        <label>
-                            <input type="checkbox" name="pilihan_2" value="D4 Bisnis Digital">
-                            D4 Bisnis Digital
-                        </label>
-                        <label>
-                            <input type="checkbox" name="pilihan_2" value="D3 Teknik Informatika">
-                            D3 Teknik Informatika
-                        </label>
-                        <label>
-                            <input type="checkbox" name="pilihan_2" value="D4 Akuntansi Bisnis Digital">
-                            D4 Akuntansi Bisnis Digital
-                        </label>
-                        <label>
-                            <input type="checkbox" name="pilihan_2" value="D3 Teknik Otomotif">
-                            D3 Teknik Otomotif
-                        </label>
-                        <label>
-                            <input type="checkbox" name="pilihan_2" value="D4 Manajemen Pemasaran Internasional">
-                            D4 Manajemen Pemasaran Internasional
-                        </label>
-                        <label>
-                            <input type="checkbox" name="pilihan_2" value="D3 Budidaya Tanaman Perkebunan">
-                            D3 Budidaya Tanaman Perkebunan
-                        </label>
-                        <label>
-                            <input type="checkbox" name="pilihan_2" value="D4 Teknologi Rekayasa Multimedia">
-                            D4 Teknologi Rekayasa Multimedia
-                        </label>
+                    <div class="checkbox-container">
+                        <div class="checkbox-group" id="pilihan2-group">
+                            <label>
+                                <input type="checkbox" name="pilihan_2" value="D4 Bisnis Digital">
+                                D4 Bisnis Digital
+                            </label>
+                            <label>
+                                <input type="checkbox" name="pilihan_2" value="D3 Teknik Informatika">
+                                D3 Teknik Informatika
+                            </label>
+                            <label>
+                                <input type="checkbox" name="pilihan_2" value="D4 Akuntansi Bisnis Digital">
+                                D4 Akuntansi Bisnis Digital
+                            </label>
+                            <label>
+                                <input type="checkbox" name="pilihan_2" value="D3 Teknik Otomotif">
+                                D3 Teknik Otomotif
+                            </label>
+                            <label>
+                                <input type="checkbox" name="pilihan_2" value="D4 Manajemen Pemasaran Internasional">
+                                D4 Manajemen Pemasaran Internasional
+                            </label>
+                            <label>
+                                <input type="checkbox" name="pilihan_2" value="D3 Budidaya Tanaman Perkebunan">
+                                D3 Budidaya Tanaman Perkebunan
+                            </label>
+                            <label>
+                                <input type="checkbox" name="pilihan_2" value="D4 Teknologi Rekayasa Multimedia">
+                                D4 Teknologi Rekayasa Multimedia
+                            </label>
+                        </div>
                     </div>
                 </div>
 
-                <button type="button" class="save-btn" onclick="saveSection('Pilihan Jurusan')">Save</button>
-                <div style="clear: both;"></div>
+                <button type="submit" class="save-btn">Save</button>
             </div>
         </div>
-
-        <button type="submit" class="done-btn">Done</button>
     </form>
+</div>
+
+<!-- Done Button di dalam container, bukan fixed -->
+<div class="done-wrapper">
+    <a href="{{ route('dashboard.camaba') }}" class="done-btn">Done</a>
 </div>
 
 <script>
@@ -373,10 +420,6 @@
         
         body.classList.toggle('open');
         chevron.classList.toggle('open');
-    }
-
-    function saveSection(sectionName) {
-        alert('Data ' + sectionName + ' berhasil disimpan!');
     }
 
     // Auto-hide alerts after 5 seconds

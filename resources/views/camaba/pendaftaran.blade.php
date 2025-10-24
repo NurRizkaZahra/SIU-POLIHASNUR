@@ -165,6 +165,12 @@
         box-shadow: 0 6px 12px rgba(30, 90, 150, 0.3);
     }
 
+    .next-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    margin-bottom: 70px;
+}
     .next-btn {
         background: #DBD328;
         color: #0d3d6b;
@@ -177,6 +183,7 @@
         display: block;
         margin: 30px auto 0;
         transition: all 0.3s;
+         text-decoration: none;
         box-shadow: 0 4px 8px rgba(101, 100, 24, 0.2);
     }
 
@@ -223,74 +230,76 @@
 </style>
 
 <div class="pendaftaran-container">
+    {{-- ALERT SUCCESS / ERROR --}}
     @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
     @endif
 
     @if(session('error'))
-    <div class="alert alert-error">
-        {{ session('error') }}
-    </div>
+        <div class="alert alert-error">
+            {{ session('error') }}
+        </div>
     @endif
 
-    <form action="{{ route('pendaftaran.simpan') }}" method="POST">
+    {{-- FORM DATA DIRI --}}
+    <form action="{{ route('camaba.data-diri.simpan') }}" method="POST">
         @csrf
 
-        <!-- DATA DIRI -->
         <div class="form-section">
             <div class="section-header" onclick="toggleFormSection(this)">
                 <span>DATA DIRI</span>
                 <div class="chevron-icon open">∨</div>
             </div>
+
             <div class="section-body open">
                 <div class="form-row">
                     <div class="form-group">
                         <label>Nama Lengkap: <span style="color: red;">*</span></label>
-                        <input type="text" name="nama_lengkap" placeholder="Masukkan nama lengkap" required>
+                        <input type="text" name="full_name" placeholder="Masukkan nama lengkap" required>
                     </div>
                     <div class="form-group">
                         <label>Alamat Lengkap: <span style="color: red;">*</span></label>
-                        <input type="text" name="alamat_lengkap" placeholder="Masukkan alamat" required>
+                        <input type="text" name="address" placeholder="Masukkan alamat" required>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>Tempat Lahir: <span style="color: red;">*</span></label>
-                        <input type="text" name="tempat_lahir" placeholder="Kota lahir" required>
+                        <input type="text" name="place_of_birth" placeholder="Kota lahir" required>
                     </div>
                     <div class="form-group">
-                        <label>Telepon/Hp: <span style="color: red;">*</span></label>
-                        <input type="text" name="telepon_hp" placeholder="Telepon/HP" required>
+                        <label>Telepon/HP: <span style="color: red;">*</span></label>
+                        <input type="text" name="phone" placeholder="Telepon/HP" required>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Jenis Kelamin: <span style="color: red;">*</span></label>
                     <div class="radio-group">
-                        <label><input type="radio" name="jenis_kelamin" value="Laki-laki" required> Laki-laki</label>
-                        <label><input type="radio" name="jenis_kelamin" value="Perempuan" required> Perempuan</label>
+                        <label><input type="radio" name="gender" value="Laki-laki" required> Laki-laki</label>
+                        <label><input type="radio" name="gender" value="Perempuan" required> Perempuan</label>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Agama: <span style="color: red;">*</span></label>
                     <div class="radio-group">
-                        <label><input type="radio" name="agama" value="Islam" required> Islam</label>
-                        <label><input type="radio" name="agama" value="Kristen" required> Kristen</label>
-                        <label><input type="radio" name="agama" value="Katolik" required> Katolik</label>
-                        <label><input type="radio" name="agama" value="Hindu" required> Hindu</label>
-                        <label><input type="radio" name="agama" value="Budha" required> Budha</label>
-                        <label><input type="radio" name="agama" value="Lainnya" required> Lainnya</label>
+                        <label><input type="radio" name="religion" value="Islam" required> Islam</label>
+                        <label><input type="radio" name="religion" value="Kristen" required> Kristen</label>
+                        <label><input type="radio" name="religion" value="Katolik" required> Katolik</label>
+                        <label><input type="radio" name="religion" value="Hindu" required> Hindu</label>
+                        <label><input type="radio" name="religion" value="Budha" required> Budha</label>
+                        <label><input type="radio" name="religion" value="Lainnya" required> Lainnya</label>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>No. Kartu Keluarga: <span style="color: red;">*</span></label>
-                        <input type="text" name="no_kk" placeholder="Nomor KK" required>
+                        <input type="text" name="kk_number" placeholder="Nomor KK" required>
                     </div>
                     <div class="form-group">
                         <label>NIK: <span style="color: red;">*</span></label>
@@ -300,15 +309,19 @@
 
                 <div class="form-group">
                     <label>Tanggal Lahir: <span style="color: red;">*</span></label>
-                    <input type="date" name="tanggal_lahir" required>
+                    <input type="date" name="date_of_birth" required>
                 </div>
 
-                <button type="button" class="save-btn" onclick="saveSection('Data Diri')">Save</button>
-                <div style="clear: both;"></div>
+                <button type="submit" class="save-btn">Save</button>
             </div>
         </div>
+    </form>
+</div>
 
         <!-- PENDIDIKAN -->
+        <form action="{{ route('camaba.data-pendidikan.simpan') }}" method="POST">
+        @csrf
+        <div class="pendaftaran-container">
         <div class="form-section">
             <div class="section-header" onclick="toggleFormSection(this)">
                 <span>PENDIDIKAN</span>
@@ -318,33 +331,33 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Sekolah Asal: <span style="color: red;">*</span></label>
-                        <input type="text" name="sekolah_asal" placeholder="Nama sekolah" required>
+                        <input type="text" name="school_name" placeholder="Nama sekolah" required>
                     </div>
                     <div class="form-group">
                         <label>Nomor Pokok Sekolah Nasional (NPSN): <span style="color: red;">*</span></label>
-                        <input type="text" name="npsn" placeholder="NPSN" required>
+                        <input type="text" name="school_code" placeholder="NPSN" required>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>Alamat Sekolah: <span style="color: red;">*</span></label>
-                        <input type="text" name="alamat_sekolah" placeholder="Masukkan Alamat Lengkap" required>
+                        <input type="text" name="school_address" placeholder="Masukkan Alamat Lengkap" required>
                     </div>
                     <div class="form-group">
                         <label>Jurusan/Program Keahlian: <span style="color: red;">*</span></label>
-                        <input type="text" name="program_keahlian" placeholder="Program keahlian" required>
+                        <input type="text" name="major" placeholder="Program keahlian" required>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>Tahun Masuk: <span style="color: red;">*</span></label>
-                        <input type="text" name="tahun_masuk" placeholder="Tahun" required>
+                        <input type="text" name="year_of_entry" placeholder="Tahun" required>
                     </div>
                     <div class="form-group">
                         <label>Prestasi Akademik dan Nilai Akademik:</label>
-                        <input type="text" name="prestasi_akademik" placeholder="Prestasi">
+                        <input type="text" name="achievement" placeholder="Prestasi">
                     </div>
                 </div>
 
@@ -353,12 +366,16 @@
                     <input type="text" name="nisn" placeholder="NISN" required>
                 </div>
 
-                <button type="button" class="save-btn" onclick="saveSection('Pendidikan')">Save</button>
-                <div style="clear: both;"></div>
+                <button type="submit" class="save-btn">Save</button>
+                </div>
             </div>
         </div>
+    </form>
 
         <!-- KELUARGA -->
+        <form action="{{ route('camaba.data-keluarga.simpan') }}" method="POST">
+        @csrf
+        <div class="pendaftaran-container">
         <div class="form-section">
             <div class="section-header" onclick="toggleFormSection(this)">
                 <span>KELUARGA</span>
@@ -368,33 +385,33 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Nama Ayah/Wali: <span style="color: red;">*</span></label>
-                        <input type="text" name="nama_ayah" placeholder="Nama ayah" required>
+                        <input type="text" name="father_name" placeholder="Nama ayah" required>
                     </div>
                     <div class="form-group">
                         <label>Jumlah Anak: <span style="color: red;">*</span></label>
-                        <input type="number" name="jumlah_anak" placeholder="Jumlah" required>
+                        <input type="number" name="number_of_children" placeholder="Jumlah" required>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>Pekerjaan Ayah: <span style="color: red;">*</span></label>
-                        <input type="text" name="pekerjaan_ayah" placeholder="Pekerjaan" required>
+                        <input type="text" name="father_job" placeholder="Pekerjaan" required>
                     </div>
-                    <div class="form-group">
-                        <label>Anak Ke: <span style="color: red;">*</span></label>
-                        <input type="number" name="anak_ke" placeholder="Urutan" required>
-                    </div>
+                    <div class="form-group"> 
+                        <label>Anak Ke: <span style="color: red;">*</span></label> 
+                        <input type="number" name="child_order" placeholder="Urutan" required> 
+                    </div> 
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>Nama Ibu/Wali: <span style="color: red;">*</span></label>
-                        <input type="text" name="nama_ibu" placeholder="Nama ibu" required>
+                        <input type="text" name="mother_name" placeholder="Nama ibu" required>
                     </div>
                     <div class="form-group">
                         <label>Penghasilan Ayah dan Ibu: <span style="color: red;">*</span></label>
-                        <select name="penghasilan_ortu" required>
+                        <select name="parent_income" required>
                             <option value="">Pilih range</option>
                             <option value="< Rp 1.000.000">< Rp 1.000.000</option>
                             <option value="Rp 1.000.000 - Rp 2.499.000">Rp 1.000.000 - Rp 2.499.000</option>
@@ -407,28 +424,29 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Pekerjaan Ibu: <span style="color: red;">*</span></label>
-                        <input type="text" name="pekerjaan_ibu" placeholder="Pekerjaan" required>
+                        <input type="text" name="mother_job" placeholder="Pekerjaan" required>
                     </div>
                     <div class="form-group">
                         <label>Alamat: <span style="color: red;">*</span></label>
-                        <input type="text" name="alamat_ortu" placeholder="Alamat lengkap" required>
+                        <input type="text" name="parent_address" placeholder="Alamat lengkap" required>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Nomor HP: <span style="color: red;">*</span></label>
-                    <input type="tel" name="no_hp" placeholder="Nomor HP" required>
+                    <input type="tel" name="parent_phone" placeholder="Nomor HP" required>
                 </div>
 
-                <button type="button" class="save-btn" onclick="saveSection('Keluarga')">Save</button>
-                <div style="clear: both;"></div>
+               <button type="submit" class="save-btn">Save</button>
             </div>
         </div>
+    </div>
+</form>
 
-        <button type="submit" class="next-btn">Next →</button>
-    </form>
+<div class="next-wrapper">
+  <a href="{{ route('pendaftaran-lanjutan') }}" class="next-btn">Next →</a>
 </div>
-
+      
 <script>
     function toggleFormSection(header) {
         const body = header.nextElementSibling;

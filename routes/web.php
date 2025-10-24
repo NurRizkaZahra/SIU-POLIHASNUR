@@ -4,6 +4,9 @@ use App\Http\Controllers\CamabaController;
 use App\Http\Controllers\Camaba\JadwalUjianController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdmissionPathController;
+use App\Http\Controllers\StudyProgramController;
+use App\Http\Controllers\ProgramSelectionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -41,19 +44,34 @@ Route::middleware(['auth', 'role:camaba'])->group(function () {
     })->name('pendaftaran');
 
     // Proses simpan sementara ke session
-    Route::post('/camaba/pendaftaran', [CamabaController::class, 'simpanSementara'])
-        ->name('pendaftaran.simpan');
+    Route::post('/camaba/pendaftaran', [CamabaController::class, 'store'])
+        ->name('pendaftaran.store');
 
     // Halaman kedua (lanjutan)
     Route::get('/camaba/pendaftaran-lanjutan', [CamabaController::class, 'pendaftaranLanjutan'])
         ->name('pendaftaran-lanjutan');
 
-    // Simpan form lanjutan
-    Route::post('/camaba/pendaftaran-lanjutan', function () {
-        return back()->with('success', 'Data berhasil disimpan (dummy).');
-    })->name('pendaftaran-lanjutan.store');
+     // ----- FORM JALUR MASUK -----
+    Route::get('/camaba/data-jalur', [CamabaController::class, 'formJalurMasuk'])
+        ->name('camaba.data-jalur');
+    Route::post('/camaba/data-jalur', [CamabaController::class, 'simpanJalurMasuk'])
+        ->name('camaba.data-jalur.simpan');
 
-    Route::post('/jadwal-ujian/store', [App\Http\Controllers\Camaba\JadwalUjianController::class, 'store'])->name('jadwal.store')->middleware('auth');
+    // ----- FORM PROGRAM STUDI -----
+    Route::get('/camaba/data-prodi', [CamabaController::class, 'formProgramStudi'])
+        ->name('camaba.data-prodi');
+    Route::post('/camaba/data-prodi', [CamabaController::class, 'simpanProgramStudi'])
+        ->name('camaba.data-prodi.simpan');
+
+     // ===== FORM PENDAFTARAN DETAIL =====
+    Route::post('/camaba/data-diri', [CamabaController::class, 'simpanDataDiri'])
+        ->name('camaba.data-diri.simpan');
+
+    Route::post('/camaba/data-pendidikan', [CamabaController::class, 'simpanDataPendidikan'])
+        ->name('camaba.data-pendidikan.simpan');
+
+    Route::post('/camaba/data-keluarga', [CamabaController::class, 'simpanDataKeluarga'])
+        ->name('camaba.data-keluarga.simpan');
 
     // Jadwal ujian
     Route::get('/jadwal-ujian', [JadwalUjianController::class, 'index'])
