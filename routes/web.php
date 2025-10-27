@@ -52,14 +52,10 @@ Route::middleware(['auth', 'role:camaba'])->group(function () {
         ->name('pendaftaran-lanjutan');
 
      // ----- FORM JALUR MASUK -----
-    Route::get('/camaba/data-jalur', [CamabaController::class, 'formJalurMasuk'])
-        ->name('camaba.data-jalur');
     Route::post('/camaba/data-jalur', [CamabaController::class, 'simpanJalurMasuk'])
         ->name('camaba.data-jalur.simpan');
 
     // ----- FORM PROGRAM STUDI -----
-    Route::get('/camaba/data-prodi', [CamabaController::class, 'formProgramStudi'])
-        ->name('camaba.data-prodi');
     Route::post('/camaba/data-prodi', [CamabaController::class, 'simpanProgramStudi'])
         ->name('camaba.data-prodi.simpan');
 
@@ -76,6 +72,9 @@ Route::middleware(['auth', 'role:camaba'])->group(function () {
     // Jadwal ujian
     Route::get('/jadwal-ujian', [JadwalUjianController::class, 'index'])
         ->name('jadwal.ujian');
+
+    Route::post('/jadwal-ujian', [JadwalUjianController::class, 'store'])
+        ->name('jadwal.store');
 });
 
 // ================== PROFILE ==================

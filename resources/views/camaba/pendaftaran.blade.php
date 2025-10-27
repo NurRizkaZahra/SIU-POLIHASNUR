@@ -257,7 +257,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Nama Lengkap: <span style="color: red;">*</span></label>
-                        <input type="text" name="full_name" placeholder="Masukkan nama lengkap" required>
+                        <input type="text" name="full_name" value="{{ '' }}" placeholder="Masukkan nama lengkap" required>
                     </div>
                     <div class="form-group">
                         <label>Alamat Lengkap: <span style="color: red;">*</span></label>

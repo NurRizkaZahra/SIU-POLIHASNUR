@@ -12,13 +12,12 @@ class AdmissionPath extends Model
     protected $table = 'admission_paths';
     protected $primaryKey = 'id_path';
     protected $fillable = [
-        'user_id',
+        'id_user',     // ubah dari id_user ke user_id
         'path_name',
     ];
 
-    // Relasi ke user
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'id_user');
     }
 }
