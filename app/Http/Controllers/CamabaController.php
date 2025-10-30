@@ -78,15 +78,19 @@ class CamabaController extends Controller
     // PENDAFTARAN
     // =============================
     public function pendaftaran()
-    {
-        return view('camaba.pendaftaran');
-    }
+{
+    $personal = PersonalData::where('id_user', Auth::id())->first();
+    $education = EducationData::where('id_user', Auth::id())->first();
+    $family = FamilyData::where('id_user', Auth::id())->first();
+    return view('camaba.pendaftaran', compact('personal', 'education', 'family'));
+}
 
    public function pendaftaranLanjutan()
 {
     $data = session('data_pendaftaran', []);
+    $admissionPaths = AdmissionPath::all();
     $studyPrograms = StudyProgram::all();
-    return view('camaba.pendaftaran-lanjutan', compact('data', 'studyPrograms'));
+    return view('camaba.pendaftaran-lanjutan', compact('data', 'admissionPaths', 'studyPrograms'));
 }
 
     // =============================

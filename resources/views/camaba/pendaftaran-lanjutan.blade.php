@@ -286,38 +286,44 @@
     <form action="{{ route('camaba.data-jalur.simpan') }}" method="POST">
         @csrf
 
-        <!-- JALUR MASUK -->
-        <div class="form-section">
-            <div class="section-header" onclick="toggleFormSection(this)">
-                <span>JALUR MASUK</span>
-                <div class="chevron-icon open">∨</div>
-            </div>
-            <div class="section-body open">
-                <div class="form-group">
-                    <div class="radio-group">
-                        <label>
-                            <input type="radio" name="path_name" value="Mandiri" required>
-                            Mandiri
-                        </label>
-                        <label>
-                            <input type="radio" name="path_name" value="Beasiswa Unggulan" required>
-                            Beasiswa Unggulan
-                        </label>
-                        <label>
-                            <input type="radio" name="path_name" value="Berdikari" required>
-                            Berdikari
-                        </label>
-                        <label>
-                            <input type="radio" name="path_name" value="KIP-Kuliah" required>
-                            KIP-Kuliah
-                        </label>
-                    </div>
-                </div>
+       <!-- JALUR MASUK -->
+<div class="form-section">
+    <div class="section-header" onclick="toggleFormSection(this)">
+        <span>JALUR MASUK</span>
+        <div class="chevron-icon open">∨</div>
+    </div>
 
-                <button type="submit" class="save-btn">Save</button>
+    <div class="section-body open">
+
+        <div class="form-group">
+            <div class="radio-group">
+
+                @php
+                $jalurList = [
+                    'Mandiri',
+                    'Beasiswa Unggulan',
+                    'Berdikari',
+                    'KIP-Kuliah'
+                ];
+                @endphp
+
+                @foreach ($jalurList as $jalur)
+                    <label>
+                        <input type="radio" name="path_name" value="{{ $jalur }}" 
+                        {{ isset($path) && $path->path_name == $jalur ? 'checked' : '' }}
+                        required>
+                        {{ $jalur }}
+                    </label>
+                @endforeach
+
             </div>
         </div>
-    </form>
+
+        <button type="submit" class="save-btn">Save</button>
+    </div>
+</div>
+
+</form>
 
     <!-- PILIHAN JURUSAN -->
 <form action="{{ route('camaba.data-prodi.simpan') }}" method="POST">
@@ -334,12 +340,16 @@
                 <h3 class="pilihan-title">Pilihan 1 <span style="color: red;">*</span></h3>
                 <div class="checkbox-container">
                     <div class="checkbox-group" id="pilihan1-group">
-                        @foreach ($studyPrograms as $program)
-                            <label>
-                                <input type="checkbox" name="id_program_1" value="{{ $program->id_program }}">
-                                {{ $program->program_name }}
-                            </label>
-                        @endforeach
+                       @foreach ($studyPrograms as $program)
+    <label>
+        <input type="checkbox" 
+               name="id_program_1" 
+               value="{{ $program->id_program }}"
+               {{ isset($programTerpilih) && $programTerpilih->id_program_1 == $program->id_program ? 'checked' : '' }}>
+        {{ $program->program_name }}
+    </label>
+@endforeach
+
                     </div>
                 </div>
             </div>
@@ -350,11 +360,15 @@
                 <div class="checkbox-container">
                     <div class="checkbox-group" id="pilihan2-group">
                         @foreach ($studyPrograms as $program)
-                            <label>
-                                <input type="checkbox" name="id_program_2" value="{{ $program->id_program }}">
-                                {{ $program->program_name }}
-                            </label>
-                        @endforeach
+    <label>
+        <input type="checkbox" 
+               name="id_program_2" 
+               value="{{ $program->id_program }}"
+               {{ isset($programTerpilih) && $programTerpilih->id_program_2 == $program->id_program ? 'checked' : '' }}>
+        {{ $program->program_name }}
+    </label>
+@endforeach
+
                     </div>
                 </div>
             </div>
