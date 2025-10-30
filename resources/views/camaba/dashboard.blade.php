@@ -14,7 +14,7 @@
             </p>
             <div class="hero-buttons">
                 <a href="#" class="btn-primary">Pilih Jadwal</a>
-                <a href="{{ route('pendaftaran') }}" class="btn-secondary">Lengkapi Data Diri</a>
+                <a href="{{ route('registration') }}" class="btn-secondary">Lengkapi Data Diri</a>
             </div>
         </div>
         <div class="badge-kampus">

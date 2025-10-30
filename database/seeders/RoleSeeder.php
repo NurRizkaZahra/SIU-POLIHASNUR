@@ -23,7 +23,7 @@ class RoleSeeder extends Seeder
                 'password' => Hash::make('polhas116'),
             ]
              );
-        $camaba = User::firstOrcreate(
+        $camaba = User::firstOrCreate(
             ['email' => 'camaba@gmail.com'],
             [
                 'name' => 'camaba',

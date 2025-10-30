@@ -3,16 +3,17 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CamabaController;
-use App\Http\Controllers\Camaba\JadwalUjianController;
-use App\Http\Controllers\Admin\AdminPendaftaranController;
-use App\Http\Controllers\Admin\JadwalUjianAdminController;
+use App\Http\Controllers\Camaba\ExamScheduleController;
+use App\Http\Controllers\Admin\AdminRegistrationController;
+use App\Http\Controllers\Admin\ExamScheduleAdminController;
+use App\Http\Controllers\Admin\AdminExamController; // ← TAMBAHAN BARU
 
-// ================== HALAMAN UTAMA ==================
+// ================== MAIN PAGE ==================
 Route::get('/', function () {
     return view('welcome');
 });
 
-// ================== DASHBOARD UNIVERSAL ==================
+// ================== UNIVERSAL DASHBOARD ==================
 Route::get('/dashboard', function () {
     $user = auth()->user();
 
@@ -25,12 +26,12 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// ================== API STATS (UMUM) ==================
+// ================== PUBLIC DASHBOARD STATS (API) ==================
 Route::get('/api/dashboard-stats', function () {
     return response()->json([
         'total' => \App\Models\Pendaftar::count(),
-        'belum' => \App\Models\Pendaftar::where('status_ujian', 'belum')->count(),
-        'selesai' => \App\Models\Pendaftar::where('status_ujian', 'selesai')->count()
+        'not_taken' => \App\Models\Pendaftar::where('status_ujian', 'belum')->count(),
+        'completed' => \App\Models\Pendaftar::where('status_ujian', 'selesai')->count(),
     ]);
 });
 
@@ -40,44 +41,55 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     // Dashboard
     Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
 
-    // ================== PENDAFTARAN ==================
-    Route::get('/pendaftaran', [AdminPendaftaranController::class, 'index'])->name('pendaftaran');
-    Route::get('/pendaftaran/{id}', [AdminPendaftaranController::class, 'show'])->name('pendaftaran.detail');
-    Route::post('/pendaftaran/{id}/status-ujian', [AdminPendaftaranController::class, 'updateStatusUjian'])->name('pendaftaran.update-status');
-    Route::get('/pendaftaran/cetak/all', [AdminPendaftaranController::class, 'print'])->name('pendaftaran.print');
-    Route::get('/pendaftaran/export/excel', [AdminPendaftaranController::class, 'export'])->name('pendaftaran.export');
+    // ================== REGISTRATION ==================
+    Route::get('/registration', [AdminRegistrationController::class, 'index'])->name('registration');
+    Route::get('/registration/{id}', [AdminRegistrationController::class, 'show'])->name('registration.detail');
+    Route::post('/registration/{id}/exam-status', [AdminRegistrationController::class, 'updateExamStatus'])->name('registration.update-status');
+    Route::get('/registration/print/all', [AdminRegistrationController::class, 'print'])->name('registration.print');
+    Route::get('/registration/export/excel', [AdminRegistrationController::class, 'export'])->name('registration.export');
 
-    // ================== JADWAL UJIAN ==================
-    Route::get('/jadwal-ujian', [JadwalUjianAdminController::class, 'index'])->name('jadwal-ujian');
-    Route::get('/jadwal-ujian/create', [JadwalUjianAdminController::class, 'create'])->name('jadwal-ujian.create');
-    Route::post('/jadwal-ujian', [JadwalUjianAdminController::class, 'store'])->name('jadwal-ujian.store');
-    Route::get('/jadwal-ujian/{id}/edit', [JadwalUjianAdminController::class, 'edit'])->name('jadwal-ujian.edit');
-    Route::put('/jadwal-ujian/{id}', [JadwalUjianAdminController::class, 'update'])->name('jadwal-ujian.update');
-    Route::delete('/jadwal-ujian/{id}', [JadwalUjianAdminController::class, 'destroy'])->name('jadwal-ujian.destroy');
+    // ================== EXAM SCHEDULE ==================
+    Route::get('/exam-schedule', [ExamScheduleAdminController::class, 'index'])->name('exam-schedule');
+    Route::get('/exam-schedule/create', [ExamScheduleAdminController::class, 'create'])->name('exam-schedule.create');
+    Route::post('/exam-schedule', [ExamScheduleAdminController::class, 'store'])->name('exam-schedule.store');
+    Route::get('/exam-schedule/{id}/edit', [ExamScheduleAdminController::class, 'edit'])->name('exam-schedule.edit');
+    Route::put('/exam-schedule/{id}', [ExamScheduleAdminController::class, 'update'])->name('exam-schedule.update');
+    Route::delete('/exam-schedule/{id}', [ExamScheduleAdminController::class, 'destroy'])->name('exam-schedule.destroy');
+
+    // ================== EXAM NOTIFICATIONS & APPROVAL (TAMBAHAN BARU) ==================
+    Route::get('exam/notifications', [AdminExamController::class, 'notifications'])->name('exam.notifications');
+    Route::post('exam/{id}/approve', [AdminExamController::class, 'approve'])->name('exam.approve');
+    Route::post('exam/{id}/reject', [AdminExamController::class, 'reject'])->name('exam.reject');
+    Route::post('exam/bulk-approve', [AdminExamController::class, 'bulkApprove'])->name('exam.bulk-approve');
 });
 
 // ================== CAMABA ==================
-Route::middleware(['auth', 'role:camaba'])->group(function () {
+
+    Route::middleware(['auth', 'role:camaba'])->group(function() {
+    Route::get('/exam-schedule', [ExamScheduleController::class, 'index'])->name('exam.schedule');
+    Route::post('/exam-schedule', [ExamScheduleController::class, 'store'])->name('exam.schedule.store');
     Route::get('/dashboard/camaba', fn() => view('camaba.dashboard'))->name('dashboard.camaba');
 
-    Route::get('/camaba/pendaftaran', fn() => view('camaba.pendaftaran'))->name('pendaftaran');
-    Route::post('/camaba/pendaftaran', [CamabaController::class, 'store'])->name('pendaftaran.store');
+    Route::get('/camaba/registration', fn() => view('camaba.registration'))->name('registration');
+    Route::post('/camaba/registration', [CamabaController::class, 'store'])->name('registration.store');
 
-    Route::get('/camaba/pendaftaran-lanjutan', [CamabaController::class, 'pendaftaranLanjutan'])->name('pendaftaran-lanjutan');
+    Route::get('/camaba/advanced-registration', [CamabaController::class, 'advancedRegistration'])->name('registration.advanced');
 
-    // Data jalur & prodi
-    Route::get('/camaba/data-jalur', [CamabaController::class, 'formJalurMasuk'])->name('camaba.data-jalur');
-    Route::post('/camaba/data-jalur', [CamabaController::class, 'simpanJalurMasuk'])->name('camaba.data-jalur.simpan');
+    // Entry path & study program data
+    Route::get('/camaba/entry-path', [CamabaController::class, 'formEntryPath'])->name('camaba.entry-path');
+    Route::post('/camaba/entry-path', [CamabaController::class, 'saveEntryPath'])->name('camaba.entry-path.save');
 
-    Route::get('/camaba/data-prodi', [CamabaController::class, 'formProgramStudi'])->name('camaba.data-prodi');
-    Route::post('/camaba/data-prodi', [CamabaController::class, 'simpanProgramStudi'])->name('camaba.data-prodi.simpan');
+    Route::get('/camaba/study-program', [CamabaController::class, 'formStudyProgram'])->name('camaba.study-program');
+    Route::post('/camaba/study-program', [CamabaController::class, 'saveStudyProgram'])->name('camaba.study-program.save');
 
-    Route::post('/camaba/data-diri', [CamabaController::class, 'simpanDataDiri'])->name('camaba.data-diri.simpan');
-    Route::post('/camaba/data-pendidikan', [CamabaController::class, 'simpanDataPendidikan'])->name('camaba.data-pendidikan.simpan');
-    Route::post('/camaba/data-keluarga', [CamabaController::class, 'simpanDataKeluarga'])->name('camaba.data-keluarga.simpan');
+    Route::post('/camaba/personal-data', [CamabaController::class, 'savePersonalData'])->name('camaba.personal-data.save');
+    Route::post('/camaba/education-data', [CamabaController::class, 'saveEducationData'])->name('camaba.education-data.save');
+    Route::post('/camaba/family-data', [CamabaController::class, 'saveFamilyData'])->name('camaba.family-data.save');
 
-    // Jadwal ujian (camaba)
-    Route::get('/jadwal-ujian', [JadwalUjianController::class, 'index'])->name('jadwal.ujian');
+    // Exam schedule (camaba)
+    Route::get('/exam-schedule', [ExamScheduleController::class, 'index'])->name('exam.schedule');
+    Route::get('/exam-schedule', [ExamScheduleController::class, 'index'])->name('exam.schedule');
+
 });
 
 // ================== PROFILE ==================

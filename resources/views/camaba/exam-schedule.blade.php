@@ -155,7 +155,7 @@
         @forelse($gelombang as $item)
         <div class="gelombang-item">
             <div class="gelombang-header">
-                <h3 class="gelombang-title">{{ $item->nama }} ({{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d-m-Y') }} - {{ \Carbon\Carbon::parse($item->tanggal_akhir)->format('d-m-Y') }})</h3>
+                <h3 class="gelombang-title">{{ $item->wave_name }} ({{ \Carbon\Carbon::parse($item->start_date)->format('d-m-Y') }} - {{ \Carbon\Carbon::parse($item->end_date)->format('d-m-Y') }})</h3>
             </div>
             <div class="gelombang-content">
                 <div class="gelombang-input-group">
@@ -186,7 +186,7 @@
         }
 
         // Kirim data ke server
-        fetch('{{ route("jadwal.store") }}', {
+        fetch('{{ route("exam.schedule") }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -244,7 +244,7 @@
     @endif
 
     {{-- FORM DATA DIRI --}}
-    <form action="{{ route('camaba.data-diri.simpan') }}" method="POST">
+    <form action="{{ route('camaba.personal-data.save') }}" method="POST">
         @csrf
 
         <div class="form-section">
@@ -319,7 +319,7 @@
 </div>
 
         <!-- PENDIDIKAN -->
-        <form action="{{ route('camaba.data-pendidikan.simpan') }}" method="POST">
+        <form action="{{ route('camaba.education-data.save') }}" method="POST">
         @csrf
         <div class="pendaftaran-container">
         <div class="form-section">
@@ -373,7 +373,7 @@
     </form>
 
         <!-- KELUARGA -->
-        <form action="{{ route('camaba.data-keluarga.simpan') }}" method="POST">
+        <form action="{{ route('camaba.family-data.save') }}" method="POST">
         @csrf
         <div class="pendaftaran-container">
         <div class="form-section">
@@ -444,7 +444,7 @@
 </form>
 
 <div class="next-wrapper">
-  <a href="{{ route('pendaftaran-lanjutan') }}" class="next-btn">Next →</a>
+  <a href="{{ route('registration.advanced') }}" class="next-btn">Next →</a>
 </div>
       
 <script>

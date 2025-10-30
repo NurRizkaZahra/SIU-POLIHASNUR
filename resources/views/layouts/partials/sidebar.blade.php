@@ -21,13 +21,13 @@
             </a>
         </li>
         <li class="menu-item">
-            <a href="{{ route('pendaftaran') }}" class="menu-link {{ request()->routeIs('pendaftaran*') ? 'active' : '' }}">
+            <a href="{{ route('registration') }}" class="menu-link {{ request()->routeIs('registration*') ? 'active' : '' }}">
                 <span class="menu-icon">📋</span>
                 <span>PENDAFTARAN</span>
             </a>
         </li>
         <li class="menu-item">
-            <a href="{{ route('jadwal.ujian') }}" class="menu-link {{ request()->routeIs('jadwal.ujian') ? 'active' : '' }}">
+            <a href="{{ route('exam.schedule') }}" class="menu-link {{ request()->routeIs('exam.schedule') ? 'active' : '' }}">
                 <span class="menu-icon">📅</span>
                 <span>JADWAL UJIAN</span>
             </a>

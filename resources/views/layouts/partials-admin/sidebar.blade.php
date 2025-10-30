@@ -27,7 +27,7 @@
 
         {{-- PENDAFTARAN --}}
         <li class="menu-item">
-            <a href="{{ route('admin.pendaftaran') }}" 
+            <a href="{{ route('admin.registration') }}" 
                class="menu-link {{ request()->routeIs('admin.pendaftaran') ? 'active' : '' }}">
                 <span class="menu-icon">📋</span>
                 <span>PENDAFTARAN</span>
@@ -36,7 +36,7 @@
 
         {{-- JADWAL UJIAN --}}
         <li class="menu-item">
-            <a href="{{ route('admin.jadwal-ujian') }}" 
+            <a href="{{ route('admin.exam-schedule') }}" 
                class="menu-link {{ request()->routeIs('admin.jadwal-ujian') ? 'active' : '' }}">
                 <span class="menu-icon">📅</span>
                 <span>JADWAL UJIAN</span>

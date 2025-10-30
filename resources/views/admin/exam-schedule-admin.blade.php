@@ -1,7 +1,7 @@
 @extends('layouts.app-admin')
 
-@section('title', 'SIU-POLIHASNUR - Jadwal Ujian')
-@section('page-title', 'JADWAL UJIAN')
+@section('title', 'SIU-POLIHASNUR - Exam Schedule')
+@section('page-title', 'EXAM SCHEDULE')
 
 @push('styles')
 <style>
@@ -216,52 +216,52 @@
 
     <div class="schedule-header">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h2>Kelola Jadwal Ujian</h2>
-           <a href="{{ route('admin.jadwal-ujian.create') }}" class="btn btn-primary">Tambah Jadwal</a>
-                <i class="fas fa-plus"></i> Tambah Gelombang
+            <h2>Manage Exam Schedules</h2>
+            <a href="{{ route('admin.exam-schedule.create') }}" class="btn-add">
+                <i class="fas fa-plus"></i> Add Exam Schedule
             </a>
         </div>
     </div>
 
-    @forelse($jadwalUjian as $jadwal)
+    @forelse($examSchedules as $schedule)
     <div class="schedule-card">
         <div class="schedule-title">
-            <h3>{{ $jadwal->nama_gelombang }} ({{ $jadwal->tanggal_mulai->format('d M Y') }} - {{ $jadwal->tanggal_selesai->format('d M Y') }})</h3>
+            <h3>{{ $schedule->wave_name }} ({{ $schedule->start_date->format('d M Y') }} - {{ $schedule->end_date->format('d M Y') }})</h3>
             <div class="schedule-actions">
-                <a href="{{ route('admin.jadwal-ujian.edit', $jadwal->id) }}" class="btn-action btn-edit">
+                <a href="{{ route('admin.exam-schedule.edit', $schedule->id) }}" class="btn-action btn-edit">
                     <i class="fas fa-edit"></i> Edit
                 </a>
-                <form action="{{ route('admin.jadwal-ujian.destroy', $jadwal->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus gelombang ini?')">
+                <form action="{{ route('admin.exam-schedule.destroy', $schedule->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this schedule?')">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn-action btn-delete">
-                        <i class="fas fa-trash"></i> Hapus
+                        <i class="fas fa-trash"></i> Delete
                     </button>
                 </form>
             </div>
         </div>
         
-        <form action="{{ route('admin.jadwal-ujian.update', $jadwal->id) }}" method="POST" class="date-range-form">
+        <form action="{{ route('admin.exam-schedule.update', $schedule->id) }}" method="POST" class="date-range-form">
             @csrf
             @method('PUT')
             <div class="date-input-group">
-                <label>Tanggal Ujian:</label>
-                <input type="date" class="date-input" name="tanggal_mulai" value="{{ $jadwal->tanggal_mulai->format('Y-m-d') }}" required>
+                <label>Exam Date:</label>
+                <input type="date" class="date-input" name="start_date" value="{{ $schedule->start_date->format('Y-m-d') }}" required>
             </div>
-            <span style="color: #999;">s/d</span>
+            <span style="color: #999;">to</span>
             <div class="date-input-group">
-                <input type="date" class="date-input" name="tanggal_selesai" value="{{ $jadwal->tanggal_selesai->format('Y-m-d') }}" required>
+                <input type="date" class="date-input" name="end_date" value="{{ $schedule->end_date->format('Y-m-d') }}" required>
             </div>
-            <input type="hidden" name="nama_gelombang" value="{{ $jadwal->nama_gelombang }}">
-            <input type="hidden" name="kuota_peserta" value="{{ $jadwal->kuota_peserta }}">
-            <input type="hidden" name="status" value="{{ $jadwal->status }}">
-            <button type="submit" class="btn-save">Simpan</button>
+            <input type="hidden" name="wave_name" value="{{ $schedule->wave_name }}">
+            <input type="hidden" name="quota" value="{{ $schedule->quota }}">
+            <input type="hidden" name="status" value="{{ $schedule->status }}">
+            <button type="submit" class="btn-save">Save</button>
         </form>
     </div>
     @empty
     <div class="no-schedule">
         <i class="fas fa-calendar-times"></i>
-        <p>Belum ada jadwal ujian. Klik "Tambah Gelombang" untuk menambahkan jadwal baru.</p>
+        <p>No exam schedule found. Click "Add Exam Schedule" to create a new one.</p>
     </div>
     @endforelse
 </div>

@@ -1,7 +1,7 @@
 @extends('layouts.app-admin')
 
-@section('title', 'SIU-POLIHASNUR - Tambah Gelombang')
-@section('page-title', 'JADWAL UJIAN')
+@section('title', 'SIU-POLIHASNUR - Add Exam Batch')
+@section('page-title', 'EXAM SCHEDULE')
 
 @push('styles')
 <style>
@@ -228,104 +228,100 @@
 <div class="form-container">
     <div class="form-card">
         <div class="form-header">
-            <h2>Tambahkan Gelombang Baru</h2>
-            <a href="{{ route('jadwal-ujian-admin.create') }}" class="btn-back">kembali</a>
+            <h2>Add New Exam Batch</h2>
+            <a href="{{ route('admin.exam-schedule') }}" class="btn-back">Back</a>
         </div>
 
-        <form action="{{ route('jadwal-ujian.store') }}" method="POST">
+        <form action="{{ route('admin.exam-schedule.store') }}" method="POST">
             @csrf
             <div class="form-body">
                 <div class="alert-warning">
                     <i class="fas fa-exclamation-circle"></i>
-                    <p>Pastikan tanggal ujian tidak bentrok dengan gelombang lain</p>
+                    <p>Make sure the exam dates do not overlap with another batch.</p>
                 </div>
 
                 <div class="form-group">
-                    <label for="nama_gelombang">
-                        Nama Gelombang <span class="required">*</span>
+                    <label for="batch_name">
+                        Batch Name <span class="required">*</span>
                     </label>
                     <input 
                         type="text" 
-                        id="nama_gelombang"
-                        name="nama_gelombang" 
+                        id="wave_name"
+                        name="wave_name" 
                         class="form-input" 
-                        placeholder="Contoh : Gelombang 1" 
-                        value="{{ old('nama_gelombang') }}"
+                        placeholder="e.g. Batch 1" 
+                        value="{{ old('wave_name') }}"
                         required
                     >
-                    <small class="form-hint">Nama gelombang akan ditampilkan ke calon mahasiswa</small>
-                    @error('nama_gelombang')
+                    <small class="form-hint">This name will be displayed to prospective students</small>
+                    @error('batch_name')
                         <small class="form-hint" style="color: #f44336;">{{ $message }}</small>
                     @enderror
                 </div>
 
                 <div class="form-group">
-                    <label>
-                        Tanggal Ujian <span class="required">*</span>
-                    </label>
+                    <label>Exam Date <span class="required">*</span></label>
                     <div class="date-range-wrapper">
                         <div>
                             <input 
                                 type="date" 
-                                name="tanggal_mulai" 
+                                name="start_date" 
                                 class="form-input"
-                                value="{{ old('tanggal_mulai') }}"
+                                value="{{ old('start_date') }}"
                                 required
                             >
                         </div>
-                        <span class="date-separator">s/d</span>
+                        <span class="date-separator">to</span>
                         <div>
                             <input 
                                 type="date" 
-                                name="tanggal_selesai" 
+                                name="end_date" 
                                 class="form-input"
-                                value="{{ old('tanggal_selesai') }}"
+                                value="{{ old('end_date') }}"
                                 required
                             >
                         </div>
                     </div>
-                    <small class="form-hint">Rentang waktu pelaksanaan ujian</small>
-                    @error('tanggal_mulai')
+                    <small class="form-hint">Exam implementation period</small>
+                    @error('start_date')
                         <small class="form-hint" style="color: #f44336;">{{ $message }}</small>
                     @enderror
-                    @error('tanggal_selesai')
+                    @error('end_date')
                         <small class="form-hint" style="color: #f44336;">{{ $message }}</small>
                     @enderror
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="kuota_peserta">Kouta Peserta</label>
+                        <label for="participant_quota">Participant Quota</label>
                         <input 
                             type="number" 
-                            id="kuota_peserta"
-                            name="kuota_peserta" 
+                            id="participant_quota"
+                            name="participant_quota" 
                             class="form-input" 
-                            placeholder="Contoh : 100"
-                            value="{{ old('kuota_peserta') }}"
+                            placeholder="e.g. 100"
+                            value="{{ old('participant_quota') }}"
                             min="1"
                         >
-                        <small class="form-hint">Maksimal peserta gelombang ini</small>
-                        @error('kuota_peserta')
+                        <small class="form-hint">Maximum number of participants in this batch</small>
+                        @error('participant_quota')
                             <small class="form-hint" style="color: #f44336;">{{ $message }}</small>
                         @enderror
                     </div>
 
                     <div class="form-group">
-                        <label for="status">
-                            Status <span class="required">*</span>
-                        </label>
+                        <label for="status">Status <span class="required">*</span></label>
                         <select 
                             id="status"
                             name="status" 
                             class="form-input" 
                             required
                         >
-                            <option value="">Pilih status</option>
-                            <option value="aktif" {{ old('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                            <option value="nonaktif" {{ old('status') == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+                            <option value="">Select status</option>
+                            <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
+                            <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
                         </select>
-                        <small class="form-hint">Status pendaftaran gelombang</small>
+                        <small class="form-hint">Batch registration status</small>
                         @error('status')
                             <small class="form-hint" style="color: #f44336;">{{ $message }}</small>
                         @enderror
@@ -334,8 +330,8 @@
             </div>
 
             <div class="form-footer">
-                <a href="{{ route('jadwal-ujian-admin') }}" class="btn-form btn-cancel">BATAL</a>
-                <button type="submit" class="btn-form btn-submit">SIMPAN</button>
+                <a href="{{ route('admin.exam-schedule') }}" class="btn-form btn-cancel">Cancel</a>
+                <button type="submit" class="btn-form btn-submit">Save</button>
             </div>
         </form>
     </div>
@@ -344,24 +340,24 @@
 
 @push('scripts')
 <script>
-// Validasi tanggal
-document.querySelector('input[name="tanggal_selesai"]').addEventListener('change', function() {
-    const tanggalMulai = document.querySelector('input[name="tanggal_mulai"]').value;
-    const tanggalSelesai = this.value;
+// Validate date
+document.querySelector('input[name="end_date"]').addEventListener('change', function() {
+    const startDate = document.querySelector('input[name="start_date"]').value;
+    const endDate = this.value;
     
-    if (tanggalMulai && tanggalSelesai) {
-        if (new Date(tanggalSelesai) < new Date(tanggalMulai)) {
-            alert('Tanggal selesai tidak boleh lebih awal dari tanggal mulai!');
+    if (startDate && endDate) {
+        if (new Date(endDate) < new Date(startDate)) {
+            alert('End date cannot be earlier than start date!');
             this.value = '';
         }
     }
 });
 
-// Konfirmasi sebelum submit
+// Confirm before submit
 document.querySelector('form').addEventListener('submit', function(e) {
-    const namaGelombang = document.querySelector('input[name="nama_gelombang"]').value;
+    const batchName = document.querySelector('input[name="batch_name"]').value;
     
-    if (!confirm(`Apakah Anda yakin ingin menambahkan "${namaGelombang}"?`)) {
+    if (!confirm(`Are you sure you want to add "${batchName}"?`)) {
         e.preventDefault();
     }
 });
