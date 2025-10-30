@@ -286,127 +286,98 @@
     <form action="{{ route('camaba.data-jalur.simpan') }}" method="POST">
         @csrf
 
-        <!-- JALUR MASUK -->
-        <div class="form-section">
-            <div class="section-header" onclick="toggleFormSection(this)">
-                <span>JALUR MASUK</span>
-                <div class="chevron-icon open">∨</div>
-            </div>
-            <div class="section-body open">
-                <div class="form-group">
-                    <div class="radio-group">
-                        <label>
-                            <input type="radio" name="jalur_masuk" value="Mandiri" required>
-                            Mandiri
-                        </label>
-                        <label>
-                            <input type="radio" name="jalur_masuk" value="Beasiswa Unggulan" required>
-                            Beasiswa Unggulan
-                        </label>
-                        <label>
-                            <input type="radio" name="jalur_masuk" value="Berdikari" required>
-                            Berdikari
-                        </label>
-                        <label>
-                            <input type="radio" name="jalur_masuk" value="KIP-Kuliah" required>
-                            KIP-Kuliah
-                        </label>
-                    </div>
-                </div>
+       <!-- JALUR MASUK -->
+<div class="form-section">
+    <div class="section-header" onclick="toggleFormSection(this)">
+        <span>JALUR MASUK</span>
+        <div class="chevron-icon open">∨</div>
+    </div>
 
-                <button type="submit" class="save-btn">Save</button>
+    <div class="section-body open">
+
+        <div class="form-group">
+            <div class="radio-group">
+
+                @php
+                $jalurList = [
+                    'Mandiri',
+                    'Beasiswa Unggulan',
+                    'Berdikari',
+                    'KIP-Kuliah'
+                ];
+                @endphp
+
+                @foreach ($jalurList as $jalur)
+                    <label>
+                        <input type="radio" name="path_name" value="{{ $jalur }}" 
+                        {{ isset($path) && $path->path_name == $jalur ? 'checked' : '' }}
+                        required>
+                        {{ $jalur }}
+                    </label>
+                @endforeach
+
             </div>
         </div>
-    </form>
+
+        <button type="submit" class="save-btn">Save</button>
+    </div>
+</div>
+
+</form>
 
     <!-- PILIHAN JURUSAN -->
-    <form action="{{ route('camaba.data-prodi.simpan') }}" method="POST">
-        @csrf
-        <div class="form-section">
-            <div class="section-header" onclick="toggleFormSection(this)">
-                <span>PILIHAN JURUSAN</span>
-                <div class="chevron-icon open">∨</div>
-            </div>
-            <div class="section-body open">
-                <!-- Pilihan 1 -->
-                <div class="pilihan-section">
-                    <h3 class="pilihan-title">Pilihan 1 <span style="color: red;">*</span></h3>
-                    <div class="checkbox-container">
-                        <div class="checkbox-group" id="pilihan1-group">
-                            <label>
-                                <input type="checkbox" name="pilihan_1" value="D4 Bisnis Digital">
-                                D4 Bisnis Digital
-                            </label>
-                            <label>
-                                <input type="checkbox" name="pilihan_1" value="D3 Teknik Informatika">
-                                D3 Teknik Informatika
-                            </label>
-                            <label>
-                                <input type="checkbox" name="pilihan_1" value="D4 Akuntansi Bisnis Digital">
-                                D4 Akuntansi Bisnis Digital
-                            </label>
-                            <label>
-                                <input type="checkbox" name="pilihan_1" value="D3 Teknik Otomotif">
-                                D3 Teknik Otomotif
-                            </label>
-                            <label>
-                                <input type="checkbox" name="pilihan_1" value="D4 Manajemen Pemasaran Internasional">
-                                D4 Manajemen Pemasaran Internasional
-                            </label>
-                            <label>
-                                <input type="checkbox" name="pilihan_1" value="D3 Budidaya Tanaman Perkebunan">
-                                D3 Budidaya Tanaman Perkebunan
-                            </label>
-                            <label>
-                                <input type="checkbox" name="pilihan_1" value="D4 Teknologi Rekayasa Multimedia">
-                                D4 Teknologi Rekayasa Multimedia
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pilihan 2 -->
-                <div class="pilihan-section">
-                    <h3 class="pilihan-title">Pilihan 2 <span style="color: red;">*</span></h3>
-                    <div class="checkbox-container">
-                        <div class="checkbox-group" id="pilihan2-group">
-                            <label>
-                                <input type="checkbox" name="pilihan_2" value="D4 Bisnis Digital">
-                                D4 Bisnis Digital
-                            </label>
-                            <label>
-                                <input type="checkbox" name="pilihan_2" value="D3 Teknik Informatika">
-                                D3 Teknik Informatika
-                            </label>
-                            <label>
-                                <input type="checkbox" name="pilihan_2" value="D4 Akuntansi Bisnis Digital">
-                                D4 Akuntansi Bisnis Digital
-                            </label>
-                            <label>
-                                <input type="checkbox" name="pilihan_2" value="D3 Teknik Otomotif">
-                                D3 Teknik Otomotif
-                            </label>
-                            <label>
-                                <input type="checkbox" name="pilihan_2" value="D4 Manajemen Pemasaran Internasional">
-                                D4 Manajemen Pemasaran Internasional
-                            </label>
-                            <label>
-                                <input type="checkbox" name="pilihan_2" value="D3 Budidaya Tanaman Perkebunan">
-                                D3 Budidaya Tanaman Perkebunan
-                            </label>
-                            <label>
-                                <input type="checkbox" name="pilihan_2" value="D4 Teknologi Rekayasa Multimedia">
-                                D4 Teknologi Rekayasa Multimedia
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <button type="submit" class="save-btn">Save</button>
-            </div>
+<form action="{{ route('camaba.data-prodi.simpan') }}" method="POST">
+    @csrf
+    <div class="form-section">
+        <div class="section-header" onclick="toggleFormSection(this)">
+            <span>PILIHAN JURUSAN</span>
+            <div class="chevron-icon open">∨</div>
         </div>
-    </form>
-</div>
+        <div class="section-body open">
+
+            <!-- Pilihan 1 -->
+            <div class="pilihan-section">
+                <h3 class="pilihan-title">Pilihan 1 <span style="color: red;">*</span></h3>
+                <div class="checkbox-container">
+                    <div class="checkbox-group" id="pilihan1-group">
+                       @foreach ($studyPrograms as $program)
+    <label>
+        <input type="checkbox" 
+               name="id_program_1" 
+               value="{{ $program->id_program }}"
+               {{ isset($programTerpilih) && $programTerpilih->id_program_1 == $program->id_program ? 'checked' : '' }}>
+        {{ $program->program_name }}
+    </label>
+@endforeach
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pilihan 2 -->
+            <div class="pilihan-section">
+                <h3 class="pilihan-title">Pilihan 2 <span style="color: red;">*</span></h3>
+                <div class="checkbox-container">
+                    <div class="checkbox-group" id="pilihan2-group">
+                        @foreach ($studyPrograms as $program)
+    <label>
+        <input type="checkbox" 
+               name="id_program_2" 
+               value="{{ $program->id_program }}"
+               {{ isset($programTerpilih) && $programTerpilih->id_program_2 == $program->id_program ? 'checked' : '' }}>
+        {{ $program->program_name }}
+    </label>
+@endforeach
+
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="save-btn">Save</button>
+        </div>
+    </div>
+</form>
+
 
 <!-- Done Button di dalam container, bukan fixed -->
 <div class="done-wrapper">

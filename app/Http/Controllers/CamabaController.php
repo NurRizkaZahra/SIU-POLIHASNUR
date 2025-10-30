@@ -78,15 +78,20 @@ class CamabaController extends Controller
     // PENDAFTARAN
     // =============================
     public function pendaftaran()
-    {
-        return view('camaba.pendaftaran');
-    }
+{
+    $personal = PersonalData::where('id_user', Auth::id())->first();
+    $education = EducationData::where('id_user', Auth::id())->first();
+    $family = FamilyData::where('id_user', Auth::id())->first();
+    return view('camaba.pendaftaran', compact('personal', 'education', 'family'));
+}
 
-    public function pendaftaranLanjutan()
-    {
-        $data = session('data_pendaftaran', []);
-        return view('camaba.pendaftaran-lanjutan', compact('data'));
-    }
+   public function pendaftaranLanjutan()
+{
+    $data = session('data_pendaftaran', []);
+    $admissionPaths = AdmissionPath::all();
+    $studyPrograms = StudyProgram::all();
+    return view('camaba.pendaftaran-lanjutan', compact('data', 'admissionPaths', 'studyPrograms'));
+}
 
     // =============================
     // SIMPAN DATA DIRI
@@ -192,41 +197,41 @@ class CamabaController extends Controller
     // =============================
     // SIMPAN JALUR MASUK
     // =============================
-    public function simpanJalurMasuk(Request $request)
-    {
-        $request->validate([
-            'id_jalur' => 'required|exists:admission_paths,id',
-        ]);
+   public function simpanJalurMasuk(Request $request)
+{
+    $request->validate([
+        'path_name' => 'required|string|max:100',
+    ]);
+    
+    AdmissionPath::updateOrCreate(
+        ['id_user' => Auth::id()],
+        ['path_name' => $request->path_name]
 
-        AdmissionPath::updateOrCreate(
-            ['user_id' => Auth::id()],
-            ['id_jalur' => $request->id_jalur]
-        );
+    );
 
-        return back()->with('success', 'Jalur masuk berhasil disimpan!');
-    }
+    return back()->with('success', 'Jalur masuk berhasil disimpan!');
+}
 
     // =============================
     // SIMPAN PROGRAM STUDI
     // =============================
     public function simpanProgramStudi(Request $request)
-    {
-        $request->validate([
-            'id_program_1' => 'required|different:id_program_2',
-            'id_program_2' => 'nullable|different:id_program_1',
-        ]);
+{
+    $request->validate([
+        'id_program_1' => 'required|different:id_program_2',
+        'id_program_2' => 'nullable|different:id_program_1',
+    ]);
 
-        ProgramSelection::updateOrCreate(
-            ['user_id' => Auth::id()],
-            [
-                'id_program_1' => $request->id_program_1,
-                'id_program_2' => $request->id_program_2,
-            ]
-        );
+    ProgramSelection::updateOrCreate(
+        ['user_id' => Auth::id()],
+        [
+            'id_program_1' => $request->id_program_1,
+            'id_program_2' => $request->id_program_2,
+        ]
+    );
 
-        return back()->with('success', 'Pilihan program studi berhasil disimpan!');
-    }
-
+    return back()->with('success', 'Pilihan program studi berhasil disimpan!');
+}
     // =============================
     // HALAMAN TAMBAHAN
     // =============================

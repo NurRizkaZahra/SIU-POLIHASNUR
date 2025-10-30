@@ -48,6 +48,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/registration/print/all', [AdminRegistrationController::class, 'print'])->name('registration.print');
     Route::get('/registration/export/excel', [AdminRegistrationController::class, 'export'])->name('registration.export');
 
+
     // ================== EXAM SCHEDULE ==================
     Route::get('/exam-schedule', [ExamScheduleAdminController::class, 'index'])->name('exam-schedule');
     Route::get('/exam-schedule/create', [ExamScheduleAdminController::class, 'create'])->name('exam-schedule.create');

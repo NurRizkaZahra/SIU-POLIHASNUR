@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('admission_paths', function (Blueprint $table) {
             $table->id('id_path');
-            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('path_name');
             $table->timestamps();
         });

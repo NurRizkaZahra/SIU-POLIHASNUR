@@ -257,59 +257,63 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Nama Lengkap: <span style="color: red;">*</span></label>
-                        <input type="text" name="full_name" placeholder="Masukkan nama lengkap" required>
+                        <input type="text" name="full_name" value="{{ $personalData->full_name ?? '' }}" placeholder="Masukkan nama lengkap" required>
                     </div>
                     <div class="form-group">
                         <label>Alamat Lengkap: <span style="color: red;">*</span></label>
-                        <input type="text" name="address" placeholder="Masukkan alamat" required>
+                        <input type="text" name="address" value="{{ $personalData->address ?? '' }}" placeholder="Masukkan alamat" required>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>Tempat Lahir: <span style="color: red;">*</span></label>
-                        <input type="text" name="place_of_birth" placeholder="Kota lahir" required>
+                        <input type="text" name="place_of_birth" value="{{ $personalData->place_of_birth ?? '' }}" placeholder="Kota lahir" required>
                     </div>
                     <div class="form-group">
                         <label>Telepon/HP: <span style="color: red;">*</span></label>
-                        <input type="text" name="phone" placeholder="Telepon/HP" required>
+                        <input type="text" name="phone" value="{{ $personalData->phone ?? '' }}" placeholder="Telepon/HP" required>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Jenis Kelamin: <span style="color: red;">*</span></label>
                     <div class="radio-group">
-                        <label><input type="radio" name="gender" value="Laki-laki" required> Laki-laki</label>
-                        <label><input type="radio" name="gender" value="Perempuan" required> Perempuan</label>
+                        <label>
+                            <input type="radio" name="gender" value="Laki-laki"
+                             {{ ($personalData->gender ?? '') == 'Laki-laki' ? 'checked': ''}}> Laki-laki</label>
+                        <label>
+                            <input type="radio" name="gender" value="Perempuan"
+                             {{ ($personalData->gender ?? '') == 'Perempuan' ? 'checked': ''}}> Perempuan</label>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Agama: <span style="color: red;">*</span></label>
                     <div class="radio-group">
-                        <label><input type="radio" name="religion" value="Islam" required> Islam</label>
-                        <label><input type="radio" name="religion" value="Kristen" required> Kristen</label>
-                        <label><input type="radio" name="religion" value="Katolik" required> Katolik</label>
-                        <label><input type="radio" name="religion" value="Hindu" required> Hindu</label>
-                        <label><input type="radio" name="religion" value="Budha" required> Budha</label>
-                        <label><input type="radio" name="religion" value="Lainnya" required> Lainnya</label>
+                        @foreach(['Islam', 'Kristen', 'Katolik', 'Hindu', 'Budha', 'Lainnya'] as $agama)
+                        <label>
+                            <input type="radio" name="religion" value="{{ $agama }}" 
+                            {{ ($personalData->religion ?? '') == $agama ? 'checked' : '' }}>{{ $agama }}
+                            </label>
+                            @endforeach
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>No. Kartu Keluarga: <span style="color: red;">*</span></label>
-                        <input type="text" name="kk_number" placeholder="Nomor KK" required>
+                        <input type="text" name="kk_number" value="{{ $personalData->kk_number ?? '' }}" placeholder="Nomor KK" required>
                     </div>
                     <div class="form-group">
                         <label>NIK: <span style="color: red;">*</span></label>
-                        <input type="text" name="nik" placeholder="Nomor NIK" required>
+                        <input type="text" name="nik" value="{{ $personalData->nik ?? '' }}" placeholder="Nomor NIK" required>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Tanggal Lahir: <span style="color: red;">*</span></label>
-                    <input type="date" name="date_of_birth" required>
+                    <input type="date" name="date_of_birth" value="{{ $personalData->date_of_birth ?? '' }}" required>
                 </div>
 
                 <button type="submit" class="save-btn">Save</button>
@@ -339,38 +343,48 @@
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Alamat Sekolah: <span style="color: red;">*</span></label>
-                        <input type="text" name="school_address" placeholder="Masukkan Alamat Lengkap" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Jurusan/Program Keahlian: <span style="color: red;">*</span></label>
-                        <input type="text" name="major" placeholder="Program keahlian" required>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Tahun Masuk: <span style="color: red;">*</span></label>
-                        <input type="text" name="year_of_entry" placeholder="Tahun" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Prestasi Akademik dan Nilai Akademik:</label>
-                        <input type="text" name="achievement" placeholder="Prestasi">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Nomor Induk Siswa Nasional (NISN): <span style="color: red;">*</span></label>
-                    <input type="text" name="nisn" placeholder="NISN" required>
-                </div>
-
-                <button type="submit" class="save-btn">Save</button>
-                </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Alamat Sekolah: <span style="color: red;">*</span></label>
+                <input type="text" name="school_address"
+                       value="{{ old('school_address', $user->educationData->school_address ?? '') }}"
+                       placeholder="Masukkan Alamat Lengkap" required>
+            </div>
+            <div class="form-group">
+                <label>Jurusan/Program Keahlian: <span style="color: red;">*</span></label>
+                <input type="text" name="major"
+                       value="{{ old('major', $user->educationData->major ?? '') }}"
+                       placeholder="Program keahlian" required>
             </div>
         </div>
-    </form>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Tahun Masuk: <span style="color: red;">*</span></label>
+                <input type="text" name="year_of_entry"
+                       value="{{ old('year_of_entry', $user->educationData->year_of_entry ?? '') }}"
+                       placeholder="Tahun" required>
+            </div>
+            <div class="form-group">
+                <label>Prestasi Akademik dan Nilai Akademik:</label>
+                <input type="text" name="achievement"
+                       value="{{ old('achievement', $user->educationData->achievement ?? '') }}"
+                       placeholder="Prestasi">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Nomor Induk Siswa Nasional (NISN): <span style="color: red;">*</span></label>
+            <input type="text" name="nisn"
+                   value="{{ old('nisn', $user->educationData->nisn ?? '') }}"
+                   placeholder="NISN" required>
+        </div>
+
+        <button type="submit" class="save-btn">Save</button>
+    </div>
+</div>
+</div>
+</form>
 
         <!-- KELUARGA -->
         <form action="{{ route('camaba.family-data.save') }}" method="POST">
@@ -393,54 +407,76 @@
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Pekerjaan Ayah: <span style="color: red;">*</span></label>
-                        <input type="text" name="father_job" placeholder="Pekerjaan" required>
-                    </div>
-                    <div class="form-group"> 
-                        <label>Anak Ke: <span style="color: red;">*</span></label> 
-                        <input type="number" name="child_order" placeholder="Urutan" required> 
-                    </div> 
-                </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Pekerjaan Ayah: *</label>
+                <input type="text" name="father_job"
+                       value="{{ $keluarga->father_job ?? '' }}"
+                       placeholder="Pekerjaan" required>
+            </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nama Ibu/Wali: <span style="color: red;">*</span></label>
-                        <input type="text" name="mother_name" placeholder="Nama ibu" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Penghasilan Ayah dan Ibu: <span style="color: red;">*</span></label>
-                        <select name="parent_income" required>
-                            <option value="">Pilih range</option>
-                            <option value="< Rp 1.000.000">< Rp 1.000.000</option>
-                            <option value="Rp 1.000.000 - Rp 2.499.000">Rp 1.000.000 - Rp 2.499.000</option>
-                            <option value="Rp 2.500.000 - Rp 4.999.000">Rp 2.500.000 - Rp 4.999.000</option>
-                            <option value="> Rp 5.000.000">> Rp 5.000.000</option>
-                        </select>
-                    </div>
-                </div>
+            <div class="form-group"> 
+                <label>Anak Ke: *</label> 
+                <input type="number" name="child_order"
+                       value="{{ $keluarga->child_order ?? '' }}"
+                       placeholder="Urutan" required>
+            </div> 
+        </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Pekerjaan Ibu: <span style="color: red;">*</span></label>
-                        <input type="text" name="mother_job" placeholder="Pekerjaan" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Alamat: <span style="color: red;">*</span></label>
-                        <input type="text" name="parent_address" placeholder="Alamat lengkap" required>
-                    </div>
-                </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Nama Ibu/Wali: *</label>
+                <input type="text" name="mother_name"
+                       value="{{ $keluarga->mother_name ?? '' }}"
+                       placeholder="Nama ibu" required>
+            </div>
 
-                <div class="form-group">
-                    <label>Nomor HP: <span style="color: red;">*</span></label>
-                    <input type="tel" name="parent_phone" placeholder="Nomor HP" required>
-                </div>
-
-               <button type="submit" class="save-btn">Save</button>
+            <div class="form-group">
+                <label>Penghasilan Ayah dan Ibu: *</label>
+                <select name="parent_income" required>
+                    <option value="">Pilih range</option>
+                    @foreach ([
+                        '< Rp 1.000.000',
+                        'Rp 1.000.000 - Rp 2.499.000',
+                        'Rp 2.500.000 - Rp 4.999.000',
+                        '> Rp 5.000.000'
+                    ] as $income)
+                        <option value="{{ $income }}" 
+                            {{ isset($keluarga) && $keluarga->parent_income == $income ? 'selected' : '' }}>
+                            {{ $income }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
         </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Pekerjaan Ibu: *</label>
+                <input type="text" name="mother_job"
+                       value="{{ $keluarga->mother_job ?? '' }}"
+                       placeholder="Pekerjaan" required>
+            </div>
+
+            <div class="form-group">
+                <label>Alamat: *</label>
+                <input type="text" name="parent_address"
+                       value="{{ $keluarga->parent_address ?? '' }}"
+                       placeholder="Alamat lengkap" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Nomor HP: *</label>
+            <input type="tel" name="parent_phone"
+                   value="{{ $keluarga->parent_phone ?? '' }}"
+                   placeholder="Nomor HP" required>
+        </div>
+
+        <button type="submit" class="save-btn">Save</button>
     </div>
+</div>
+</div>
 </form>
 
 <div class="next-wrapper">

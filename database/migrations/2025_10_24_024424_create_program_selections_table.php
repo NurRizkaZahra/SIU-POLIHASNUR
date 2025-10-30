@@ -10,15 +10,10 @@ return new class extends Migration
     {
         Schema::create('program_selections', function (Blueprint $table) {
             $table->id('id_selection');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('id_program_1')->nullable();
-            $table->unsignedBigInteger('id_program_2')->nullable();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_program_1')->constrained('study_programs')->onDelete('cascade');
+            $table->foreignId('id_program_2')->nullable()->constrained('study_programs')->onDelete('cascade');
             $table->timestamps();
-
-            // relasi ke tabel lain
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('id_program_1')->references('id_program')->on('study_programs');
-            $table->foreign('id_program_2')->references('id_program')->on('study_programs');
         });
     }
 
