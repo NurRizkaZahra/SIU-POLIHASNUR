@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pendaftar;
+use App\Models\Registration;
 use Illuminate\Http\Request;
 
 class AdminRegistrationController extends Controller
@@ -21,7 +21,10 @@ class AdminRegistrationController extends Controller
      */
     public function index()
     {
-        return view('admin.registration-admin');
+        // Ambil semua data registrasi untuk ditampilkan di view
+        $camaba = Registration::orderBy('created_at', 'desc')->get();
+        
+        return view('admin.registration-admin', compact('camaba'));
     }
 
     /**
@@ -30,7 +33,7 @@ class AdminRegistrationController extends Controller
     public function getData()
     {
         try {
-            $registrations = Pendaftar::select(
+            $registrations = Registration::select(
                 'id as no',
                 'nama_lengkap as name',
                 'jalur_masuk as entry_path',
@@ -60,9 +63,9 @@ class AdminRegistrationController extends Controller
     public function getStats()
     {
         try {
-            $total = Pendaftar::count();
-            $notTaken = Pendaftar::where('status_ujian', 'belum')->count();
-            $completed = Pendaftar::where('status_ujian', 'selesai')->count();
+            $total = Registration::count();
+            $notTaken = Registration::where('status_ujian', 'belum')->count();
+            $completed = Registration::where('status_ujian', 'selesai')->count();
 
             return response()->json([
                 'total' => $total,
@@ -83,7 +86,7 @@ class AdminRegistrationController extends Controller
     public function show($id)
     {
         try {
-            $registrant = Pendaftar::findOrFail($id);
+            $registrant = Registration::findOrFail($id);
             return view('admin.registration-detail', compact('registrant'));
         } catch (\Exception $e) {
             return back()->with('error', 'Data not found: ' . $e->getMessage());

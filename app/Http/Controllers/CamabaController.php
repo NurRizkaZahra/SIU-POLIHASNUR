@@ -77,12 +77,12 @@ class CamabaController extends Controller
     // =============================
     // PENDAFTARAN
     // =============================
-    public function pendaftaran()
+    public function registration()
 {
     $personal = PersonalData::where('id_user', Auth::id())->first();
     $education = EducationData::where('id_user', Auth::id())->first();
     $family = FamilyData::where('id_user', Auth::id())->first();
-    return view('camaba.pendaftaran', compact('personal', 'education', 'family'));
+    return view('camaba.registration', compact('personal', 'education', 'family'));
 }
 
    public function pendaftaranLanjutan()
@@ -96,6 +96,16 @@ class CamabaController extends Controller
     // =============================
     // SIMPAN DATA DIRI
     // =============================
+     public function showPersonalData()
+    {
+        $user = Auth::user();
+
+        // Ambil data registrasi berdasarkan user yang login
+        $registration = Registration::where('user_id', $user->id)->first();
+
+        return view('camaba.personal-data', compact('registration'));
+    }
+
     public function simpanDataDiri(Request $request)
     {
         $request->validate([
