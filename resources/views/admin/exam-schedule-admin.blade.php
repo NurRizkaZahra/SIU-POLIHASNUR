@@ -217,7 +217,7 @@
     <div class="schedule-header">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <h2>Manage Exam Schedules</h2>
-            <a href="{{ route('admin.exam-schedule.create') }}" class="btn-add">
+            <a href="{{ route('admin.exam-schedule-create') }}" class="btn-add">
                 <i class="fas fa-plus"></i> Add Exam Schedule
             </a>
         </div>
@@ -228,10 +228,10 @@
         <div class="schedule-title">
             <h3>{{ $schedule->wave_name }} ({{ $schedule->start_date->format('d M Y') }} - {{ $schedule->end_date->format('d M Y') }})</h3>
             <div class="schedule-actions">
-                <a href="{{ route('admin.exam-schedule.edit', $schedule->id) }}" class="btn-action btn-edit">
+                <a href="{{ route('admin.exam-schedule-edit', $schedule->id) }}" class="btn-action btn-edit">
                     <i class="fas fa-edit"></i> Edit
                 </a>
-                <form action="{{ route('admin.exam-schedule.destroy', $schedule->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this schedule?')">
+                <form action="{{ route('admin.exam-schedule-destroy', $schedule->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this schedule?')">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn-action btn-delete">
@@ -241,7 +241,7 @@
             </div>
         </div>
         
-        <form action="{{ route('admin.exam-schedule.update', $schedule->id) }}" method="POST" class="date-range-form">
+        <form action="{{ route('admin.exam-schedule-update', $schedule->id) }}" method="POST" class="date-range-form">
             @csrf
             @method('PUT')
             <div class="date-input-group">

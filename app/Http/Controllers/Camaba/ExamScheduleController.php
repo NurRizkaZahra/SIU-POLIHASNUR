@@ -10,13 +10,13 @@ class ExamScheduleController extends Controller
 {
     public function index()
     {
-        $gelombang = ExamSchedule::orderBy('start_date', 'desc')->get();
+        $examSchedules= ExamSchedule::orderBy('start_date', 'desc')->get();
 
         if (auth()->check() && auth()->user()->hasRole('admin')) {
-            return view('admin.exam-schedule-admin', compact('gelombang'));
+            return view('admin.exam-schedule-admin', compact('examSchedule'));
         }
 
-        return view('camaba.exam-schedule', compact('gelombang'));
+        return view('camaba.exam-schedule', compact('examSchedules'));
     }
 
     public function store(Request $request)

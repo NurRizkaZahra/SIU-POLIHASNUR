@@ -49,7 +49,7 @@ class ExamScheduleAdminController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->route('admin.exam-schedule')->with('success', 'Exam schedule created successfully!');
+        return redirect()->route('admin.exam-schedule-admin')->with('success', 'Exam schedule created successfully!');
 
     }
 
@@ -78,7 +78,7 @@ class ExamScheduleAdminController extends Controller
         $examSchedule = ExamSchedule::findOrFail($id);
         $examSchedule->update($request->only('wave_name', 'start_date', 'end_date', 'participant_quota', 'status'));
 
-        return redirect()->route('admin.exam-schedule')->with('success', 'Exam schedule deleted successfully!');
+        return redirect()->route('admin.exam-schedule-admin')->with('success', 'Exam schedule deleted successfully!');
 
     }
 
@@ -90,7 +90,7 @@ class ExamScheduleAdminController extends Controller
         $examSchedule = ExamSchedule::findOrFail($id);
         $examSchedule->delete();
 
-       return redirect()->route('admin.exam-schedule')->with('success', 'Exam schedule deleted successfully!');
+       return redirect()->route('admin.exam-schedule-admin')->with('success', 'Exam schedule deleted successfully!');
 
     }
 }

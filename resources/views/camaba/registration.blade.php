@@ -480,7 +480,7 @@
 </form>
 
 <div class="next-wrapper">
-  <a href="{{ route('registration.advanced') }}" class="next-btn">Next →</a>
+  <a href="{{ route('camaba.registration-advanced') }}" class="next-btn">Next →</a>
 </div>
       
 <script>

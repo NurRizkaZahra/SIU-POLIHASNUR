@@ -229,10 +229,10 @@
     <div class="form-card">
         <div class="form-header">
             <h2>Add New Exam Batch</h2>
-            <a href="{{ route('admin.exam-schedule') }}" class="btn-back">Back</a>
+            <a href="{{ route('admin.exam-schedule-admin') }}" class="btn-back">Back</a>
         </div>
 
-        <form action="{{ route('admin.exam-schedule.store') }}" method="POST">
+        <form action="{{ route('admin.exam-schedule-store') }}" method="POST">
             @csrf
             <div class="form-body">
                 <div class="alert-warning">
@@ -330,7 +330,7 @@
             </div>
 
             <div class="form-footer">
-                <a href="{{ route('admin.exam-schedule') }}" class="btn-form btn-cancel">Cancel</a>
+                <a href="{{ route('admin.exam-schedule-admin') }}" class="btn-form btn-cancel">Cancel</a>
                 <button type="submit" class="btn-form btn-submit">Save</button>
             </div>
         </form>

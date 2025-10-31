@@ -13,8 +13,8 @@
                 Sistem ini dirancang untuk mendukung proses evaluasi akademik di Politeknik Hasnur secara efisien, transparan, dan modern. Melalui platform ini, mahasiswa dapat mengikuti ujian secara online, aman, dan mudah diakses kapan saja.
             </p>
             <div class="hero-buttons">
-                <a href="#" class="btn-primary">Pilih Jadwal</a>
-                <a href="{{ route('registration') }}" class="btn-secondary">Lengkapi Data Diri</a>
+                <a href="{{ route('camaba.exam-schedule') }}" class="btn-primary">Pilih Jadwal</a>
+                <a href="{{ route('camaba.registration') }}" class="btn-secondary">Lengkapi Data Diri</a>
             </div>
         </div>
         <div class="badge-kampus">
