@@ -18,7 +18,7 @@
     <ul class="menu">
         {{-- BERANDA --}}
         <li class="menu-item">
-            <a href="{{ route('admin.dashboard') }}" 
+            <a href="{{ route('dashboard.admin') }}" 
                class="menu-link {{ request()->routeIs('admin.beranda') ? 'active' : '' }}">
                 <span class="menu-icon">🏠</span>
                 <span>BERANDA</span>
@@ -36,7 +36,7 @@
 
         {{-- JADWAL UJIAN --}}
         <li class="menu-item">
-            <a href="{{ route('admin.exam-schedule') }}" 
+            <a href="{{ route('admin.exam-schedule-admin') }}" 
                class="menu-link {{ request()->routeIs('admin.jadwal-ujian') ? 'active' : '' }}">
                 <span class="menu-icon">📅</span>
                 <span>JADWAL UJIAN</span>

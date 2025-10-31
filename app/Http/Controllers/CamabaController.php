@@ -90,7 +90,7 @@ class CamabaController extends Controller
     $data = session('data_pendaftaran', []);
     $admissionPaths = AdmissionPath::all();
     $studyPrograms = StudyProgram::all();
-    return view('camaba.pendaftaran-lanjutan', compact('data', 'admissionPaths', 'studyPrograms'));
+    return view('camaba.registration-advanced', compact('data', 'admissionPaths', 'studyPrograms'));
 }
 
     // =============================
@@ -247,7 +247,7 @@ class CamabaController extends Controller
     // =============================
     public function jadwalUjian()
     {
-        return view('camaba.jadwal-ujian');
+        return view('camaba.exam-schedule');
     }
 
     public function ujian()

@@ -15,19 +15,19 @@
 
     <ul class="menu">
         <li class="menu-item">
-            <a href="{{ route('camaba.dashboard') }}" class="menu-link {{ request()->routeIs('dashboard.camaba') ? 'active' : '' }}">
+            <a href="{{ route('dashboard.camaba') }}" class="menu-link {{ request()->routeIs('dashboard.camaba') ? 'active' : '' }}">
                 <span class="menu-icon">🏠</span>
                 <span>BERANDA</span>
             </a>
         </li>
         <li class="menu-item">
-            <a href="{{ route('camaba.registration.advanced') }}" class="menu-link {{ request()->routeIs('registration*') ? 'active' : '' }}">
+            <a href="{{ route('camaba.registration') }}" class="menu-link {{ request()->routeIs('registration*') ? 'active' : '' }}">
                 <span class="menu-icon">📋</span>
                 <span>PENDAFTARAN</span>
             </a>
         </li>
         <li class="menu-item">
-            <a href="{{ route('camaba.exam-schedule') }}" class="menu-link {{ request()->routeIs('exam.schedule') ? 'active' : '' }}">
+            <a href="{{ route('camaba.exam-schedule') }}" class="menu-link {{ request()->routeIs('camaba.exam-schedule') ? 'active' : '' }}">
                 <span class="menu-icon">📅</span>
                 <span>JADWAL UJIAN</span>
             </a>

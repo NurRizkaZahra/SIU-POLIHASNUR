@@ -271,7 +271,7 @@
 
     {{-- Tombol kembali --}}
     <div class="mt-4 text-center">
-        <a href="{{ route('admin.pendaftaran') }}" class="btn-back">← Kembali</a>
+        <a href="{{ route('admin.registration') }}" class="btn-back">← Kembali</a>
     </div>
 </div>
 @endsection

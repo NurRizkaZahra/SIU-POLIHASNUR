@@ -1,9 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CamabaController;
-use App\Http\Controllers\Camaba\ExamScheduleController;
+use App\Http\Controllers\Admin\AdminExamController;
 use App\Http\Controllers\Admin\AdminRegistrationController;
 use App\Http\Controllers\Admin\ExamScheduleAdminController;
 use App\Http\Controllers\Admin\AdminExamController;

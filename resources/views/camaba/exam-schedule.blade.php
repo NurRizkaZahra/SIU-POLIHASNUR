@@ -152,7 +152,7 @@
 
 <div class="content">
     <div class="gelombang-container">
-        @forelse($gelombang as $item)
+        @forelse($examSchedules as $item)
         <div class="gelombang-item">
             <div class="gelombang-header">
                 <h3 class="gelombang-title">{{ $item->wave_name }} ({{ \Carbon\Carbon::parse($item->start_date)->format('d-m-Y') }} - {{ \Carbon\Carbon::parse($item->end_date)->format('d-m-Y') }})</h3>
@@ -186,7 +186,7 @@
         }
 
         // Kirim data ke server
-        fetch('{{ route("exam.schedule") }}', {
+        fetch("{{ route('camaba.exam-schedule') }}", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
