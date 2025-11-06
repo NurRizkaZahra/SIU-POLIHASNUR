@@ -283,7 +283,7 @@
     </div>
     @endif
 
-    <form action="{{ route('camaba.entry-path.save') }}" method="POST">
+    <form action="{{ route('camaba.data-jalur.simpan') }}" method="POST">
         @csrf
 
        <!-- JALUR MASUK -->
@@ -326,7 +326,7 @@
 </form>
 
     <!-- PILIHAN JURUSAN -->
-<form action="{{ route('camaba.study-program.save') }}" method="POST">
+<form action="{{ route('camaba.data-prodi.simpan') }}" method="POST">
     @csrf
     <div class="form-section">
         <div class="section-header" onclick="toggleFormSection(this)">
@@ -381,7 +381,7 @@
 
 <!-- Done Button di dalam container, bukan fixed -->
 <div class="done-wrapper">
-    <a href="{{ route('camaba.dashboard') }}" class="done-btn">Done</a>
+    <a href="{{ route('dashboard.camaba') }}" class="done-btn">Done</a>
 </div>
 
 <script>
