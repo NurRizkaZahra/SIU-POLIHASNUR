@@ -4,6 +4,7 @@
     </div>
 
     <div class="profile">
+        <a href="{{ route('admin.profile') }}" class="profile" style="text-decoration:none; color:inherit;">
         <div class="profile-icon">
             <svg viewBox="0 0 24 24">
                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 
@@ -13,6 +14,7 @@
         </div>
         <div class="badge">{{ auth()->user()->role ?? 'Admin' }}</div>
         <div class="profile-name">{{ auth()->user()->name ?? 'Nur Rizka Zahra' }}</div>
+        </a>
     </div>
 
     <ul class="menu">
@@ -42,15 +44,15 @@
                 <span>JADWAL UJIAN</span>
             </a>
         </li>
-
-        {{-- UJIAN --}}
+       {{-- UJIAN --}}
         <li class="menu-item">
-            <a href="#" 
-               class="menu-link {{ request()->routeIs('admin.ujian') ? 'active' : '' }}">
-                <span class="menu-icon">🧾</span>
-                <span>UJIAN</span>
+            <a href="{{ route('admin.questions.index') }}" 
+                class="menu-link {{ request()->routeIs('questions.*') ? 'active' : '' }}">
+            <span class="menu-icon">🧾</span>
+            <span>UJIAN</span>
             </a>
         </li>
+
 
         {{-- HASIL --}}
         <li class="menu-item">

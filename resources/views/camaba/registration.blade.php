@@ -366,7 +366,7 @@
                        placeholder="Tahun" required>
             </div>
             <div class="form-group">
-                <label>Prestasi Akademik dan Nilai Akademik:</label>
+                <label>Prestasi Akademik dan Nilai Akademik: </label>
                 <input type="text" name="achievement"
                        value="{{ old('achievement', $user->educationData->achievement ?? '') }}"
                        placeholder="Prestasi">
@@ -409,14 +409,14 @@
 
         <div class="form-row">
             <div class="form-group">
-                <label>Pekerjaan Ayah: *</label>
+                <label>Pekerjaan Ayah: <span style="color: red;">*</span></label>
                 <input type="text" name="father_job"
                        value="{{ $keluarga->father_job ?? '' }}"
                        placeholder="Pekerjaan" required>
             </div>
 
             <div class="form-group"> 
-                <label>Anak Ke: *</label> 
+                <label>Anak Ke: <span style="color: red;">*</span></label> 
                 <input type="number" name="child_order"
                        value="{{ $keluarga->child_order ?? '' }}"
                        placeholder="Urutan" required>
@@ -425,14 +425,14 @@
 
         <div class="form-row">
             <div class="form-group">
-                <label>Nama Ibu/Wali: *</label>
+                <label>Nama Ibu/Wali: <span style="color: red;">*</span></label>
                 <input type="text" name="mother_name"
                        value="{{ $keluarga->mother_name ?? '' }}"
                        placeholder="Nama ibu" required>
             </div>
 
             <div class="form-group">
-                <label>Penghasilan Ayah dan Ibu: *</label>
+                <label>Penghasilan Ayah dan Ibu: <span style="color: red;">*</span></label>
                 <select name="parent_income" required>
                     <option value="">Pilih range</option>
                     @foreach ([
@@ -452,14 +452,14 @@
 
         <div class="form-row">
             <div class="form-group">
-                <label>Pekerjaan Ibu: *</label>
+                <label>Pekerjaan Ibu: <span style="color: red;">*</span></label>
                 <input type="text" name="mother_job"
                        value="{{ $keluarga->mother_job ?? '' }}"
                        placeholder="Pekerjaan" required>
             </div>
 
             <div class="form-group">
-                <label>Alamat: *</label>
+                <label>Alamat: <span style="color: red;">*</span></label>
                 <input type="text" name="parent_address"
                        value="{{ $keluarga->parent_address ?? '' }}"
                        placeholder="Alamat lengkap" required>
@@ -467,7 +467,7 @@
         </div>
 
         <div class="form-group">
-            <label>Nomor HP: *</label>
+            <label>Nomor HP: <span style="color: red;">*</span></label>
             <input type="tel" name="parent_phone"
                    value="{{ $keluarga->parent_phone ?? '' }}"
                    placeholder="Nomor HP" required>
