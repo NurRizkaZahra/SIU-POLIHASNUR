@@ -186,17 +186,20 @@
         }
 
         // Kirim data ke server
-        fetch("{{ route('camaba.exam-schedule') }}", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({
-                gelombang_id: gelombangId,
-                tanggal: dateInput.value
-            })
-        })
+        fetch("{{ route('camaba.exam-schedule.store') }}", {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json', // 🔹 tambahkan ini
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    },
+    body: JSON.stringify({
+        exam_schedule_id: gelombangId,  // 🔹 ganti dari gelombang_id
+        start_time: dateInput.value + ' 08:00', // 🔹 buat start_time
+        end_time: dateInput.value + ' 10:00'    // 🔹 buat end_time
+    })
+})
+
         .then(response => response.json())
         .then(data => {
             if (data.success) {

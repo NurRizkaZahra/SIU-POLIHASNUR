@@ -35,15 +35,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard/admin', function () {
         return view('admin.dashboard');
     })->name('dashboard.admin');
-
-    });
     // ==================PROFILE ADMIN ==================
     Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/profile', [AdminProfileController::class, 'index'])->name('admin.profile');
     Route::get('/admin/profile/edit', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
     Route::put('/admin/profile', [AdminProfileController::class, 'update'])->name('admin.profile.update');
     Route::get('/admin/profile/change-password', [AdminProfileController::class, 'changePassword'])->name('admin.profile.change-password');
-});
+ });
     // ================== REGISTRATION ==================
     Route::get('/admin/registration', [AdminRegistrationController::class, 'index'])->name('admin.registration');
     Route::get('/admin/registration/{id}', [AdminRegistrationController::class, 'show'])->name('admin.registration.show');
@@ -62,14 +60,18 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     //=================== QUESTION ======================
     Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('questions', QuestionController::class);
+    });
+    //notification
+    Route::get('/exam/notifications', [AdminExamController::class, 'notifications'])->name('exam.notifications');
+    Route::post('/exam/{id}/approve', [AdminExamController::class, 'approve'])->name('admin.exam.approve');
+    Route::post('/exam/{id}/reject', [AdminExamController::class, 'reject'])->name('admin.exam.reject');
+    Route::post('/exam/bulk-approve', [AdminExamController::class, 'bulkApprove'])->name('admin.exam.bulk-approve');
 });
-
 // ================== CAMABA ==================
 Route::middleware(['auth', 'role:camaba'])->group(function () {
     Route::get('/dashboard/camaba', function () {
         return view('camaba.dashboard');
     })->name('dashboard.camaba');
-});
 
     // Halaman form pertama
     Route::get('/camaba/registration', function () {
@@ -106,12 +108,9 @@ Route::middleware(['auth', 'role:camaba'])->group(function () {
     Route::get('/camaba/exam-schedule', [ExamScheduleController::class, 'index'])->name('camaba.exam-schedule');
     Route::post('/camaba/exam-schedule', [ExamScheduleController::class, 'store'])->name('camaba.exam-schedule.store');
 
-    //notification
-    Route::get('/exam/notifications', [AdminExamController::class, 'notifications'])->name('exam.notifications');
-    Route::post('/exam/{id}/approve', [AdminExamController::class, 'approve'])->name('exam.approve');
-    Route::post('/exam/{id}/reject', [AdminExamController::class, 'reject'])->name('exam.reject');
-    Route::post('/exam/bulk-approve', [AdminExamController::class, 'bulkApprove'])->name('exam.bulk-approve');
+});
 
+    
 // ================== PROFILE ==================
 // Route::middleware('auth')->group(function () {
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

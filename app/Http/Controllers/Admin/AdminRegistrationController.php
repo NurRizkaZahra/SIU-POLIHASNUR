@@ -38,6 +38,7 @@ class AdminRegistrationController extends Controller
 
    public function show($id)
     {
+
         $camaba = \App\Models\User::with([
             'personalData',
             'educationData',
@@ -46,6 +47,7 @@ class AdminRegistrationController extends Controller
             'programSelection.program1',
             'programSelection.program2',
         ])->findOrFail($id);
+
 
         return view('admin.registration-details', compact('camaba'));
     }

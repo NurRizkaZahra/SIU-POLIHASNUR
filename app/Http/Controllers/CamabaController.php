@@ -96,6 +96,16 @@ class CamabaController extends Controller
     // =============================
     // SIMPAN DATA DIRI
     // =============================
+     public function showPersonalData()
+    {
+        $user = Auth::user();
+
+        // Ambil data registrasi berdasarkan user yang login
+        $registration = Registration::where('user_id', $user->id)->first();
+
+        return view('camaba.personal-data', compact('registration'));
+    }
+
     public function simpanDataDiri(Request $request)
     {
         $request->validate([

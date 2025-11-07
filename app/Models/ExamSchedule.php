@@ -18,6 +18,8 @@ class ExamSchedule extends Model
         'end_date',
         'participant_quota',
         'status',
+        'location',
+        'description',
     ];
 
     protected $casts = [
@@ -26,113 +28,232 @@ class ExamSchedule extends Model
         'participant_quota' => 'integer',
     ];
 
-    /**
-     * Get formatted date range
-     */
+    // Constants untuk status
+    const STATUS_ACTIVE = 'active';
+    const STATUS_INACTIVE = 'inactive';
+    const STATUS_CLOSED = 'closed';
+
+    // ================= RELATIONSHIPS =================
+
+    public function exams()
+    {
+        return $this->hasMany(Exam::class, 'exam_schedule_id');
+    }
+
+    public function approvedExams()
+    {
+        return $this->exams()->where('status', Exam::STATUS_APPROVED);
+    }
+
+    public function pendingExams()
+    {
+        return $this->exams()->where('status', Exam::STATUS_PENDING);
+    }
+
+    public function rejectedExams()
+    {
+        return $this->exams()->where('status', Exam::STATUS_REJECTED);
+    }
+
+    // ================= ACCESSORS =================
+
     public function getDateRangeAttribute()
     {
         return Carbon::parse($this->start_date)->format('d M Y') . ' - ' .
                Carbon::parse($this->end_date)->format('d M Y');
     }
 
-    /**
-     * Get formatted date range for display (localized)
-     */
     public function getFormattedDateRangeAttribute()
     {
         return Carbon::parse($this->start_date)->isoFormat('D MMMM Y') . ' - ' .
                Carbon::parse($this->end_date)->isoFormat('D MMMM Y');
     }
 
-    /**
-     * Check if the wave is active
-     */
-    public function isActive()
-    {
-        return $this->status === 'active';
-    }
-
-    /**
-     * Check if the wave is full
-     */
-    public function isFull()
-    {
-        if (!$this->participant_quota) {
-            return false;
-        }
-
-        // Hitung berdasarkan exam yang sudah approved
-        $registeredCount = $this->exams()->where('status', 'approved')->count();
-        return $registeredCount >= $this->participant_quota;
-    }
-
-    /**
-     * Get remaining quota
-     */
-    public function getRemainingQuotaAttribute()
-    {
-        if (!$this->participant_quota) {
-            return null;
-        }
-
-        // Hitung berdasarkan exam yang sudah approved
-        $registeredCount = $this->exams()->where('status', 'approved')->count();
-        return max(0, $this->participant_quota - $registeredCount);
-    }
-
-    /**
-     * Get remaining quota (method version)
-     */
     public function getRemainingQuota()
     {
         if (!$this->participant_quota) {
             return null;
         }
-
-        $registeredCount = $this->exams()->where('status', 'approved')->count();
-        return max(0, $this->participant_quota - $registeredCount);
+        return max(0, $this->participant_quota - $this->approvedExams()->count());
     }
 
-    /**
-     * Scope for active waves
-     */
+    // ================= HELPER METHODS =================
+
+    public function isActive()
+    {
+        return $this->status === self::STATUS_ACTIVE;
+    }
+
+    public function isClosed()
+    {
+        return $this->status === self::STATUS_CLOSED;
+    }
+
+    public function isFull()
+    {
+        if (!$this->participant_quota) return false;
+        return $this->getRemainingQuota() <= 0;
+    }
+
+    public function hasAvailableQuota()
+    {
+        return $this->getRemainingQuota() > 0;
+    }
+
+    public function getApprovedCount()
+    {
+        return $this->approvedExams()->count();
+    }
+
+    public function getPendingCount()
+    {
+        return $this->pendingExams()->count();
+    }
+
+    public function getQuotaPercentage()
+    {
+        if (!$this->participant_quota || $this->participant_quota == 0) return 0;
+        return round(($this->getApprovedCount() / $this->participant_quota) * 100, 2);
+    }
+
+    public function isRegistrationOpen()
+    {
+        $today = now()->startOfDay();
+        return $this->isActive() && $this->end_date >= $today;
+    }
+
+    public function isPast()
+    {
+        return $this->end_date < now()->startOfDay();
+    }
+
+    public function isUpcoming()
+    {
+        return $this->start_date > now()->startOfDay();
+    }
+
+    public function getFormattedPeriod()
+    {
+        return $this->start_date->format('d M Y') . ' - ' . $this->end_date->format('d M Y');
+    }
+
+    public function getStatusBadgeClass()
+    {
+        return match($this->status) {
+            self::STATUS_ACTIVE => 'badge-success',
+            self::STATUS_INACTIVE => 'badge-warning',
+            self::STATUS_CLOSED => 'badge-danger',
+            default => 'badge-secondary',
+        };
+    }
+
+    public function getStatusText()
+    {
+        return match($this->status) {
+            self::STATUS_ACTIVE => 'Aktif',
+            self::STATUS_INACTIVE => 'Tidak Aktif',
+            self::STATUS_CLOSED => 'Ditutup',
+            default => 'Tidak Diketahui',
+        };
+    }
+
+    public function getAvailabilityText()
+    {
+        if ($this->isFull()) return 'Kuota Penuh';
+        if ($this->isPast()) return 'Sudah Ditutup';
+        if ($this->isUpcoming()) return 'Belum Dibuka';
+        if ($this->isRegistrationOpen()) return 'Pendaftaran Dibuka';
+        return 'Tidak Tersedia';
+    }
+
+    public function hasUserApplied($userId)
+    {
+        return $this->exams()
+                    ->where('user_id', $userId)
+                    ->whereIn('status', [Exam::STATUS_PENDING, Exam::STATUS_APPROVED])
+                    ->exists();
+    }
+
+    public function getUserExamStatus($userId)
+    {
+        return $this->exams()
+                    ->where('user_id', $userId)
+                    ->whereIn('status', [Exam::STATUS_PENDING, Exam::STATUS_APPROVED])
+                    ->first();
+    }
+
+    // ================= SCOPES =================
+
     public function scopeActive($query)
     {
-        return $query->where('status', 'active');
+        return $query->where('status', self::STATUS_ACTIVE);
     }
 
-    /**
-     * Scope for available waves (still open for registration)
-     */
+    public function scopeInactive($query)
+    {
+        return $query->where('status', self::STATUS_INACTIVE);
+    }
+
+    public function scopeClosed($query)
+    {
+        return $query->where('status', self::STATUS_CLOSED);
+    }
+
     public function scopeAvailable($query)
     {
-        return $query->where('status', 'active')
-                     ->where('end_date', '>=', now());
+        return $query->where('status', self::STATUS_ACTIVE)
+                     ->where('end_date', '>=', now()->startOfDay());
     }
 
-    /**
-     * Relasi ke tabel exam (TAMBAHAN BARU)
-     */
-    public function exams()
+    public function scopeCurrentlyActive($query)
     {
-        return $this->hasMany(Exam::class, 'exam_schedule_id');
+        $today = now()->startOfDay();
+        return $query->where('status', self::STATUS_ACTIVE)
+                     ->whereDate('start_date', '<=', $today)
+                     ->whereDate('end_date', '>=', $today);
     }
 
-    /**
-     * Get approved exams only
-     */
-    public function approvedExams()
+    public function scopeUpcoming($query)
     {
-        return $this->hasMany(Exam::class, 'exam_schedule_id')
-                    ->where('status', 'approved');
+        return $query->whereDate('start_date', '>', now()->startOfDay());
     }
 
-    /**
-     * Get pending exams only
-     */
-    public function pendingExams()
+    public function scopePast($query)
     {
-        return $this->hasMany(Exam::class, 'exam_schedule_id')
-                    ->where('status', 'pending');
+        return $query->whereDate('end_date', '<', now()->startOfDay());
+    }
+
+    public function scopeHasQuota($query)
+    {
+        return $query->where(function ($q) {
+            $q->whereNull('participant_quota')
+              ->orWhereColumn('participant_quota', '>', function ($subQuery) {
+                  $subQuery->selectRaw('COUNT(*)')
+                           ->from('exam')
+                           ->whereColumn('exam.exam_schedule_id', 'exam_schedules.id')
+                           ->where('exam.status', Exam::STATUS_APPROVED);
+              });
+        });
+    }
+
+    // ================= BOOT METHOD =================
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Set default status saat create
+        static::creating(function ($examSchedule) {
+            if (empty($examSchedule->status)) {
+                $examSchedule->status = self::STATUS_ACTIVE;
+            }
+        });
+
+        // Auto close jika tanggal sudah lewat
+        static::updating(function ($examSchedule) {
+            if ($examSchedule->end_date < now()->startOfDay() && $examSchedule->status === self::STATUS_ACTIVE) {
+                $examSchedule->status = self::STATUS_CLOSED;
+            }
+        });
     }
 }
