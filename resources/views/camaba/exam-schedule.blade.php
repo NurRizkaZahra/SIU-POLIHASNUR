@@ -195,8 +195,6 @@
     },
     body: JSON.stringify({
         exam_schedule_id: gelombangId,  // 🔹 ganti dari gelombang_id
-        start_time: dateInput.value + ' 08:00', // 🔹 buat start_time
-        end_time: dateInput.value + ' 10:00'    // 🔹 buat end_time
     })
 })
 

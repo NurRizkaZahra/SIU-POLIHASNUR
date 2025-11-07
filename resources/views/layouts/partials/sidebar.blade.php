@@ -33,9 +33,9 @@
             </a>
         </li>
         <li class="menu-item">
-            <a href="#" class="menu-link" style="opacity: 0.6; cursor: not-allowed;" title="Segera hadir">
-                <span class="menu-icon">📝</span>
-                <span>UJIAN</span>
+            <a href="{{ route('camaba.exam') }}" class="menu-link {{ request()->routeIs('camaba.exam') ? 'active' : '' }}">
+            <span class="menu-icon">📝</span>
+            <span>UJIAN</span>
             </a>
         </li>
     </ul>

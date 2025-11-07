@@ -5,9 +5,11 @@ use App\Http\Controllers\Admin\AdminRegistrationController;
 use App\Http\Controllers\Admin\ExamScheduleAdminController;
 use App\Http\Controllers\CamabaController;
 use App\Http\Controllers\Camaba\JadwalUjianController;
+use App\Http\Controllers\Camaba\ExamController; // ← TAMBAHKAN INI
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdmissionPathController;
+use App\Http\Controllers\Camaba\CamabaController as CamabaCamabaController;
 use App\Http\Controllers\Camaba\ExamScheduleController;
 use App\Http\Controllers\StudyProgramController;
 use App\Http\Controllers\ProgramSelectionController;
@@ -56,6 +58,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/exam/bulk-approve', [AdminExamController::class, 'bulkApprove'])->name('admin.exam.bulk-approve');
 
     });
+    
 // ================== CAMABA ==================
 Route::middleware(['auth', 'role:camaba'])->group(function () {
     Route::get('/dashboard/camaba', function () {
@@ -67,30 +70,50 @@ Route::middleware(['auth', 'role:camaba'])->group(function () {
         return view('camaba.registration');
     })->name('camaba.registration');
 
+    // ================== UJIAN - ROUTE BARU ==================
+    // Halaman Form Mulai Ujian
+    Route::get('/camaba/exam', [ExamController::class, 'index'])->name('camaba.exam');
+    
+    // Mulai Ujian (POST)
+    Route::post('/exam/start', [ExamController::class, 'start'])->name('ujian.start');
+    
+    // Halaman Soal Ujian
+    Route::get('/exam/{examScheduleId}/questions', [ExamController::class, 'questions'])->name('ujian.questions');
+    
+    // Simpan Jawaban (AJAX)
+    Route::post('/exam/{examScheduleId}/answer', [ExamController::class, 'answer'])->name('ujian.answer');
+    
+    // Submit Ujian
+    Route::post('/exam/{examScheduleId}/submit', [ExamController::class, 'submit'])->name('ujian.submit');
+    
+    // Hasil Ujian
+    Route::get('/exam/{examScheduleId}/result', [ExamController::class, 'result'])->name('ujian.result');
+    // ========================================================
+
     // Proses simpan sementara ke session
-    Route::post('/camaba/registration', [CamabaController::class, 'store'])
+    Route::post('/camaba/registration', [CamabaCamabaController::class, 'store'])
         ->name('camaba.registration.store');
 
     // Halaman kedua (lanjutan)
-    Route::get('/camaba/registration-advanced', [CamabaController::class, 'pendaftaranLanjutan'])
+    Route::get('/camaba/registration-advanced', [CamabaCamabaController::class, 'pendaftaranLanjutan'])
         ->name('camaba.registration-advanced');
 
      // ----- FORM JALUR MASUK -----
-    Route::post('/camaba/data-jalur', [CamabaController::class, 'simpanJalurMasuk'])
+    Route::post('/camaba/data-jalur', [CamabaCamabaController::class, 'simpanJalurMasuk'])
         ->name('camaba.data-jalur.simpan');
 
     // ----- FORM PROGRAM STUDI -----
-    Route::post('/camaba/data-prodi', [CamabaController::class, 'simpanProgramStudi'])
+    Route::post('/camaba/data-prodi', [CamabaCamabaController::class, 'simpanProgramStudi'])
         ->name('camaba.data-prodi.simpan');
 
      // ===== FORM PENDAFTARAN DETAIL =====
-    Route::post('/camaba/personal-data', [CamabaController::class, 'simpanDataDiri'])
+    Route::post('/camaba/personal-data', [CamabaCamabaController::class, 'simpanDataDiri'])
         ->name('camaba.personal-data.save');
 
-    Route::post('/camaba/education-data', [CamabaController::class, 'simpanDataPendidikan'])
+    Route::post('/camaba/education-data', [CamabaCamabaController::class, 'simpanDataPendidikan'])
         ->name('camaba.education-data.save');
 
-    Route::post('/camaba/family-data', [CamabaController::class, 'simpanDataKeluarga'])
+    Route::post('/camaba/family-data', [CamabaCamabaController::class, 'simpanDataKeluarga'])
         ->name('camaba.family-data.save');
 
     // Jadwal ujian
