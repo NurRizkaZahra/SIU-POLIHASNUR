@@ -6,11 +6,14 @@ use App\Http\Controllers\Admin\ExamScheduleAdminController;
 use App\Http\Controllers\CamabaController;
 use App\Http\Controllers\Camaba\JadwalUjianController;
 use App\Http\Controllers\Camaba\ExamController; // ← TAMBAHKAN INI
-use App\Http\Controllers\ProfileController;
+//use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdmissionPathController;
 use App\Http\Controllers\Camaba\CamabaController as CamabaCamabaController;
 use App\Http\Controllers\Camaba\ExamScheduleController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudyProgramController;
 use App\Http\Controllers\ProgramSelectionController;
 
@@ -36,7 +39,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard/admin', function () {
         return view('admin.dashboard');
     })->name('dashboard.admin');
-
+    // ==================PROFILE ADMIN ==================
+    Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/profile', [AdminProfileController::class, 'index'])->name('admin.profile');
+    Route::get('/admin/profile/edit', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
+    Route::put('/admin/profile', [AdminProfileController::class, 'update'])->name('admin.profile.update');
+    Route::get('/admin/profile/change-password', [AdminProfileController::class, 'changePassword'])->name('admin.profile.change-password');
+ });
     // ================== REGISTRATION ==================
     Route::get('/admin/registration', [AdminRegistrationController::class, 'index'])->name('admin.registration');
     Route::get('/admin/registration/{id}', [AdminRegistrationController::class, 'show'])->name('admin.registration.show');
@@ -44,6 +53,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/registration/print/all', [AdminRegistrationController::class, 'print'])->name('admin.registration.print');
     Route::get('/admin/registration/export/excel', [AdminRegistrationController::class, 'export'])->name('admin.registration.export');
 
+    //=================== EXAM SCHEDULE =================
     Route::get('/admin/exam-schedule', [ExamScheduleAdminController::class, 'index'])->name('admin.exam-schedule-admin');
     Route::get('/admin/exam-schedule/create', [ExamScheduleAdminController::class, 'create'])->name('admin.exam-schedule-create');
     Route::post('/admin/exam-schedule', [ExamScheduleAdminController::class, 'store'])->name('admin.exam-schedule-store');
@@ -51,14 +61,22 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/admin/exam-schedule/{id}', [ExamScheduleAdminController::class, 'update'])->name('admin.exam-schedule-update');
     Route::delete('/admin/exam-schedule/{id}', [ExamScheduleAdminController::class, 'destroy'])->name('admin.exam-schedule-destroy');
 
+    //=================== QUESTION ======================
+    Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('questions', QuestionController::class);
+    });
     //notification
     Route::get('/exam/notifications', [AdminExamController::class, 'notifications'])->name('exam.notifications');
     Route::post('/exam/{id}/approve', [AdminExamController::class, 'approve'])->name('admin.exam.approve');
     Route::post('/exam/{id}/reject', [AdminExamController::class, 'reject'])->name('admin.exam.reject');
     Route::post('/exam/bulk-approve', [AdminExamController::class, 'bulkApprove'])->name('admin.exam.bulk-approve');
 
-    });
+
+   // });
     
+
+});
+
 // ================== CAMABA ==================
 Route::middleware(['auth', 'role:camaba'])->group(function () {
     Route::get('/dashboard/camaba', function () {
@@ -125,7 +143,7 @@ Route::middleware(['auth', 'role:camaba'])->group(function () {
     
 // ================== PROFILE ==================
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController  ::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });

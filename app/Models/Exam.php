@@ -11,7 +11,7 @@ class Exam extends Model
     use HasFactory;
 
     // Nama tabel
-    protected $table = 'exam';
+    protected $table = 'exams';
 
     protected $fillable = [
         'user_id',

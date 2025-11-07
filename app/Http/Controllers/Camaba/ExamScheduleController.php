@@ -46,15 +46,15 @@ class ExamScheduleController extends Controller
         
         $validated = $request->validate([
             'exam_schedule_id' => 'required|exists:exam_schedules,id',
-            'start_time' => 'required|date_format:Y-m-d H:i',  // Format tanggal + jam
-            'end_time' => 'required|date_format:Y-m-d H:i',
+          //  'start_time' => 'required|date_format:Y-m-d H:i',  // Format tanggal + jam
+            //'end_time' => 'required|date_format:Y-m-d H:i',
         ], [
             'exam_schedule_id.required' => 'Jadwal ujian harus dipilih.',
             'exam_schedule_id.exists' => 'Jadwal ujian tidak valid.',
-            'start_time.required' => 'Waktu mulai harus diisi.',
-            'start_time.date_format' => 'Format waktu mulai tidak valid (YYYY-MM-DD HH:mm).',
-            'end_time.required' => 'Waktu selesai harus diisi.',
-            'end_time.date_format' => 'Format waktu selesai tidak valid (YYYY-MM-DD HH:mm).',
+           // 'start_time.required' => 'Waktu mulai harus diisi.',
+          //  'start_time.date_format' => 'Format waktu mulai tidak valid (YYYY-MM-DD HH:mm).',
+           // 'end_time.required' => 'Waktu selesai harus diisi.',
+           // 'end_time.date_format' => 'Format waktu selesai tidak valid (YYYY-MM-DD HH:mm).',
         ]);
 
         try {
@@ -90,27 +90,27 @@ class ExamScheduleController extends Controller
             }
 
             // Validasi durasi ujian
-            $duration = $this->calculateDuration($validated['start_time'], $validated['end_time']);
-            if ($duration < 60) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Durasi ujian minimal 60 menit!'
-                ], 400);
-            }
+           // $duration = $this->calculateDuration($validated['start_time'], $validated['end_time']);
+           // if ($duration < 60) {
+               // return response()->json([
+                 //   'success' => false,
+                   // 'message' => 'Durasi ujian minimal 60 menit!'
+             //   ], 400);
+           // }
 
-            if ($duration > 240) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Durasi ujian maksimal 240 menit (4 jam)!'
-                ], 400);
-            }
+           // if ($duration > 240) {
+             //   return response()->json([
+               //     'success' => false,
+                 //   'message' => 'Durasi ujian maksimal 240 menit (4 jam)!'
+                //], 400);
+           // }
 
             // Buat pengajuan ujian
-            $exam = Exam::create([
+            $exams = Exam::create([
                 'user_id' => auth()->id(),
                 'exam_schedule_id' => $validated['exam_schedule_id'],
-                'start_time' => $validated['start_time'],
-                'end_time' => $validated['end_time'],
+              //  'start_time' => $validated['start_time'],
+              //  'end_time' => $validated['end_time'],
                 'status' => Exam::STATUS_PENDING,
             ]);
 
@@ -118,7 +118,7 @@ class ExamScheduleController extends Controller
 
             Log::info('Exam application submitted', [
                 'user_id' => auth()->id(),
-                'exam_id' => $exam->id,
+                'exam_id' => $exams->id,
                 'exam_schedule_id' => $validated['exam_schedule_id'],
             ]);
 

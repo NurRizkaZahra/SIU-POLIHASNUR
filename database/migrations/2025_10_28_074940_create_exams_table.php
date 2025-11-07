@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('exam', function (Blueprint $table) {
+        Schema::create('exams', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id'); // Foreign key ke users
             $table->unsignedBigInteger('exam_schedule_id')->nullable(); // Foreign key ke exam_schedules
@@ -33,6 +33,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('exam');
+        Schema::dropIfExists('exams');
     }
 };

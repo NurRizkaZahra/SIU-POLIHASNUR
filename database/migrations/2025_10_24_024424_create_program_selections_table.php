@@ -11,8 +11,19 @@ return new class extends Migration
         Schema::create('program_selections', function (Blueprint $table) {
             $table->id('id_selection');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('id_program_1')->constrained('study_programs')->onDelete('cascade');
-            $table->foreignId('id_program_2')->nullable()->constrained('study_programs')->onDelete('cascade');
+            $table->unsignedBigInteger('id_program_1');
+    $table->unsignedBigInteger('id_program_2');
+
+    // Foreign key ke tabel programs
+    $table->foreign('id_program_1')
+          ->references('id_program')
+          ->on('study_programs')
+          ->onDelete('cascade');
+
+    $table->foreign('id_program_2')
+          ->references('id_program')
+          ->on('study_programs')
+          ->onDelete('cascade');
             $table->timestamps();
         });
     }
