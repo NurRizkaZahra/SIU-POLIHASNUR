@@ -14,17 +14,19 @@ class Exam extends Model
     protected $table = 'exams';
 
     protected $fillable = [
-        'user_id',
-        'exam_schedule_id',
-        'start_time',
-        'end_time',
-        'status',
+    'user_id',
+    'exam_schedule_id',
+    'started_at',
+    'finished_at',
+    'status',
+    'score',
     ];
 
     protected $casts = [
-        'start_time' => 'datetime:H:i',
-        'end_time' => 'datetime:H:i',
+    'started_at' => 'datetime',
+    'finished_at' => 'datetime',
     ];
+
 
     // Status constants
     const STATUS_PENDING = 'pending';

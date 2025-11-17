@@ -5,7 +5,6 @@
 
 @push('styles')
 <style>
-    /* Reset untuk menghindari konflik */
     .dashboard-wrapper {
         padding: 20px;
         background: #f8f9fa;
@@ -76,96 +75,21 @@
         margin: 0;
     }
 
-    .chart-container {
-        background: white;
-        border: 2px solid #e0e0e0;
-        border-radius: 12px;
-        min-height: 450px;
-        overflow: hidden;
-        position: relative;
-    }
-
-    .chart-container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(to right, #1e5a9e, #2874ba);
-    }
-
-    .chart-wrapper {
-        width: 100%;
-        height: 450px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: #fafafa;
-    }
-
-    .chart-icon {
-        margin-bottom: 16px;
-        opacity: 0.3;
-    }
-
-    .chart-icon svg line {
-        stroke: #1e5a9e;
-    }
-
-    .chart-label {
-        font-size: 16px;
-        color: #1e5a9e;
-        font-weight: 500;
-        margin: 0;
-    }
-
-    /* Responsive Design */
     @media (max-width: 992px) {
         .stats-grid {
             grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
         }
-
         .stat-card:last-child {
             grid-column: span 2;
         }
     }
 
     @media (max-width: 576px) {
-        .dashboard-wrapper {
-            padding: 15px;
-        }
-
         .stats-grid {
             grid-template-columns: 1fr;
-            gap: 12px;
         }
-
-        .stat-card:last-child {
-            grid-column: span 1;
-        }
-
-        .stat-card-header {
-            padding: 14px 16px;
-            font-size: 14px;
-        }
-
-        .stat-card-body {
-            padding: 30px 16px;
-        }
-
         .stat-number {
             font-size: 44px;
-        }
-
-        .chart-container {
-            min-height: 350px;
-        }
-
-        .chart-wrapper {
-            height: 350px;
         }
     }
 </style>
@@ -173,12 +97,12 @@
 
 @section('content')
 <div class="dashboard-wrapper">
-    <!-- Statistics Cards -->
+
     <div class="stats-grid">
         <div class="stat-card">
             <div class="stat-card-header">Total Pendaftar</div>
             <div class="stat-card-body">
-                <div class="stat-number" id="totalPendaftar">0</div>
+                <div class="stat-number" id="totalPendaftar">{{ $totalPendaftar ?? 0 }}</div>
                 <p class="stat-label">Pendaftar</p>
             </div>
         </div>
@@ -186,7 +110,7 @@
         <div class="stat-card">
             <div class="stat-card-header">Belum Ujian</div>
             <div class="stat-card-body">
-                <div class="stat-number" id="belumUjian">0</div>
+                <div class="stat-number" id="belumUjian">{{ $belumUjian ?? 0 }}</div>
                 <p class="stat-label">Pendaftar</p>
             </div>
         </div>
@@ -194,66 +118,110 @@
         <div class="stat-card">
             <div class="stat-card-header">Selesai Ujian</div>
             <div class="stat-card-body">
-                <div class="stat-number" id="selesaiUjian">0</div>
+                <div class="stat-number" id="selesaiUjian">{{ $selesaiUjian ?? 0 }}</div>
                 <p class="stat-label">Pendaftar</p>
             </div>
         </div>
     </div>
 
-    <!-- Chart Section -->
-    <div class="chart-container">
-        <div class="chart-wrapper">
-            <div class="chart-icon">
-                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <line x1="25" y1="25" x2="55" y2="55" stroke="#1e5a9e" stroke-width="3" stroke-linecap="round"/>
-                    <line x1="55" y1="25" x2="25" y2="55" stroke="#1e5a9e" stroke-width="3" stroke-linecap="round"/>
-                </svg>
-            </div>
-            <p class="chart-label">Grafik Statistik</p>
-        </div>
+    {{-- BAR CHART --}}
+    <div class="card p-4 shadow-sm">
+        <canvas id="ujianChart" height="120"></canvas>
     </div>
+
 </div>
 @endsection
 
 @push('scripts')
+
+<!-- CHART.JS CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
-    // Fungsi untuk update data dashboard
+    const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+
+    // FETCH DATA
     function updateDashboardData() {
-        // Simulasi fetch data dari API
-        // Ganti URL dengan endpoint API Anda
-        fetch('/api/dashboard-stats')
-            .then(response => response.json())
-            .then(data => {
-                // Update angka di dashboard
-                document.getElementById('totalPendaftar').textContent = data.total || 0;
-                document.getElementById('belumUjian').textContent = data.belum || 0;
-                document.getElementById('selesaiUjian').textContent = data.selesai || 0;
-                
-                // Tambahkan efek animasi
-                animateNumbers();
-            })
-            .catch(error => {
-                console.log('Menggunakan data default:', error);
-            });
+        fetch("{{ url('/admin/dashboard/stats') }}", {
+            method: "GET",
+            headers: {
+                "X-CSRF-TOKEN": csrf,
+                "Accept": "application/json"
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            animateCounter("totalPendaftar", data.total ?? 0);
+            animateCounter("belumUjian", data.belum ?? 0);
+            animateCounter("selesaiUjian", data.selesai ?? 0);
+
+            updateChart(data.total ?? 0, data.selesai ?? 0, data.belum ?? 0);
+        })
+        .catch(err => console.error("Fetch Error:", err));
     }
 
-    // Animasi untuk angka
-    function animateNumbers() {
-        const numbers = document.querySelectorAll('.stat-number');
-        numbers.forEach(num => {
-            num.style.transform = 'scale(1.1)';
-            setTimeout(() => {
-                num.style.transform = 'scale(1)';
-            }, 200);
+    // ANIMASI ANGKA
+    function animateCounter(id, target) {
+        const el = document.getElementById(id);
+        let value = parseInt(el.innerText) || 0;
+        const step = Math.max(1, Math.ceil(Math.abs(target - value) / 20));
+
+        if (value === target) return;
+
+        const interval = setInterval(() => {
+            if (value < target) value += step;
+            else value -= step;
+
+            if ((step > 0 && value >= target) || (step < 0 && value <= target)) {
+                value = target;
+                clearInterval(interval);
+            }
+
+            el.innerText = value;
+            el.style.transform = "scale(1.07)";
+            setTimeout(() => el.style.transform = "scale(1)", 100);
+        }, 30);
+    }
+
+    // ==== BAR CHART SECTION ====
+
+    let ujianChart = null;
+
+    function initChart() {
+        const ctx = document.getElementById('ujianChart').getContext('2d');
+
+        ujianChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Total', 'Selesai', 'Belum'],
+                datasets: [{
+                    label: 'Jumlah Peserta',
+                    data: [0, 0, 0],
+                    borderWidth: 2,
+                    backgroundColor: ['#1e5a9e', '#2874ba', '#8bb9e0']
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
         });
     }
 
-    // Update data saat halaman dimuat
-    document.addEventListener('DOMContentLoaded', function() {
+    function updateChart(total, selesai, belum) {
+        if (!ujianChart) return;
+        ujianChart.data.datasets[0].data = [total, selesai, belum];
+        ujianChart.update();
+    }
+
+    // INITIAL LOAD
+    document.addEventListener("DOMContentLoaded", () => {
+        initChart();
         updateDashboardData();
-        
-        // Auto-refresh setiap 30 detik
         setInterval(updateDashboardData, 30000);
     });
 </script>
+
 @endpush

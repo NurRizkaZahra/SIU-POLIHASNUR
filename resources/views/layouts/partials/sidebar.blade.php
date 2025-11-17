@@ -10,33 +10,38 @@
             </svg>
         </div>
         <div class="badge">{{ auth()->user()->role ?? 'camaba' }}</div>
-        <div class="profile-name">{{ auth()->user()->name ?? 'Nur Rizka Zahra' }}</div>
+        <div class="profile-name">{{ auth()->user()->name ?? 'Guest User' }}</div>
     </div>
 
     <ul class="menu">
+        @role('camaba')
         <li class="menu-item">
             <a href="{{ route('dashboard.camaba') }}" class="menu-link {{ request()->routeIs('dashboard.camaba') ? 'active' : '' }}">
                 <span class="menu-icon">🏠</span>
                 <span>BERANDA</span>
             </a>
         </li>
+
         <li class="menu-item">
             <a href="{{ route('camaba.registration') }}" class="menu-link {{ request()->routeIs('registration*') ? 'active' : '' }}">
                 <span class="menu-icon">📋</span>
                 <span>PENDAFTARAN</span>
             </a>
         </li>
+
         <li class="menu-item">
             <a href="{{ route('camaba.exam-schedule') }}" class="menu-link {{ request()->routeIs('camaba.exam-schedule') ? 'active' : '' }}">
                 <span class="menu-icon">📅</span>
                 <span>JADWAL UJIAN</span>
             </a>
         </li>
+
         <li class="menu-item">
             <a href="{{ route('camaba.exam') }}" class="menu-link {{ request()->routeIs('camaba.exam') ? 'active' : '' }}">
-            <span class="menu-icon">📝</span>
-            <span>UJIAN</span>
+                <span class="menu-icon">📝</span>
+                <span>UJIAN</span>
             </a>
         </li>
+        @endrole
     </ul>
 </div>
