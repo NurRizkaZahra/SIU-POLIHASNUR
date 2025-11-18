@@ -9,6 +9,7 @@ use App\Http\Controllers\Camaba\ExamController; // ← TAMBAHKAN INI
 //use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
+use App\Http\Controllers\Admin\QuestionGroupController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdmissionPathController;
 use App\Http\Controllers\Camaba\CamabaController as CamabaCamabaController;
@@ -63,6 +64,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     //=================== QUESTION ======================
     Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+        // Question Groups
+    Route::resource('question-groups', QuestionGroupController::class);
     Route::resource('questions', QuestionController::class);
     });
     //notification
@@ -93,19 +96,16 @@ Route::middleware(['auth', 'role:camaba'])->group(function () {
     Route::get('/camaba/exam', [ExamController::class, 'index'])->name('camaba.exam');
     
     // Mulai Ujian (POST)
-    Route::post('/exam/start', [ExamController::class, 'start'])->name('ujian.start');
-    
-    // Halaman Soal Ujian
-    Route::get('/exam/{examScheduleId}/questions', [ExamController::class, 'questions'])->name('ujian.questions');
-    
-    // Simpan Jawaban (AJAX)
-    Route::post('/exam/{examScheduleId}/answer', [ExamController::class, 'answer'])->name('ujian.answer');
-    
-    // Submit Ujian
-    Route::post('/exam/{examScheduleId}/submit', [ExamController::class, 'submit'])->name('ujian.submit');
-    
-    // Hasil Ujian
-    Route::get('/exam/{examScheduleId}/result', [ExamController::class, 'result'])->name('ujian.result');
+   Route::post('/exam/start', [ExamController::class, 'start'])->name('exam.start');
+
+Route::get('/exam/{exam}/questions', [ExamController::class, 'questions'])
+    ->name('exam.questions');
+
+Route::post('/exam/{exam}/submit', [ExamController::class, 'submit'])
+    ->name('exam.submit');
+
+Route::get('/exam/{exam}/result', [ExamController::class, 'result'])
+    ->name('exam.result');
     // ========================================================
 
     // Proses simpan sementara ke session

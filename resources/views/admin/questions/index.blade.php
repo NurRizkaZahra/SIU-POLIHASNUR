@@ -5,30 +5,41 @@
 
 @section('content')
 <style>
+    /* Fix header spacing */
+    .content-wrapper {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+    
+    main {
+        padding-top: 0 !important;
+    }
+    
     .questions-container {
         padding: 20px;
+        margin-top: 0;
     }
     
     .header-actions {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
         flex-wrap: wrap;
-        gap: 15px;
+        gap: 12px;
     }
     
     .search-box {
         position: relative;
         flex: 1;
-        max-width: 400px;
+        max-width: 350px;
     }
     
     .search-input {
         width: 100%;
-        padding: 12px 40px 12px 45px;
-        border: 2px solid #e5e7eb;
-        border-radius: 10px;
+        padding: 10px 35px 10px 40px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
         font-size: 14px;
         transition: all 0.3s;
     }
@@ -49,30 +60,61 @@
         height: 20px;
     }
     
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    
     .btn-add {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        background: #fbbf24;
         color: #1e293b;
-        padding: 12px 24px;
-        border-radius: 10px;
+        padding: 10px 20px;
+        border-radius: 8px;
         font-weight: 600;
+        font-size: 14px;
         text-decoration: none;
         border: none;
         cursor: pointer;
         transition: all 0.3s;
-        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
     }
     
     .btn-add:hover {
+        background: #f59e0b;
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(251, 191, 36, 0.4);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+        color: #1e293b;
+    }
+    
+    .btn-add-group {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #10b981;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .btn-add-group:hover {
+        background: #059669;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        color: white;
     }
     
     .btn-icon {
-        width: 20px;
-        height: 20px;
+        width: 16px;
+        height: 16px;
     }
     
     .questions-grid {
@@ -180,6 +222,25 @@
         flex: 1;
     }
     
+    .question-meta {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+    }
+    
+    .group-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #dbeafe;
+        color: #1e40af;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    
     .question-text {
         font-size: 16px;
         color: #1e293b;
@@ -264,7 +325,6 @@
         border-radius: 20px;
         font-size: 12px;
         font-weight: 600;
-        margin-top: 10px;
     }
     
     .empty-state {
@@ -337,6 +397,15 @@
             align-items: stretch;
         }
         
+        .action-buttons {
+            width: 100%;
+        }
+        
+        .btn-add,
+        .btn-add-group {
+            flex: 1;
+        }
+        
         .search-box {
             max-width: 100%;
         }
@@ -366,12 +435,21 @@
             <input type="text" class="search-input" placeholder="Cari soal...">
         </div>
         
-        <a href="{{ route('admin.questions.create') }}" class="btn-add">
-            <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-            </svg>
-            Tambah Soal
-        </a>
+        <div class="action-buttons">
+            <a href="{{ route('admin.question-groups.create') }}" class="btn-add-group">
+                <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                </svg>
+                Tambah Kelompok
+            </a>
+            
+            <a href="{{ route('admin.questions.create') }}" class="btn-add">
+                <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Tambah Soal
+            </a>
+        </div>
     </div>
 
     <!-- Questions Grid -->
@@ -380,34 +458,52 @@
         <div class="question-card">
             <div class="question-header">
                 <div style="display: flex; align-items: start; gap: 15px; flex: 1;">
-                    <div class="question-number">{{ $index + 1 }}</div>
+                    <div class="question-number">{{ $questions->firstItem() + $index }}</div>
                     <div class="question-content">
+                        <!-- Question Meta (Group & Video) -->
+                        <div class="question-meta">
+                            @if($question->questionGroup)
+                            <span class="group-badge">
+                                <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                </svg>
+                                {{ $question->questionGroup->name }}
+                            </span>
+                            @endif
+                            
+                            @if($question->video_tutorial)
+                            <span class="video-badge">
+                                <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
+                                </svg>
+                                Video Tutorial
+                            </span>
+                            @endif
+                        </div>
+                        
                         <div class="question-text">{{ $question->question_text }}</div>
                         
-                        @if($question->video_tutorial)
-                        <span class="video-badge">
-                            <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
-                            </svg>
-                            Video Tutorial
-                        </span>
-                        @endif
-                        
                         <div class="answers-list">
-    @php
-        $choices = $question->answer_choices; // Sudah array karena casting
-    @endphp
-    
-    @foreach(['A', 'B', 'C', 'D', 'E'] as $option)
-        @if(isset($choices[$option]))
-        <div class="answer-option {{ $option == $question->correct_answer ? 'correct' : '' }}">
-            <span class="option-label">{{ $option }}</span>
-            <span class="option-text">{{ $choices[$option] }}</span>
-            <span class="correct-indicator">✓</span>
-        </div>
-        @endif
-    @endforeach
-</div>
+                            @php
+                               $choices = $question->answer_choices ?? [];
+                            @endphp
+                            
+                            @foreach(['A', 'B', 'C', 'D', 'E'] as $option)
+                                @if(isset($choices[$option]) && !empty($choices[$option]))
+                                <div class="answer-option {{ $option == $question->correct_answer ? 'correct' : '' }}">
+                                    <span class="option-label">{{ $option }}</span>
+                                    <span class="option-text">
+                                @if(is_array($choices[$option]))
+                                    {{ $choices[$option]['text'] ?? '' }} (skor: {{ $choices[$option]['score'] ?? '' }})
+                                @else
+                                    {{ $choices[$option] }}
+                                @endif
+                                </span>
+                                    <span class="correct-indicator">✓</span>
+                                </div>
+                                @endif
+                            @endforeach
+                        </div>
                     </div>
                 </div>
                 
@@ -420,13 +516,13 @@
                     </a>
                     @endif
                     
-                    <a href="{{ route('admin.questions.edit', $question->id) }}" class="btn-action btn-edit">
+                    <a href="{{ route('admin.questions.edit', $question->id) }}" class="btn-action btn-edit" title="Edit">
                         <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                         </svg>
                     </a>
                     
-                    <form action="{{ route('admin.questions.destroy', $question->id) }}" method="POST">
+                    <form action="{{ route('admin.questions.destroy', $question->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus soal ini?')">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn-action btn-delete" title="Hapus">
@@ -483,7 +579,7 @@
 // Search functionality
 document.querySelector('.search-input').addEventListener('input', function(e) {
     const searchTerm = e.target.value.toLowerCase();
-    const questionCards = document.querySelectorAll('.question-card');
+    const questionCards = document.querySAll('.question-card');
     
     questionCards.forEach(card => {
         const questionText = card.querySelector('.question-text').textContent.toLowerCase();
@@ -491,6 +587,15 @@ document.querySelector('.search-input').addEventListener('input', function(e) {
             card.style.display = 'block';
         } else {
             card.style.display = 'none';
+        }
+    });
+});
+
+// Confirm delete
+document.querySelectorAll('.btn-delete').forEach(btn => {
+    btn.closest('form').addEventListener('submit', function(e) {
+        if (!confirm('Yakin ingin menghapus soal ini?')) {
+            e.preventDefault();
         }
     });
 });

@@ -126,10 +126,10 @@ class ExamScheduleController extends Controller
                 'success' => true,
                 'message' => 'Jadwal ujian berhasil diajukan! Menunggu persetujuan admin.',
                 'data' => [
-                    'exam_id' => $exam->id,
-                    'status' => $exam->status,
-                    'status_text' => $exam->getStatusText(),
-                    'formatted_time' => $exam->getFormattedTime(),
+                    'exam_id' => $exams->id,
+                    'status' => $exams->status,
+                    'status_text' => $exams->getStatusText(),
+                    'formatted_time' => $exams->getFormattedTime(),
                 ]
             ]);
 

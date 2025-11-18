@@ -3,291 +3,183 @@
 namespace App\Http\Controllers\Camaba;
 
 use App\Http\Controllers\Controller;
-use App\Models\Exam;
-use App\Models\ExamSchedule;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use App\Models\ExamSchedule;
+use App\Models\Exam;
+use App\Models\Question;
+use App\Models\QuestionGroup;
+use App\Models\ExamAnswer;
 
 class ExamController extends Controller
 {
     /**
-     * Halaman utama ujian (form sebelum mulai ujian)
-     * Route: GET /camaba/exam
-     * Name: camaba.exam
+     * Halaman daftar jadwal ujian camaba
      */
     public function index()
     {
-        $user = Auth::user();
-        
-        // Ambil jadwal ujian aktif untuk user ini
-        $activeExam = Exam::with('examSchedule')
-            ->where('user_id', $user->id)
-            ->whereIn('status', ['pending', 'approved'])
-            ->whereHas('examSchedule', function($query) {
-                $query->where('status', 'active')
-                      ->where('end_date', '>=', now());
-            })
-            ->first();
-        
-        // Jika tidak ada ujian aktif, redirect ke jadwal ujian
-        if (!$activeExam) {
-            return redirect()->route('camaba.exam-schedule')
-                ->with('error', 'Tidak ada ujian yang tersedia saat ini.');
-        }
-        
-        return view('camaba.exam', compact('user', 'activeExam'));
+        $schedules = ExamSchedule::orderBy('start_date', 'asc')->get();
+        return view('camaba.exam', compact('schedules'));
     }
-    
+
     /**
-     * Mulai ujian
-     * Route: POST /exam/start
-     * Name: ujian.start
+     * Saat camaba klik "Mulai Ujian"
      */
     public function start(Request $request)
     {
-        $user = Auth::user();
-        
-        // Validasi
         $request->validate([
             'exam_schedule_id' => 'required|exists:exam_schedules,id'
         ]);
-        
-        // Cek apakah user sudah terdaftar di ujian ini
+
+        $user = auth()->user();
+
+        // Cari exam jika user pernah memulai
         $exam = Exam::where('user_id', $user->id)
-            ->where('exam_schedule_id', $request->exam_schedule_id)
-            ->whereIn('status', ['pending', 'approved'])
-            ->first();
-        
+                    ->where('exam_schedule_id', $request->exam_schedule_id)
+                    ->first();
+
         if (!$exam) {
-            return redirect()->back()
-                ->with('error', 'Anda tidak terdaftar untuk ujian ini.');
+            // Buat exam baru
+            $exam = Exam::create([
+                'user_id'           => $user->id,
+                'exam_schedule_id'  => $request->exam_schedule_id,
+                'status'            => 'in_progress',
+                'start_time'        => now()
+            ]);
         }
-        
-        // Cek apakah ujian sudah dimulai sebelumnya
-        if ($exam->started_at) {
-            return redirect()->route('ujian.questions', $exam->exam_schedule_id);
-        }
-        
-        // Update waktu mulai ujian
-        $exam->update([
-            'started_at' => now(),
-            'status' => 'in_progress'
-        ]);
-        
-        return redirect()->route('ujian.questions', $exam->exam_schedule_id)
+
+        // Redirect ke soal, menggunakan EXAM ID
+        return redirect()
+            ->route('exam.questions', $exam->id)
             ->with('success', 'Ujian dimulai. Selamat mengerjakan!');
     }
-    
+
     /**
-     * Halaman soal ujian
-     * Route: GET /exam/{examScheduleId}/questions
-     * Name: ujian.questions
+     * Tampilan halaman soal.
      */
-    public function questions($examScheduleId)
-    {
-        $user = Auth::user();
-        
-        // Ambil data ujian dengan soal-soal
-        $exam = Exam::with(['examSchedule'])
-            ->where('user_id', $user->id)
-            ->where('exam_schedule_id', $examScheduleId)
-            ->firstOrFail();
-        
-        // Cek apakah ujian sudah dimulai
-        if (!$exam->started_at) {
-            return redirect()->route('camaba.exam')
-                ->with('error', 'Silakan mulai ujian terlebih dahulu.');
-        }
-        
-        // Cek apakah ujian sudah selesai
-        if ($exam->finished_at) {
-            return redirect()->route('ujian.result', $examScheduleId)
-                ->with('info', 'Ujian sudah selesai.');
-        }
-        
-        // Ambil soal-soal (sesuaikan dengan struktur database Anda)
-        $questions = DB::table('questions')
-            ->where('exam_schedule_id', $examScheduleId)
+   public function questions($examId)
+{
+    $exam = Exam::where('id', $examId)
+        ->where('user_id', auth()->id())
+        ->firstOrFail();
+
+    $examSchedule = ExamSchedule::findOrFail($exam->exam_schedule_id);
+
+    // ================================
+    // 🔹 Ambil soal PU (acak per soal)
+    // ================================
+    $questionsPU = Question::whereHas('group', function($q) {
+        $q->where('type', 'PU');
+    })->inRandomOrder()->get();
+
+    // ================================
+    // 🔹 Ambil soal PSI per grup acak
+    // ================================
+    $psiGroups = QuestionGroup::where('type', 'PSI')->get();
+    $questionsPSI = [];
+
+    foreach ($psiGroups as $group) {
+        $questionsPSI[$group->id] = Question::where('question_group_id', $group->id)
+            ->inRandomOrder()
             ->get();
-        
-        // Hitung waktu tersisa
-        $examSchedule = $exam->examSchedule;
-        $duration = $examSchedule->duration ?? 60; // dalam menit
-        $startTime = $exam->started_at;
-        $endTime = $startTime->copy()->addMinutes($duration);
-        $timeRemaining = now()->diffInSeconds($endTime, false);
-        
-        // Jika waktu habis, otomatis submit
-        if ($timeRemaining <= 0) {
-            return $this->autoSubmit($exam);
-        }
-        
-        // Ambil jawaban yang sudah ada (jika tabel exam_answers sudah ada)
-        $answers = [];
-        if (DB::getSchemaBuilder()->hasTable('exam_answers')) {
-            $answers = DB::table('exam_answers')
-                ->where('exam_id', $exam->id)
-                ->pluck('answer', 'question_id')
-                ->toArray();
-        }
-        
-        return view('camaba.exam.questions', compact('exam', 'examSchedule', 'questions', 'timeRemaining', 'answers'));
     }
-    
-    /**
-     * Simpan jawaban (AJAX)
-     * Route: POST /exam/{examScheduleId}/answer
-     * Name: ujian.answer
-     */
-    public function answer(Request $request, $examScheduleId)
-    {
-        $user = Auth::user();
-        
-        $request->validate([
-            'question_id' => 'required|exists:questions,id',
-            'answer' => 'required'
-        ]);
-        
-        $exam = Exam::where('user_id', $user->id)
-            ->where('exam_schedule_id', $examScheduleId)
-            ->firstOrFail();
-        
-        // Simpan atau update jawaban
-        DB::table('exam_answers')->updateOrInsert(
-            [
-                'exam_id' => $exam->id,
-                'question_id' => $request->question_id
-            ],
-            [
-                'answer' => $request->answer,
-                'answered_at' => now(),
-                'updated_at' => now()
-            ]
-        );
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Jawaban tersimpan'
-        ]);
+
+    // ================================
+    // 🔹 Gabungkan PU + PSI jadi satu list
+    // ================================
+    $questions = collect();
+
+    // Tambah semua PU
+    foreach ($questionsPU as $q) {
+        $questions->push($q);
     }
-    
-    /**
-     * Submit ujian
-     * Route: POST /exam/{examScheduleId}/submit
-     * Name: ujian.submit
-     */
-    public function submit(Request $request, $examScheduleId)
-    {
-        $user = Auth::user();
-        
-        $exam = Exam::where('user_id', $user->id)
-            ->where('exam_schedule_id', $examScheduleId)
-            ->firstOrFail();
-        
-        DB::beginTransaction();
-        try {
-            // Hitung nilai
-            $score = $this->calculateScore($exam);
-            
-            // Update status ujian
-            $exam->update([
-                'finished_at' => now(),
-                'status' => 'completed',
-                'score' => $score
-            ]);
-            
-            DB::commit();
-            
-            return redirect()->route('ujian.result', $examScheduleId)
-                ->with('success', 'Ujian berhasil diselesaikan!');
-                
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()
-                ->with('error', 'Terjadi kesalahan saat submit ujian: ' . $e->getMessage());
+
+    // Tambah semua PSI berurutan per grup
+    foreach ($psiGroups as $group) {
+        foreach ($questionsPSI[$group->id] as $q) {
+            $questions->push($q);
         }
     }
-    
+
+    // ================================
+    // 🔹 Hitung statistik
+    // ================================
+    $totalQuestions = $questions->count();
+
+    $answeredCount = ExamAnswer::where('exam_id', $exam->id)->count();
+    $unansweredCount = $totalQuestions - $answeredCount;
+
+    // ================================
+    // 🔹 Load jawaban tersimpan (untuk resume)
+    // ================================
+    $savedAnswers = ExamAnswer::where('exam_id', $exam->id)
+        ->pluck('selected_answer', 'question_id')
+        ->toArray();
+
+    // ================================
+    // 🔹 Waktu tersisa
+    // ================================
+    $timeRemaining = $exam->examSchedule->duration * 60; // misal durasi dalam menit
+
+    return view('camaba.exam.questions', [
+        'exam'             => $exam,
+        'examSchedule'     => $examSchedule,
+        'questionsPU'      => $questionsPU,
+        'questionsPSI'     => $questionsPSI,
+        'psiGroups'        => $psiGroups,
+        'questions'        => $questions,
+        'totalQuestions'   => $totalQuestions,
+        'answeredCount'    => $answeredCount,
+        'unansweredCount'  => $unansweredCount,
+        'savedAnswers'     => $savedAnswers,
+        'timeRemaining'    => $timeRemaining,
+    ]);
+}
+
     /**
-     * Hasil ujian
-     * Route: GET /exam/{examScheduleId}/result
-     * Name: ujian.result
+     * Submit semua jawaban.
      */
-    public function result($examScheduleId)
+    public function submit(Request $request, $examId)
     {
-        $user = Auth::user();
-        
-        $exam = Exam::with(['examSchedule'])
+        $user = auth()->user();
+
+        $exam = Exam::where('id', $examId)
             ->where('user_id', $user->id)
-            ->where('exam_schedule_id', $examScheduleId)
             ->firstOrFail();
-        
-        if (!$exam->finished_at) {
-            return redirect()->route('ujian.questions', $examScheduleId)
-                ->with('error', 'Ujian belum selesai.');
+
+        foreach ($request->answers as $questionId => $answer) {
+            ExamAnswer::updateOrCreate(
+                [
+                    'exam_id' => $exam->id,
+                    'question_id' => $questionId,
+                ],
+                [
+                    'selected_answer' => $answer,
+                ]
+            );
         }
-        
-        // Ambil jawaban user
-        $answers = DB::table('exam_answers')
-            ->where('exam_id', $exam->id)
-            ->get();
-        
-        return view('camaba.exam.result', compact('exam', 'answers'));
-    }
-    
-    /**
-     * Auto submit jika waktu habis
-     * Private method
-     */
-    private function autoSubmit($exam)
-    {
-        $score = $this->calculateScore($exam);
-        
+
+        // Set ujian selesai
         $exam->update([
-            'finished_at' => now(),
             'status' => 'completed',
-            'score' => $score
+            'end_time' => now()
         ]);
-        
-        return redirect()->route('ujian.result', $exam->exam_schedule_id)
-            ->with('warning', 'Waktu ujian habis. Ujian otomatis disubmit.');
+
+        return redirect()->route('exam.result', $exam->id)
+            ->with('success', 'Ujian telah diselesaikan. Terima kasih!');
     }
-    
+
     /**
-     * Hitung nilai ujian
-     * Private method
+     * Halaman hasil ujian camaba.
      */
-    private function calculateScore($exam)
+    public function result($examId)
     {
-        // Cek apakah tabel exam_answers ada
-        if (!DB::getSchemaBuilder()->hasTable('exam_answers')) {
-            return 0;
-        }
-        
-        $answers = DB::table('exam_answers')
-            ->where('exam_id', $exam->id)
-            ->get();
-        
-        $correctAnswers = 0;
-        $totalQuestions = $answers->count();
-        
-        foreach ($answers as $answer) {
-            // Ambil jawaban benar dari tabel questions
-            $question = DB::table('questions')
-                ->where('id', $answer->question_id)
-                ->first();
-            
-            if ($question && $answer->answer == $question->correct_answer) {
-                $correctAnswers++;
-            }
-        }
-        
-        // Hitung score (dari 100)
-        $score = $totalQuestions > 0 
-            ? round(($correctAnswers / $totalQuestions) * 100, 2)
-            : 0;
-        
-        return $score;
+        $user = auth()->user();
+
+        $exam = Exam::with(['answers', 'examSchedule'])
+            ->where('id', $examId)
+            ->where('user_id', $user->id)
+            ->firstOrFail();
+
+        return view('camaba.exam.result', compact('exam'));
     }
 }

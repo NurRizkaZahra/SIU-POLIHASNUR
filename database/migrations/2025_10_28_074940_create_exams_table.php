@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id'); // Foreign key ke users
             $table->unsignedBigInteger('exam_schedule_id')->nullable(); // Foreign key ke exam_schedules
-            $table->enum('status', ['pending', 'approved', 'rejected', 'completed'])
+            $table->enum('status', ['pending', 'approved', 'rejected', 'completed', 'in_progress', 'completed', 'finished'])
                   ->default('pending');
             $table->dateTime('start_time')->nullable();
             $table->dateTime('end_time')->nullable();

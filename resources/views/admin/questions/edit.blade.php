@@ -73,12 +73,6 @@
         margin-top: 5px;
     }
     
-    .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-    }
-    
     .answers-section {
         margin-top: 30px;
     }
@@ -116,6 +110,11 @@
     
     .option-input {
         flex: 1;
+    }
+    
+    .psi-score-input {
+        width: 120px;
+        flex-shrink: 0;
     }
     
     .form-actions {
@@ -206,13 +205,13 @@
 
         @if (session('success'))
         <div class="success-message">
-            <strong>Berhasil!</strong> {{ session('success') }}
+            <strong>✓ Berhasil!</strong> {{ session('success') }}
         </div>
         @endif
 
         @if ($errors->any())
         <div class="error-message">
-            <strong>Terjadi kesalahan:</strong>
+            <strong>✗ Terjadi kesalahan:</strong>
             <ul style="margin: 8px 0 0 20px;">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -238,41 +237,34 @@
                 <div class="form-hint">Gunakan bahasa yang jelas dan mudah dipahami</div>
             </div>
 
-            <!-- Tipe Soal -->
+            @php
+                // Deteksi tipe soal dari group atau dari correct_answer
+                $currentType = 'PU';
+                if ($question->question_group_id) {
+                    $currentType = $question->group->type;
+                } elseif (!$question->correct_answer) {
+                    $currentType = 'PSI';
+                }
+            @endphp
+
+            <!-- Tipe Soal (Read Only - Informasi saja) -->
             <div class="form-group">
-                <label class="form-label">
-                    Tipe Soal <span class="required">*</span>
-                </label>
-                <div style="display: flex; gap: 20px; margin-top: 10px;">
-                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                        <input 
-                            type="radio" 
-                            name="question_type" 
-                            value="PU" 
-                            {{ old('question_type', $question->question_group_id ? 'PSI' : 'PU') == 'PU' ? 'checked' : '' }}
-                            onchange="toggleQuestionType()"
-                            style="width: 18px; height: 18px;">
-                        <span style="font-weight: 500;">Pengetahuan Umum (PU)</span>
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                        <input 
-                            type="radio" 
-                            name="question_type" 
-                            value="PSI" 
-                            {{ old('question_type', $question->question_group_id ? 'PSI' : 'PU') == 'PSI' ? 'checked' : '' }}
-                            onchange="toggleQuestionType()"
-                            style="width: 18px; height: 18px;">
-                        <span style="font-weight: 500;">Psikotes (PSI)</span>
-                    </label>
+                <label class="form-label">Tipe Soal</label>
+                <div style="display: inline-block; padding: 8px 16px; background: {{ $currentType == 'PSI' ? '#dbeafe' : '#d1fae5' }}; color: {{ $currentType == 'PSI' ? '#1e40af' : '#065f46' }}; border-radius: 20px; font-weight: 600;">
+                    {{ $currentType == 'PSI' ? '🧠 Psikotes (PSI)' : '📚 Pengetahuan Umum (PU)' }}
                 </div>
-                <div class="form-hint">Pilih tipe soal sesuai kategori</div>
+                <div class="form-hint">Tipe soal tidak dapat diubah setelah dibuat</div>
+                <input type="hidden" name="type" value="{{ $currentType }}">
             </div>
 
-            <!-- Question Group (Muncul jika PSI) -->
-            <div class="form-group" id="group-field" style="display: none;">
-                <label class="form-label">Grup Soal (Opsional)</label>
-                <select name="question_group_id" class="form-select">
-                    <option value="">-- Pilih Grup PSI --</option>
+            <!-- Grup PSI (Jika PSI) -->
+            @if($currentType == 'PSI')
+            <div class="form-group">
+                <label class="form-label">
+                    Kelompok Soal PSI <span class="required">*</span>
+                </label>
+                <select name="question_group_id" class="form-select" required>
+                    <option value="">-- Pilih Kelompok Soal PSI --</option>
                     @foreach($groups as $group)
                         @if($group->type == 'PSI')
                         <option value="{{ $group->id }}" 
@@ -282,10 +274,11 @@
                         @endif
                     @endforeach
                 </select>
-                <div class="form-hint">Pilih grup jika soal ini terkait dengan gambar/bacaan tertentu</div>
+                <div class="form-hint">Kelompok soal untuk PSI</div>
             </div>
+            @endif
 
-            <!-- Video Tutorial -->
+            <!-- Video Tutorial (Opsional) -->
             <div class="form-group">
                 <label class="form-label">Link Video Tutorial (Opsional)</label>
                 <input 
@@ -294,10 +287,11 @@
                     class="form-input" 
                     placeholder="https://youtube.com/watch?v=..."
                     value="{{ old('video_tutorial', $question->video_tutorial) }}">
-                <div class="form-hint">Link video YouTube atau platform lainnya untuk penjelasan soal</div>
+                <div class="form-hint">Link video untuk penjelasan soal (opsional)</div>
             </div>
 
-            <!-- Score -->
+            <!-- Skor (Hanya untuk PU) -->
+            @if($currentType == 'PU')
             <div class="form-group">
                 <label class="form-label">
                     Skor <span class="required">*</span>
@@ -308,45 +302,74 @@
                     class="form-input" 
                     placeholder="Masukkan skor..."
                     value="{{ old('score', $question->score) }}"
-                    min="1"
+                    step="0.1"
+                    min="0.1"
                     required>
-                <div class="form-hint">Bobot poin untuk soal ini</div>
+                <div class="form-hint">Bobot poin untuk soal ini jika dijawab benar</div>
             </div>
+            @endif
 
             <!-- Pilihan Jawaban -->
             <div class="answers-section">
                 <label class="form-label">
                     Pilihan Jawaban <span class="required">*</span>
-                    <span class="correct-answer-hint">Pilih radio button untuk jawaban yang benar</span>
                 </label>
+
+                @if($currentType == 'PU')
+                <!-- Tampilan PU: Text + Radio Button -->
                 <div class="form-hint" style="margin-bottom: 15px;">
-                    Pilih radio button di samping kanan untuk menandai jawaban yang benar
+                    <span class="correct-answer-hint">Pilih radio button untuk jawaban yang benar</span>
                 </div>
 
-                @php
-                    $answerChoices = $question->answer_choices;
-                @endphp
+                @foreach(['A', 'B', 'C', 'D', 'E'] as $option)
+                <div class="answer-item">
+                    <div class="option-label-box">{{ $option }}</div>
+                    <input 
+                        type="text" 
+                        name="answer_choices[{{ $option }}]" 
+                        class="form-input option-input" 
+                        placeholder="Masukkan pilihan jawaban {{ $option }}..."
+                        value="{{ old('answer_choices.' . $option, $question->answer_choices[$option] ?? '') }}"
+                        required>
+                    <div class="option-radio">
+                        <input 
+                            type="radio" 
+                            name="correct_answer" 
+                            value="{{ $option }}"
+                            {{ old('correct_answer', $question->correct_answer) == $option ? 'checked' : '' }}
+                            required>
+                    </div>
+                </div>
+                @endforeach
+
+                @else
+                <!-- Tampilan PSI: Text + Skor per Pilihan -->
+                <div class="form-hint" style="margin-bottom: 15px;">
+                    Masukkan teks pilihan dan skor untuk setiap opsi jawaban
+                </div>
 
                 @foreach(['A', 'B', 'C', 'D', 'E'] as $option)
-<div class="answer-item">
-    <div class="option-label-box">{{ $option }}</div>
-    <input 
-        type="text" 
-        name="answer_choices[{{ $option }}]" 
-        class="form-input option-input" 
-        placeholder="Masukkan pilihan jawaban {{ $option }}..."
-        value="{{ old('answer_choices.' . $option, isset($question->answer_choices[$option]) ? $question->answer_choices[$option] : '') }}"
-        required>
-    <div class="option-radio">
-        <input 
-            type="radio" 
-            name="correct_answer" 
-            value="{{ $option }}"
-            {{ old('correct_answer', $question->correct_answer) == $option ? 'checked' : '' }}
-            required>
-    </div>
-</div>
-@endforeach
+                <div class="answer-item">
+                    <div class="option-label-box">{{ $option }}</div>
+                    <input 
+                        type="text" 
+                        name="answer_choices[{{ $option }}][text]" 
+                        class="form-input option-input" 
+                        placeholder="Teks pilihan {{ $option }}..."
+                        value="{{ old('answer_choices.' . $option . '.text', $question->answer_choices[$option]['text'] ?? '') }}"
+                        required>
+                    <input 
+                        type="number" 
+                        name="answer_choices[{{ $option }}][score]" 
+                        class="form-input psi-score-input" 
+                        placeholder="Skor"
+                        value="{{ old('answer_choices.' . $option . '.score', $question->answer_choices[$option]['score'] ?? '') }}"
+                        min="1"
+                        step="1"
+                        required>
+                </div>
+                @endforeach
+                @endif
             </div>
 
             <!-- Form Actions -->
@@ -369,11 +392,12 @@
 </div>
 
 <script>
-// Optional: Konfirmasi sebelum submit
+// Konfirmasi sebelum submit
 document.querySelector('form').addEventListener('submit', function(e) {
     if (!confirm('Apakah Anda yakin ingin menyimpan perubahan soal ini?')) {
         e.preventDefault();
     }
 });
 </script>
+
 @endsection

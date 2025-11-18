@@ -5,13 +5,13 @@
 
 @section('content')
 <style>
-    /* Wrapper mengikuti layout utama, tanpa ubah background sidebar */
     .exam-wrapper {
         display: flex;
         justify-content: center;
         align-items: center;
         width: 100%;
         padding: 40px 20px;
+        min-height: 70vh;
     }
 
     .exam-card {
@@ -55,14 +55,19 @@
         transition: all 0.3s ease;
         box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
         display: block;
-        margin-left: auto;
-        margin-right: auto;
+        width: 100%;
     }
 
-    .start-button:hover {
+    .start-button:hover:not(:disabled) {
         background: #152d6b;
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(30, 58, 138, 0.45);
+    }
+
+    .start-button:disabled {
+        background: #94a3b8;
+        cursor: not-allowed;
+        transform: none;
     }
 
     .form-group {
@@ -103,6 +108,43 @@
         cursor: not-allowed;
     }
 
+    .alert {
+        padding: 12px 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+    .alert-danger {
+        background: #fee2e2;
+        border: 1px solid #fecaca;
+        color: #991b1b;
+    }
+
+    .alert-success {
+        background: #d1fae5;
+        border: 1px solid #a7f3d0;
+        color: #065f46;
+    }
+
+    .alert-info {
+        background: #dbeafe;
+        border: 1px solid #bfdbfe;
+        color: #1e40af;
+    }
+
+    .continue-link {
+        display: inline-block;
+        margin-top: 15px;
+        color: #1e3a8a;
+        font-weight: 600;
+        text-decoration: underline;
+    }
+
+    .continue-link:hover {
+        color: #152d6b;
+    }
+
     @media (max-width: 640px) {
         .exam-card {
             padding: 30px 25px;
@@ -119,7 +161,6 @@
         }
 
         .start-button {
-            width: 100%;
             padding: 13px 25px;
         }
 
@@ -132,6 +173,25 @@
 
 <div class="exam-wrapper">
     <div class="exam-card">
+        <!-- Alerts -->
+        @if(session('error'))
+            <div class="alert alert-danger">
+                <strong>⚠️ Error:</strong> {{ session('error') }}
+            </div>
+        @endif
+
+        @if(session('success'))
+            <div class="alert alert-success">
+                <strong>✓ Berhasil:</strong> {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('info'))
+            <div class="alert alert-info">
+                <strong>ℹ️ Info:</strong> {{ session('info') }}
+            </div>
+        @endif
+
         <!-- Profile Icon -->
         <div class="profile-icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -140,35 +200,63 @@
             </svg>
         </div>
 
-        <!-- Start Button -->
-        <button onclick="handleStartExam()" class="start-button">
-            Mulai Ujian
-        </button>
+        <!-- Start Button Form -->
+        <form id="startExamForm" action="{{ route('exam.start') }}" method="POST">
+            @csrf
+            <input type="hidden" name="exam_schedule_id" value="{{ $schedules->first()->id }}">
+            <input type="hidden" name="name" value="{{ Auth::user()->name }}">
+            <input type="hidden" name="exam_date" value="{{ date('Y-m-d') }}">
+            
+            <button type="submit" class="start-button" id="startBtn">
+                Mulai Ujian
+            </button>
+        </form>
 
-        <!-- Form -->
-        <form id="examForm">
-            <!-- Nama Lengkap -->
+       
+        <!-- Info Form -->
+        <div style="margin-top: 30px;">
             <div class="form-group">
                 <label class="form-label">Nama Lengkap</label>
-                <input type="text" name="nama_lengkap"
-                    value="{{ Auth::user()->name ?? 'Nur Rizka Zahra' }}" class="form-input" readonly />
+                <input type="text" value="{{ Auth::user()->name }}" class="form-input" readonly />
             </div>
 
-            <!-- Tanggal Ujian -->
             <div class="form-group">
                 <label class="form-label">Tanggal Ujian</label>
-                <input type="text" name="tanggal_ujian" value="{{ date('d/m/Y') }}" class="form-input"
-                    readonly />
+                <input type="text" value="{{ date('d/m/Y') }}" class="form-input" readonly />
             </div>
-        </form>
+
+            <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Gelombang</label>
+                <input type="text" value="{{ $schedules->first()->wave_name ?? 'Tidak diketahui' }}" class="form-input" readonly />
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
-function handleStartExam() {
-    if (confirm('Apakah Anda yakin ingin memulai ujian?')) {
-        window.location.href = "{{ route('ujian.start') }}";
+document.getElementById('startExamForm').addEventListener('submit', function(e) {
+    const btn = document.getElementById('startBtn');
+    
+    // Jika sudah disabled, jangan submit
+    if (btn.disabled) {
+        e.preventDefault();
+        return false;
     }
+    
+    // Konfirmasi
+    if (!confirm('⚠️ Apakah Anda yakin ingin memulai ujian?\n\n• Timer akan mulai berjalan\n• Anda tidak dapat membatalkan\n• Pastikan koneksi internet stabil')) {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Disable button untuk prevent double submit
+    btn.disabled = true;
+    btn.textContent = '⏳ Memulai...';
+});
+
+// Prevent back button resubmission
+if (window.history.replaceState) {
+    window.history.replaceState(null, null, window.location.href);
 }
 </script>
 @endsection

@@ -35,11 +35,11 @@ class ExamSchedule extends Model
 
     // ================= RELATIONSHIPS =================
 
+    //Banyak exam (peserta ujian)
     public function exams()
     {
         return $this->hasMany(Exam::class, 'exam_schedule_id');
     }
-
     public function approvedExams()
     {
         return $this->exams()->where('status', Exam::STATUS_APPROVED);

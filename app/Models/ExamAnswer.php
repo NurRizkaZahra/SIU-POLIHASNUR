@@ -20,8 +20,7 @@ class ExamAnswer extends Model
     protected $fillable = [
         'exam_id',
         'question_id',
-        'answer',
-        'answered_at'
+        'selected_answer',
     ];
 
     /**
@@ -58,7 +57,7 @@ class ExamAnswer extends Model
      */
     public function isCorrect()
     {
-        return $this->answer === $this->question->correct_answer;
+        return $this->selected_answer === $this->question->correct_answer;
     }
 
     /**
@@ -82,6 +81,6 @@ class ExamAnswer extends Model
      */
     public function scopeCorrect($query)
     {
-        return $query->whereRaw('answer = (SELECT correct_answer FROM questions WHERE questions.id = exam_answers.question_id)');
+        return $query->whereRaw('selected_answer = (SELECT correct_answer FROM questions WHERE questions.id = exam_answers.question_id)');
     }
 }

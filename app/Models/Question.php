@@ -11,7 +11,6 @@ class Question extends Model
     'answer_choices',
     'correct_answer',
     'score',
-    'video_tutorial',
     'question_group_id'
 ];
 

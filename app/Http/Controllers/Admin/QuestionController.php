@@ -23,32 +23,50 @@ class QuestionController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'question_text' => 'required|string',
-            'correct_answer' => 'required|string|in:A,B,C,D,E',
-            'score' => 'required|integer|min:1',
-            'question_group_id' => 'nullable|exists:question_groups,id',
-            
-            // JSON input
-            'answer_choices' => 'required|array|size:5',
-            'answer_choices.A' => 'required|string',
-            'answer_choices.B' => 'required|string',
-            'answer_choices.C' => 'required|string',
-            'answer_choices.D' => 'required|string',
-            'answer_choices.E' => 'required|string',
-        ]);
+         $group = QuestionGroup::find($request->question_group_id);
+    $rules = [
+        'question_text' => 'required|string',
+        'answer_choices' => 'required|array|size:5',
+    ];
 
-        Question::create([
-            'question_text' => $validated['question_text'],
-            'answer_choices' => json_encode($validated['answer_choices']),
-            'correct_answer' => $validated['correct_answer'],
-            'score' => $validated['score'],
-            'question_group_id' => $validated['question_group_id'],
-        ]);
+    // jika grup dipilih, baca type dari grup
+    $type = $group ? $group->type : $request->type;
 
-        return redirect()->route('admin.questions.index')
-            ->with('success', 'Soal berhasil ditambahkan!');
+    // PSI wajib ada grup
+    if ($type == 'PSI' && !$group) {
+        return back()->withErrors(['question_group_id' => 'Soal PSI wajib memilih grup']);
     }
+
+    if ($type == 'PU')
+    {
+        $rules['correct_answer'] = 'required|string|in:A,B,C,D,E';
+        $rules['score'] = 'required|numeric|min:0.1';
+
+        foreach (['A','B','C','D','E'] as $i) {
+            $rules["answer_choices.$i"] = 'required|string';
+        }
+    }
+
+    if ($type == 'PSI')
+    {
+        foreach (['A','B','C','D','E'] as $i) {
+            $rules["answer_choices.$i.text"] = 'required|string';
+            $rules["answer_choices.$i.score"] = 'required|numeric|min:1';
+        }
+    }
+
+    $validated = $request->validate($rules);
+
+    Question::create([
+        'question_text' => $validated['question_text'],
+        'answer_choices' => $validated['answer_choices'],
+        'correct_answer' => $type == 'PU' ? $validated['correct_answer'] : null,
+        'score' => $type == 'PU' ? $validated['score'] : null,
+        'question_group_id' => $group ? $group->id : null,
+    ]);
+
+    return redirect()->route('admin.questions.index')->with('success', 'Soal berhasil ditambahkan!');
+}
 
    public function edit(Question $question)
 {
@@ -58,37 +76,59 @@ class QuestionController extends Controller
 }
     public function update(Request $request, Question $question)
     {
-        $validated = $request->validate([
-            'question_text' => 'required|string',
-            'correct_answer' => 'required|string|in:A,B,C,D,E',
-            'score' => 'required|integer|min:1',
-            'question_group_id' => 'nullable|exists:question_groups,id',
+        // Cek grup soal
+    $group = QuestionGroup::find($request->question_group_id);
 
-            'answer_choices' => 'required|array|size:5',
-            'answer_choices.A' => 'required|string',
-            'answer_choices.B' => 'required|string',
-            'answer_choices.C' => 'required|string',
-            'answer_choices.D' => 'required|string',
-            'answer_choices.E' => 'required|string',
-        ]);
-
-        $question->update([
-            'question_text' => $validated['question_text'],
-            'answer_choices' => json_encode($validated['answer_choices']),
-            'correct_answer' => $validated['correct_answer'],
-            'score' => $validated['score'],
-            'question_group_id' => $validated['question_group_id'],
-        ]);
-
-        return redirect()->route('admin.questions.index')
-            ->with('success', 'Soal berhasil diperbarui!');
+    if (!$group) {
+        return back()->withErrors(['question_group_id' => 'Pilih kelompok soal!']);
     }
 
-    public function destroy(Question $question)
-    {
-        $question->delete();
-        
-        return redirect()->route('admin.questions.index')
-            ->with('success', 'Soal berhasil dihapus!');
+    // Rules dasar
+    $rules = [
+        'question_text' => 'required|string',
+        'question_group_id' => 'required|exists:question_groups,id',
+        'answer_choices' => 'required|array|size:5',
+    ];
+
+    // Rules untuk PU (Pilihan Umum)
+    if ($group->type == 'PU') {
+        $rules['correct_answer'] = 'required|string|in:A,B,C,D,E';
+        $rules['score'] = 'required|numeric|min:0.5';
+
+        foreach (['A','B','C','D','E'] as $opt) {
+            $rules["answer_choices.$opt"] = 'required|string';
+        }
     }
+
+    // Rules untuk PSI (Psikotes)
+    if ($group->type == 'PSI') {
+        foreach (['A','B','C','D','E'] as $opt) {
+            $rules["answer_choices.$opt.text"] = 'required|string';
+            $rules["answer_choices.$opt.score"] = 'required|integer|min:1';
+        }
+    }
+
+    // Validasi
+    $validated = $request->validate($rules);
+
+    // Update data
+    $question->update([
+        'question_text' => $validated['question_text'],
+        'answer_choices' => $validated['answer_choices'],
+        'correct_answer' => $group->type == 'PU' ? $validated['correct_answer'] : null,
+        'score' => $group->type == 'PU' ? $validated['score'] : null,
+        'question_group_id' => $validated['question_group_id'],
+    ]);
+
+    return redirect()->route('admin.questions.index')
+        ->with('success', 'Soal berhasil diperbarui!');
+}
+public function destroy($id)
+{
+    $question = Question::findOrFail($id);
+    $question->delete();
+
+    return redirect()->route('admin.questions.index')
+                     ->with('success', 'Soal berhasil dihapus!');
+}
 }

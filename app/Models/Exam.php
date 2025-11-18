@@ -10,7 +10,6 @@ class Exam extends Model
 {
     use HasFactory;
 
-    // Nama tabel
     protected $table = 'exams';
 
     protected $fillable = [
@@ -26,10 +25,13 @@ class Exam extends Model
         'end_time' => 'datetime:H:i',
     ];
 
-    // Status constants
-    const STATUS_PENDING = 'pending';
-    const STATUS_APPROVED = 'approved';
-    const STATUS_REJECTED = 'rejected';
+    // ================= STATUS CONSTANTS =================
+    const STATUS_PENDING      = 'pending';
+    const STATUS_APPROVED     = 'approved';
+    const STATUS_REJECTED     = 'rejected';
+    const STATUS_IN_PROGRESS  = 'in_progress';
+    const STATUS_COMPLETED    = 'completed';
+    const STATUS_FINISHED     = 'finished';
 
     // ================= RELATIONSHIPS =================
 
@@ -43,34 +45,34 @@ class Exam extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function answers()
+    {
+        return $this->hasMany(ExamAnswer::class);
+    }
+
     // ================= ACCESSORS & HELPERS =================
 
-    /**
-     * Format status untuk tampilan
-     */
     public function getStatusText()
     {
-        return match($this->status) {
-            self::STATUS_PENDING => 'Menunggu Verifikasi',
-            self::STATUS_APPROVED => 'Disetujui',
-            self::STATUS_REJECTED => 'Ditolak',
-            default => 'Tidak Diketahui',
+        return match ($this->status) {
+            self::STATUS_PENDING      => 'Menunggu Verifikasi',
+            self::STATUS_APPROVED     => 'Disetujui',
+            self::STATUS_REJECTED     => 'Ditolak',
+            self::STATUS_IN_PROGRESS  => 'Sedang Berlangsung',
+            self::STATUS_COMPLETED    => 'Selesai Dikerjakan',
+            self::STATUS_FINISHED     => 'Ujian Selesai',
+            default                   => 'Tidak Diketahui',
         };
     }
 
-    /**
-     * Format waktu ujian
-     */
     public function getFormattedTime()
     {
         $start = Carbon::parse($this->start_time)->format('H:i');
-        $end = Carbon::parse($this->end_time)->format('H:i');
+        $end   = Carbon::parse($this->end_time)->format('H:i');
+
         return $start . ' - ' . $end;
     }
 
-    /**
-     * Bisa dibatalkan? Hanya status pending
-     */
     public function canBeCancelled()
     {
         return $this->status === self::STATUS_PENDING;
@@ -93,13 +95,27 @@ class Exam extends Model
         return $query->where('status', self::STATUS_REJECTED);
     }
 
+    public function scopeInProgress($query)
+    {
+        return $query->where('status', self::STATUS_IN_PROGRESS);
+    }
+
+    public function scopeCompleted($query)
+    {
+        return $query->where('status', self::STATUS_COMPLETED);
+    }
+
+    public function scopeFinished($query)
+    {
+        return $query->where('status', self::STATUS_FINISHED);
+    }
+
     // ================= BOOT METHOD =================
 
     protected static function boot()
     {
         parent::boot();
 
-        // Set default status saat create
         static::creating(function ($exam) {
             if (empty($exam->status)) {
                 $exam->status = self::STATUS_PENDING;
