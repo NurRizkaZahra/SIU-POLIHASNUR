@@ -13,25 +13,22 @@ class Exam extends Model
     protected $table = 'exams';
 
     protected $fillable = [
-        'user_id',
-        'exam_schedule_id',
-        'start_time',
-        'end_time',
-        'status',
+    'user_id',
+    'exam_schedule_id',
+    'started_at',
+    'finished_at',
+    'status',
+    'score',
     ];
 
     protected $casts = [
-        'start_time' => 'datetime:H:i',
-        'end_time' => 'datetime:H:i',
+    'started_at' => 'datetime',
+    'finished_at' => 'datetime',
     ];
-
-    // ================= STATUS CONSTANTS =================
-    const STATUS_PENDING      = 'pending';
-    const STATUS_APPROVED     = 'approved';
-    const STATUS_REJECTED     = 'rejected';
-    const STATUS_IN_PROGRESS  = 'in_progress';
-    const STATUS_COMPLETED    = 'completed';
-    const STATUS_FINISHED     = 'finished';
+    // Status constants
+    const STATUS_PENDING = 'pending';
+    const STATUS_APPROVED = 'approved';
+    const STATUS_REJECTED = 'rejected';
 
     // ================= RELATIONSHIPS =================
 
@@ -58,9 +55,6 @@ class Exam extends Model
             self::STATUS_PENDING      => 'Menunggu Verifikasi',
             self::STATUS_APPROVED     => 'Disetujui',
             self::STATUS_REJECTED     => 'Ditolak',
-            self::STATUS_IN_PROGRESS  => 'Sedang Berlangsung',
-            self::STATUS_COMPLETED    => 'Selesai Dikerjakan',
-            self::STATUS_FINISHED     => 'Ujian Selesai',
             default                   => 'Tidak Diketahui',
         };
     }
@@ -93,21 +87,6 @@ class Exam extends Model
     public function scopeRejected($query)
     {
         return $query->where('status', self::STATUS_REJECTED);
-    }
-
-    public function scopeInProgress($query)
-    {
-        return $query->where('status', self::STATUS_IN_PROGRESS);
-    }
-
-    public function scopeCompleted($query)
-    {
-        return $query->where('status', self::STATUS_COMPLETED);
-    }
-
-    public function scopeFinished($query)
-    {
-        return $query->where('status', self::STATUS_FINISHED);
     }
 
     // ================= BOOT METHOD =================

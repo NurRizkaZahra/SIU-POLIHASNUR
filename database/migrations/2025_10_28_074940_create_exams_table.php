@@ -13,17 +13,41 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id'); // Foreign key ke users
             $table->unsignedBigInteger('exam_schedule_id')->nullable(); // Foreign key ke exam_schedules
             $table->enum('status', ['pending', 'approved', 'rejected', 'completed', 'in_progress', 'completed', 'finished'])
+
+            // Relasi ke users
+            $table->unsignedBigInteger('user_id');
+
+            // Relasi ke exam_schedules (boleh null)
+            $table->unsignedBigInteger('exam_schedule_id')->nullable();
+
+            /**
+             * Status ujian:
+             * - pending : menunggu verifikasi
+             * - approved: sudah diverifikasi admin
+             * - progress: sedang berlangsung
+             * - completed: selesai
+             * - rejected : ditolak admin
+             */
+            $table->enum('status', ['pending', 'approved', 'rejected', 'progress', 'completed'])
+
                   ->default('pending');
-            $table->dateTime('start_time')->nullable();
-            $table->dateTime('end_time')->nullable();
+
+            // Waktu ujian
+            $table->dateTime('started_at')->nullable();
+            $table->dateTime('finished_at')->nullable();
+
+            // Nilai ujian (optional)
+            $table->integer('score')->nullable();
+
             $table->timestamps();
 
-            // Foreign keys
+            // Foreign key user
             $table->foreign('user_id')
                   ->references('id')
                   ->on('users')
                   ->onDelete('cascade');
-            
+
+            // Foreign key jadwal ujian
             $table->foreign('exam_schedule_id')
                   ->references('id')
                   ->on('exam_schedules')
