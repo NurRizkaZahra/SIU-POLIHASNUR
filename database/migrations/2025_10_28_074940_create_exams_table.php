@@ -25,13 +25,9 @@ return new class extends Migration
              * - completed  : selesai
              * - rejected   : ditolak admin
              */
-            $table->enum('status', [
-                'pending',
-                'approved',
-                'rejected',
-                'in_progress',
-                'completed'
-            ])->default('pending');
+
+            $table->enum('status', ['pending', 'approved', 'rejected', 'progress', 'completed'])
+                  ->default('pending');
 
             // Waktu ujian
             $table->dateTime('started_at')->nullable();
