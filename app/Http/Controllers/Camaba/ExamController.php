@@ -282,7 +282,8 @@ public function index()
     // ================================
     $exam->update([
         'status' => 'completed',
-        'end_time' => now(),
+       // 'end_time' => now(),//
+        'finished_at' => now(),
         'score_pu' => round($scorePU, 2),
         'score_psi' => round($scorePSI, 2),
     ]);

@@ -18,7 +18,7 @@ class AdminDashboardController extends Controller
             // Total pendaftar (role = camaba)
             $totalPendaftar = User::role('camaba')->count();
 
-            // User UNIK yang sudah selesai ujian
+            // User UNIK yang sudah selesai ujian - DIPERBAIKI
             $selesaiUjian = DB::table('exams')
                 ->join('users', 'exams.user_id', '=', 'users.id')
                 ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
@@ -26,8 +26,9 @@ class AdminDashboardController extends Controller
                 ->where('roles.name', 'camaba')
                 ->where('model_has_roles.model_type', 'App\\Models\\User')
                 ->whereNotNull('exams.finished_at')
-                ->distinct()
-                ->count('exams.user_id');
+                ->pluck('exams.user_id')
+                ->unique()
+                ->count();
 
             // Belum ujian
             $belumUjian = max(0, $totalPendaftar - $selesaiUjian);
@@ -55,7 +56,7 @@ class AdminDashboardController extends Controller
             // Total pendaftar
             $totalPendaftar = User::role('camaba')->count();
 
-            // Selesai ujian
+            // Selesai ujian - DIPERBAIKI
             $selesaiUjian = DB::table('exams')
                 ->join('users', 'exams.user_id', '=', 'users.id')
                 ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
@@ -63,8 +64,9 @@ class AdminDashboardController extends Controller
                 ->where('roles.name', 'camaba')
                 ->where('model_has_roles.model_type', 'App\\Models\\User')
                 ->whereNotNull('exams.finished_at')
-                ->distinct()
-                ->count('exams.user_id');
+                ->pluck('exams.user_id')
+                ->unique()
+                ->count();
 
             $belumUjian = max(0, $totalPendaftar - $selesaiUjian);
 
