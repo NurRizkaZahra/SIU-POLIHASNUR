@@ -355,7 +355,7 @@ document.querySelector('input[name="end_date"]').addEventListener('change', func
 
 // Confirm before submit
 document.querySelector('form').addEventListener('submit', function(e) {
-    const batchName = document.querySelector('input[name="batch_name"]').value;
+    const batchName = document.querySelector('input[name="wave_name"]').value;
     
     if (!confirm(`Are you sure you want to add "${batchName}"?`)) {
         e.preventDefault();

@@ -199,7 +199,14 @@
 
 @section('content')
 <div class="exam-schedule-container">
-    <!-- Alert Messages -->
+
+     @if(session('error'))
+    <div class="alert alert-error">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>{{ session('error') }}</span>
+    </div>
+    @endif
+
     @if(session('success'))
     <div class="alert alert-success">
         <i class="fas fa-check-circle"></i>
@@ -258,6 +265,7 @@
             <button type="submit" class="btn-save">Save</button>
         </form>
     </div>
+    
     @empty
     <div class="no-schedule">
         <i class="fas fa-calendar-times"></i>

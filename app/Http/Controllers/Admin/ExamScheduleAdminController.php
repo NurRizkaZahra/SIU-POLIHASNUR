@@ -10,13 +10,12 @@ use App\Models\Exam;
 class ExamScheduleAdminController extends Controller
 {
     /**
-     * Display all exam schedules (hanya yang memiliki pengajuan)
+     * Display all exam schedules (tampilkan semua)
      */
     public function index()
     {
-        // Ambil jadwal yang memiliki minimal 1 pengajuan dari camaba
-        $examSchedules = ExamSchedule::has('exams')
-            ->withCount([
+        // Tampilkan SEMUA jadwal ujian, tidak harus punya pengajuan
+        $examSchedules = ExamSchedule::withCount([
                 'exams as total_applications',
                 'pendingExams as pending_count',
                 'approvedExams as approved_count',
@@ -49,13 +48,13 @@ class ExamScheduleAdminController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
         
-        ExamSchedule::create([
-            'wave_name' => $request->wave_name,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'participant_quota' => $request->participant_quota,
-            'status' => $request->status,
-        ]);
+        ExamSchedule::create($request->only(
+            'wave_name',
+            'start_date',
+            'end_date',
+            'participant_quota',
+            'status'
+        ));
 
         return redirect()->route('admin.exam-schedule-admin')
             ->with('success', 'Jadwal ujian berhasil dibuat!');
@@ -63,11 +62,11 @@ class ExamScheduleAdminController extends Controller
 
     /**
      * Show the form for editing an existing exam schedule
-     * Hanya bisa edit jika ada pengajuan
      */
     public function edit($id)
     {
-        $examSchedule = ExamSchedule::has('exams')->findOrFail($id);
+        // Tidak perlu has('exams'), tetap boleh edit meski belum ada pengajuan
+        $examSchedule = ExamSchedule::findOrFail($id);
         
         return view('admin.exam-schedule-edit', compact('examSchedule'));
     }
@@ -85,8 +84,14 @@ class ExamScheduleAdminController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
 
-        $examSchedule = ExamSchedule::has('exams')->findOrFail($id);
-        $examSchedule->update($request->only('wave_name', 'start_date', 'end_date', 'participant_quota', 'status'));
+        $examSchedule = ExamSchedule::findOrFail($id);
+        $examSchedule->update($request->only(
+            'wave_name',
+            'start_date',
+            'end_date',
+            'participant_quota',
+            'status'
+        ));
 
         return redirect()->route('admin.exam-schedule-admin')
             ->with('success', 'Jadwal ujian berhasil diupdate!');
@@ -100,13 +105,12 @@ class ExamScheduleAdminController extends Controller
     {
         $examSchedule = ExamSchedule::findOrFail($id);
         
-        // Cek apakah ada pengajuan yang sudah disetujui
-        $hasApprovedExams = $examSchedule->approvedExams()->exists();
-        
-        if ($hasApprovedExams) {
+        if ($examSchedule->approvedExams()->exists()) {
             return redirect()->route('admin.exam-schedule-admin')
                 ->with('error', 'Tidak dapat menghapus jadwal yang sudah memiliki pengajuan disetujui!');
         }
+        
+        $examSchedule->exams()->delete();
         
         $examSchedule->delete();
 
@@ -127,7 +131,6 @@ class ExamScheduleAdminController extends Controller
         ->withCount(['pendingExams', 'approvedExams', 'rejectedExams'])
         ->findOrFail($id);
         
-        // Kelompokkan pengajuan berdasarkan status
         $groupedExams = [
             'pending' => $examSchedule->pendingExams,
             'approved' => $examSchedule->approvedExams,
