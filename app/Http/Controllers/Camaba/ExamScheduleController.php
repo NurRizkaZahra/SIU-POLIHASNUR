@@ -13,24 +13,23 @@ use Carbon\Carbon;
 class ExamScheduleController extends Controller
 {
     /**
-     * Display exam schedules
+     * Halaman daftar jadwal ujian camaba
      */
     public function index()
     {
-        // Redirect admin ke halaman admin
+        // Jika admin salah masuk ke halaman camaba
         if (auth()->check() && auth()->user()->hasRole('admin')) {
             return redirect()->route('admin.exam-schedule-admin');
         }
 
-        // Ambil jadwal ujian aktif dan tersedia
         $examSchedules = ExamSchedule::active()
             ->available()
             ->with(['approvedExams', 'pendingExams'])
             ->orderBy('start_date', 'asc')
             ->get();
 
-        // Tambahkan status user
         $userId = auth()->id();
+
         foreach ($examSchedules as $schedule) {
             $schedule->userExamStatus = $schedule->getUserExamStatus($userId);
         }
@@ -39,7 +38,8 @@ class ExamScheduleController extends Controller
     }
 
     /**
-     * Store exam application
+     * STORE PENGAJUAN UJIAN
+     * User hanya boleh mengajukan 1 kali seumur hidup
      */
     public function store(Request $request)
     {
@@ -53,9 +53,22 @@ class ExamScheduleController extends Controller
         try {
             DB::beginTransaction();
 
+            // =====================================================
+            // 1️⃣ GLOBAL CHECK: User hanya boleh ajukan ujian 1x
+            // =====================================================
+            $alreadyApplied = Exam::where('user_id', auth()->id())->exists();
+
+            if ($alreadyApplied) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda hanya dapat mengajukan jadwal ujian satu kali saja.'
+                ], 400);
+            }
+
+            // Lock row jadwal ujian
             $examSchedule = ExamSchedule::lockForUpdate()->findOrFail($validated['exam_schedule_id']);
 
-            // Cek status registrasi
+            // 2️⃣ Cek apakah pendaftaran gelombang dibuka
             if (!$examSchedule->isRegistrationOpen()) {
                 return response()->json([
                     'success' => false,
@@ -63,7 +76,7 @@ class ExamScheduleController extends Controller
                 ], 400);
             }
 
-            // Cek apakah user sudah apply
+            // 3️⃣ Cek apakah user sudah apply di gelombang yang sama
             if ($examSchedule->hasUserApplied(auth()->id())) {
                 $existingExam = $examSchedule->getUserExamStatus(auth()->id());
 
@@ -73,7 +86,7 @@ class ExamScheduleController extends Controller
                 ], 400);
             }
 
-            // Cek kuota
+            // 4️⃣ Cek kuota
             if (!$examSchedule->hasAvailableQuota()) {
                 return response()->json([
                     'success' => false,
@@ -81,7 +94,9 @@ class ExamScheduleController extends Controller
                 ], 400);
             }
 
-            // Buat pengajuan ujian
+            // =====================================================
+            // 5️⃣ Buat pengajuan ujian
+            // =====================================================
             $exam = Exam::create([
                 'user_id' => auth()->id(),
                 'exam_schedule_id' => $validated['exam_schedule_id'],
@@ -94,18 +109,11 @@ class ExamScheduleController extends Controller
                 'success' => true,
                 'message' => 'Jadwal ujian berhasil diajukan! Menunggu persetujuan admin.',
                 'data' => [
-                    'exam_id' => $exams->id,
-                    'status' => $exams->status,
-                    'status_text' => $exams->getStatusText(),
-                    'formatted_time' => $exams->getFormattedTime(),
-                'message' => 'Jadwal ujian berhasil diajukan!',
-                'data'    => [
-                    'exam_id' => $exam->id,
-                    'status_text' => $exam->getStatusText(),
+                    'exam_id'        => $exam->id,
+                    'status_text'    => $exam->getStatusText(),
                     'formatted_time' => $exam->getFormattedTime(),
                 ]
-            ]
-        ]);
+            ]);
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -119,7 +127,7 @@ class ExamScheduleController extends Controller
     }
 
     /**
-     * List of user's exam applications
+     * Halaman daftar pengajuan user
      */
     public function myExams()
     {
@@ -138,7 +146,7 @@ class ExamScheduleController extends Controller
     }
 
     /**
-     * Cancel exam application
+     * Membatalkan pengajuan ujian
      */
     public function cancel($id)
     {
@@ -177,7 +185,7 @@ class ExamScheduleController extends Controller
     }
 
     /**
-     * Show exam schedule detail
+     * Detail jadwal ujian
      */
     public function show($id)
     {
@@ -192,7 +200,7 @@ class ExamScheduleController extends Controller
     }
 
     /**
-     * Dummy time slots
+     * Slot waktu dummy
      */
     public function getAvailableTimeSlots(Request $request)
     {
@@ -213,20 +221,20 @@ class ExamScheduleController extends Controller
             ]
         ]);
     }
+
     /**
-     * ✅ Notifications for Camaba
+     * Notifikasi camaba
      */
     public function notifications()
     {
         $userId = auth()->id();
 
-        // Ambil semua pengajuan
         $exams = Exam::with('examSchedule')
             ->where('user_id', $userId)
             ->orderBy('created_at', 'desc')
             ->get();
-        // Hitung unread jika kolom tersedia
-        $unreadCount = 0;
+
+        // hitung unread jika kolom ada
         try {
             $unreadCount = Exam::where('user_id', $userId)
                 ->whereNull('is_read')
@@ -235,7 +243,6 @@ class ExamScheduleController extends Controller
             $unreadCount = 0;
         }
 
-        // Kelompokkan status
         $grouped = [
             'pending'  => $exams->where('status', Exam::STATUS_PENDING),
             'approved' => $exams->where('status', Exam::STATUS_APPROVED),
@@ -243,17 +250,20 @@ class ExamScheduleController extends Controller
         ];
 
         return view('camaba.notifications', [
-    'notifications' => $exams,
-    'grouped' => $grouped,
-    'unreadCount' => $unreadCount
-]);
-}
+            'notifications' => $exams,
+            'grouped' => $grouped,
+            'unreadCount' => $unreadCount
+        ]);
+    }
 
     public function deleteNotification($id)
     {
-    Exam::where('id', $id)
-       ->where('user_id', auth()->id())
-       ->delete();
-    return redirect()->route('camaba.notifications')->with('success', 'Notifikasi berhasil dihapus.');
+        Exam::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->delete();
+
+        return redirect()->route('camaba.notifications')
+            ->with('success', 'Notifikasi berhasil dihapus.');
     }
 }
+
