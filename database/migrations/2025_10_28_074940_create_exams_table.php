@@ -10,48 +10,49 @@ return new class extends Migration
     {
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id'); // Foreign key ke users
-            $table->unsignedBigInteger('exam_schedule_id')->nullable(); // Foreign key ke exam_schedules
-            $table->enum('status', ['pending', 'approved', 'rejected', 'completed', 'in_progress', 'completed', 'finished'])
 
-            // Relasi ke users
+            // Foreign key ke users
             $table->unsignedBigInteger('user_id');
 
-            // Relasi ke exam_schedules (boleh null)
+            // Foreign key ke exam_schedules
             $table->unsignedBigInteger('exam_schedule_id')->nullable();
 
             /**
              * Status ujian:
-             * - pending : menunggu verifikasi
-             * - approved: sudah diverifikasi admin
-             * - progress: sedang berlangsung
-             * - completed: selesai
-             * - rejected : ditolak admin
+             * - pending    : menunggu verifikasi
+             * - approved   : sudah diverifikasi admin
+             * - in_progress: sedang berlangsung
+             * - completed  : selesai
+             * - rejected   : ditolak admin
              */
-            $table->enum('status', ['pending', 'approved', 'rejected', 'progress', 'completed'])
-
-                  ->default('pending');
+            $table->enum('status', [
+                'pending',
+                'approved',
+                'rejected',
+                'in_progress',
+                'completed'
+            ])->default('pending');
 
             // Waktu ujian
             $table->dateTime('started_at')->nullable();
             $table->dateTime('finished_at')->nullable();
 
-            // Nilai ujian (optional)
+            // Nilai ujian
             $table->integer('score')->nullable();
 
             $table->timestamps();
 
-            // Foreign key user
-            $table->foreign('user_id')
-                  ->references('id')
-                  ->on('users')
-                  ->onDelete('cascade');
+            // ------------------ RELASI ------------------
 
-            // Foreign key jadwal ujian
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+
             $table->foreign('exam_schedule_id')
-                  ->references('id')
-                  ->on('exam_schedules')
-                  ->onDelete('set null');
+                ->references('id')
+                ->on('exam_schedules')
+                ->onDelete('set null');
         });
     }
 

@@ -92,6 +92,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/admin/results', [AdminResultController::class, 'index'])->name('admin.results');
     Route::get('/admin/results/print', [AdminResultController::class, 'print'])->name('admin.results.print');
+    Route::get('/admin/results/export-excel', [AdminResultController::class, 'exportExcel'])->name('admin.results.excel');
 });
 
 
@@ -113,8 +114,8 @@ Route::middleware(['auth', 'role:camaba'])->group(function () {
     Route::post('/camaba/exam/{examScheduleId}/submit', [ExamController::class, 'submit'])
     ->name('exam.submit');
 
-    Route::get('/camaba/exam/{examScheduleId}/result', [ExamController::class, 'result'])
-    ->name('exam.result');
+    Route::get('/camaba/exam/{examScheduleId}/success', [ExamController::class, 'success'])
+    ->name('exam.success');
 
     Route::delete('/camaba/notifications/{id}', [ExamScheduleController::class, 'deleteNotification'])
     ->name('notifikasi.delete');

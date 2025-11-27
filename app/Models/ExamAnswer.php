@@ -21,6 +21,7 @@ class ExamAnswer extends Model
         'exam_id',
         'question_id',
         'selected_answer',
+        'score',
     ];
 
     /**

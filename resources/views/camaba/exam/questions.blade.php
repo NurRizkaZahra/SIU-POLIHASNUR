@@ -318,12 +318,12 @@
     }
 
     .btn-prev {
-        background: #95a5a6;
+        background: #cdbf07;
         color: white;
     }
 
     .btn-prev:hover:not(:disabled) {
-        background: #7f8c8d;
+        background: #cdbf07;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(127, 140, 141, 0.3);
     }
@@ -637,119 +637,216 @@
         startTimer();
     });
 
-    // Load Question
-    function loadQuestion(index) {
-        if (index < 0 || index >= questions.length) return;
+// Load Question
+function loadQuestion(index) {
+    if (index < 0 || index >= questions.length) return;
 
-        currentIndex = index;
-        const question = questions[index];
+    currentIndex = index;
+    const question = questions[index];
 
-        console.log('Loading question:', question);
+    // ✅ DEBUG: Log semua info question
+    console.log('=== Loading Question ===');
+    console.log('Index:', index + 1);
+    console.log('Question ID:', question.id);
+    console.log('Question:', question.question_text);
+    console.log('Group:', question.group);
+    console.log('Is First in Group:', question.is_first_in_group);
+    console.log('Video Tutorial:', question.group?.video_tutorial);
+    console.log('======================');
 
-        // Update current number
-        document.getElementById('currentNumber').textContent = index + 1;
+    // Update current number
+    document.getElementById('currentNumber').textContent = index + 1;
 
-        // Update session badge & type badge
-        const sessionBadge = document.getElementById('sessionBadge');
-        const typeBadge = document.getElementById('typeBadge');
-        
-        // Check if question has group and group type
-        if (question.group && question.group.type === 'PSI') {
-            sessionBadge.textContent = 'Psikotes';
-            typeBadge.textContent = 'Psikotes';
-            typeBadge.className = 'question-type-badge badge-psi';
+    // Update session badge & type badge
+    const sessionBadge = document.getElementById('sessionBadge');
+    const typeBadge = document.getElementById('typeBadge');
+    const videoContainer = document.getElementById('videoContainer');
+    const tutorialVideo = document.getElementById('tutorialVideo');
+    
+    // Check if question has group and group type
+    if (question.group && question.group.type === 'PSI') {
+        sessionBadge.textContent = 'Psikotes - ' + question.group.name;
+        typeBadge.textContent = 'Psikotes';
+        typeBadge.className = 'question-type-badge badge-psi';
 
-            // Show video if available
-            if (question.group.video_tutorial) {
-                document.getElementById('videoContainer').style.display = 'block';
-                document.getElementById('tutorialVideo').src = question.group.video_tutorial;
-            } else {
-                document.getElementById('videoContainer').style.display = 'none';
+        // ✅ SHOW VIDEO HANYA JIKA ada video & soal pertama dalam grup
+        if (question.group.video_tutorial && question.is_first_in_group) {
+            console.log('✅ Showing video for first question in group');
+            
+            const videoUrl = question.group.video_tutorial;
+            
+            // ✅ CEK APAKAH YOUTUBE ATAU MP4 LOKAL
+            if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+                console.log('📹 YouTube video detected');
+                
+                // Convert ke embed URL
+                let embedUrl = videoUrl;
+                if (videoUrl.includes('watch?v=')) {
+                    const videoId = videoUrl.split('watch?v=')[1].split('&')[0];
+                    embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                } else if (videoUrl.includes('youtu.be/')) {
+                    const videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
+                    embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                } else if (!videoUrl.includes('embed')) {
+                    console.warn('⚠️ YouTube URL format tidak dikenali:', videoUrl);
+                }
+                
+                // Tampilkan YouTube dengan iframe
+                videoContainer.innerHTML = `
+                    <iframe 
+                        id="youtubePlayer"
+                        width="100%" 
+                        height="400" 
+                        src="${embedUrl}" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen
+                        style="border-radius: 10px;">
+                    </iframe>
+                `;
+                videoContainer.style.display = 'block';
+                console.log('✅ YouTube iframe loaded:', embedUrl);
+            } 
+            else {
+                // ✅ VIDEO LOKAL (MP4)
+                console.log('🎬 Local video detected');
+                
+                // Reset innerHTML ke video element
+                videoContainer.innerHTML = `
+                    <video id="tutorialVideo" controls controlsList="nodownload" preload="metadata" style="width: 100%; border-radius: 10px;">
+                        <source src="" type="video/mp4">
+                        Browser Anda tidak mendukung pemutaran video.
+                    </video>
+                `;
+                
+                const video = document.getElementById('tutorialVideo');
+                video.src = videoUrl;
+                video.load();
+                
+                // Handle video errors
+                video.onerror = function() {
+                    console.error('❌ Video gagal dimuat:', videoUrl);
+                    videoContainer.innerHTML = `
+                        <div style="padding: 20px; text-align: center; color: #e74c3c; background: #fee; border-radius: 10px;">
+                            <i class="bi bi-exclamation-triangle" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                            <p style="margin: 0; font-weight: 600;">Video tutorial tidak dapat dimuat</p>
+                            <p style="margin: 5px 0 0 0; font-size: 0.9rem;">Silakan lanjutkan mengerjakan soal</p>
+                        </div>
+                    `;
+                };
+                
+                video.onloadeddata = function() {
+                    console.log('✅ Video berhasil dimuat:', videoUrl);
+                };
+                
+                videoContainer.style.display = 'block';
             }
         } else {
-            sessionBadge.textContent = 'Pengetahuan Umum';
-            typeBadge.textContent = 'Pengetahuan Umum';
-            typeBadge.className = 'question-type-badge badge-pu';
-            document.getElementById('videoContainer').style.display = 'none';
-        }
-
-        // Load question text
-        document.getElementById('questionText').innerHTML = question.question_text;
-
-        // Load options
-        const optionsContainer = document.getElementById('optionsContainer');
-        optionsContainer.innerHTML = '';
-
-        ['A', 'B', 'C', 'D', 'E'].forEach(letter => {
-            const isSelected = answers[question.id] === letter;
-            const optionDiv = document.createElement('div');
-            optionDiv.className = 'option-item' + (isSelected ? ' selected' : '');
-            optionDiv.onclick = () => selectOption(letter, question.id);
-            
-            optionDiv.innerHTML = `
-                <input type="radio" name="answer" id="option${letter}" value="${letter}" ${isSelected ? 'checked' : ''}>
-                <label class="option-label" for="option${letter}">
-                    <span class="option-letter">${letter}</span>
-                    <span class="option-text">${question['option_' + letter.toLowerCase()]}</span>
-                </label>
+            console.log('❌ Video tidak ditampilkan:', {
+                'Ada video?': !!question.group.video_tutorial,
+                'Soal pertama?': question.is_first_in_group
+            });
+            videoContainer.style.display = 'none';
+            videoContainer.innerHTML = `
+                <video id="tutorialVideo" controls>
+                    <source src="" type="video/mp4">
+                </video>
             `;
-            
-            optionsContainer.appendChild(optionDiv);
-        });
-
-        // Update navigation buttons
-        updateNavigationButtons();
-        updateQuestionGrid();
+        }
+    } else {
+        // Soal PU - no video
+        sessionBadge.textContent = 'Pengetahuan Umum';
+        typeBadge.textContent = 'Pengetahuan Umum';
+        typeBadge.className = 'question-type-badge badge-pu';
+        videoContainer.style.display = 'none';
+        videoContainer.innerHTML = `
+            <video id="tutorialVideo" controls>
+                <source src="" type="video/mp4">
+            </video>
+        `;
     }
 
-    // Select Option
-    function selectOption(letter, questionId) {
-        // Update UI
-        document.querySelectorAll('.option-item').forEach(opt => opt.classList.remove('selected'));
-        event.currentTarget.classList.add('selected');
-        document.getElementById(`option${letter}`).checked = true;
+    // Load question text
+    document.getElementById('questionText').innerHTML = question.question_text;
 
-        // Save to state
-        answers[questionId] = letter;
+    // Load options
+    const optionsContainer = document.getElementById('optionsContainer');
+    optionsContainer.innerHTML = '';
 
-        // Save to backend
-        saveAnswer(questionId, letter);
-
-        // Update grid & progress
-        updateQuestionGrid();
-        updateProgress();
-    }
-
-    // Save Answer via AJAX
-    function saveAnswer(questionId, selectedAnswer) {
-        fetch(`/exam/${examId}/save-answer`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken,
-            },
-            body: JSON.stringify({
-                question_id: questionId,
-                selected_answer: selectedAnswer,
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                console.log('Jawaban tersimpan');
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    }
-
-    // Update Progress
-    function updateProgress() {
-        const answeredCount = Object.keys(answers).length;
-        const progress = Math.round((answeredCount / questions.length) * 100);
+    ['A', 'B', 'C', 'D', 'E'].forEach(letter => {
+        const isSelected = answers[question.id] === letter;
+        const optionDiv = document.createElement('div');
+        optionDiv.className = 'option-item' + (isSelected ? ' selected' : '');
+        optionDiv.onclick = () => selectOption(letter, question.id);
         
-        document.getElementById('progressBar').style.width = progress + '%';
-        document.getElementById('progressPercent').textContent = progress;
-    }
+        optionDiv.innerHTML = `
+            <input type="radio" name="answers[${question.id}]" id="option${letter}" value="${letter}" ${isSelected ? 'checked' : ''}>
+            <label class="option-label" for="option${letter}">
+                <span class="option-letter">${letter}</span>
+                <span class="option-text">${question['option_' + letter.toLowerCase()]}</span>
+            </label>
+        `;
+        
+        optionsContainer.appendChild(optionDiv);
+    });
+
+    // Update navigation buttons
+    updateNavigationButtons();
+    updateQuestionGrid();
+}
+
+// Select Option
+function selectOption(letter, questionId) {
+    // Update UI
+    document.querySelectorAll('.option-item').forEach(opt => opt.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    document.getElementById(`option${letter}`).checked = true;
+
+    // Save to state
+    answers[questionId] = letter;
+
+    // Save to backend
+    saveAnswer(questionId, letter);
+
+    // Update grid & progress
+    updateQuestionGrid();
+    updateProgress();
+}
+
+// Save Answer via AJAX
+function saveAnswer(questionId, selectedAnswer) {
+    fetch(`/exam/${examId}/save-answer`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+        },
+        body: JSON.stringify({
+            question_id: questionId,
+            selected_answer: selectedAnswer,
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('✅ Jawaban tersimpan untuk soal #' + questionId + ': ' + selectedAnswer);
+        } else {
+            console.error('❌ Gagal menyimpan jawaban');
+        }
+    })
+    .catch(error => console.error('❌ Error saving answer:', error));
+}
+
+// Update Progress
+function updateProgress() {
+    const answeredCount = Object.keys(answers).length;
+    const progress = Math.round((answeredCount / questions.length) * 100);
+    
+    document.getElementById('progressBar').style.width = progress + '%';
+    document.getElementById('progressPercent').textContent = progress;
+    
+    console.log(`📊 Progress: ${answeredCount}/${questions.length} (${progress}%)`);
+}
 
     // Update Question Grid
     function updateQuestionGrid() {
