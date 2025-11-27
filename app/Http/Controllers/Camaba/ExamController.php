@@ -17,7 +17,7 @@ class ExamController extends Controller
      */
 public function index()
 {
-    $schedules = ExamSchedule::orderBy('start_date', 'asc')->get();
+    $schedules = ExamSchedule::orderBy('id', 'desc')->get();
     return view('camaba.exam', compact('schedules'));
 }
     /**
@@ -47,12 +47,12 @@ public function index()
                     ->where('exam_schedule_id', $request->exam_schedule_id)
                     ->first();
 
-        // 🚫 BLOK kalau sudah selesai
-        //if ($exam && $exam->status === 'completed') {
-        //return redirect()
-        // ->back()
-        //->with('error', 'Anda sudah menyelesaikan ujian ini.');
-        //}
+        //🚫 BLOK kalau sudah selesai
+        if ($exam && $exam->status === 'completed') {
+        return redirect()
+         ->route('exam.success', $exam->id)
+         ->with('error', 'Anda sudah menyelesaikan ujian ini.');
+       }
 
         if (!$exam) {
             // Buat exam baru

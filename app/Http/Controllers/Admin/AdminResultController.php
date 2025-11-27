@@ -12,18 +12,23 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 class AdminResultController extends Controller
 {
-    public function index()
+    private function getUniqueExams()
     {
-        $exams = Exam::with(['user', 'answers.question.group'])
+        // Ambil hanya 1 hasil per user (hasil terbaru)
+        return Exam::with(['user', 'answers.question.group'])
             ->where('status', 'completed')
+            ->orderBy('created_at', 'desc')
             ->get()
+            ->unique('user_id') // inilah kuncinya
+            ->values()          // reset index
             ->map(function($exam) {
+
                 $scorePU = 0;
                 $scorePSI = 0;
 
                 foreach ($exam->answers as $answer) {
                     $type = $answer->question->group ? $answer->question->group->type : 'PU';
-                    
+
                     if ($type == 'PU') {
                         $scorePU += $answer->score;
                     } else {
@@ -33,69 +38,27 @@ class AdminResultController extends Controller
 
                 return [
                     'name' => $exam->user->name,
-                    'pu' => number_format($scorePU, 1),
-                    'psi' => number_format($scorePSI, 1),
+                    'pu'   => number_format($scorePU, 1),
+                    'psi'  => number_format($scorePSI, 1),
                 ];
             });
+    }
 
+    public function index()
+    {
+        $exams = $this->getUniqueExams();
         return view('admin.result', compact('exams'));
     }
 
     public function print()
     {
-        // Sama seperti index, tapi return view print
-        $exams = Exam::with(['user', 'answers.question.group'])
-            ->where('status', 'completed')
-            ->get()
-            ->map(function($exam) {
-                $scorePU = 0;
-                $scorePSI = 0;
-
-                foreach ($exam->answers as $answer) {
-                    $type = $answer->question->group ? $answer->question->group->type : 'PU';
-                    
-                    if ($type == 'PU') {
-                        $scorePU += $answer->score;
-                    } else {
-                        $scorePSI += $answer->score;
-                    }
-                }
-
-                return [
-                    'name' => $exam->user->name,
-                    'pu' => number_format($scorePU, 1),
-                    'psi' => number_format($scorePSI, 1),
-                ];
-            });
-
+        $exams = $this->getUniqueExams();
         return view('admin.result-print', compact('exams'));
     }
 
     public function exportExcel()
     {
-        $exams = Exam::with(['user', 'answers.question.group'])
-            ->where('status', 'completed')
-            ->get()
-            ->map(function($exam) {
-                $scorePU = 0;
-                $scorePSI = 0;
-
-                foreach ($exam->answers as $answer) {
-                    $type = $answer->question->group ? $answer->question->group->type : 'PU';
-                    
-                    if ($type == 'PU') {
-                        $scorePU += $answer->score;
-                    } else {
-                        $scorePSI += $answer->score;
-                    }
-                }
-
-                return [
-                    'name' => $exam->user->name,
-                    'pu' => number_format($scorePU, 1, '.', ''),
-                    'psi' => number_format($scorePSI, 1, '.', ''),
-                ];
-            });
+        $exams = $this->getUniqueExams();
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -130,11 +93,11 @@ class AdminResultController extends Controller
             $sheet->setCellValue('B' . $row, $exam['name']);
             $sheet->setCellValue('C' . $row, $exam['pu']);
             $sheet->setCellValue('D' . $row, $exam['psi']);
-            
+
             $sheet->getStyle('A' . $row . ':D' . $row)
                 ->getAlignment()
                 ->setHorizontal(Alignment::HORIZONTAL_CENTER);
-            
+
             $row++;
         }
 
