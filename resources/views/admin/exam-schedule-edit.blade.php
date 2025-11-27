@@ -1,6 +1,6 @@
 @extends('layouts.app-admin')
 
-@section('title', 'SIU-POLIHASNUR - Add Exam Batch')
+@section('title', 'SIU-POLIHASNUR - Edit Exam Batch')
 @section('page-title', 'EXAM SCHEDULE')
 
 @push('styles')
@@ -78,6 +78,30 @@
         font-weight: 500;
     }
 
+    .alert-info {
+        background: #e8f5e9;
+        border-left: 4px solid #4caf50;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: start;
+        gap: 0.75rem;
+    }
+
+    .alert-info i {
+        color: #388e3c;
+        font-size: 1.2rem;
+        margin-top: 2px;
+    }
+
+    .alert-info p {
+        margin: 0;
+        color: #2e7d32;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
     .form-group {
         margin-bottom: 1.75rem;
     }
@@ -151,6 +175,22 @@
         padding-right: 2.5rem;
     }
 
+    .info-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: #e3f2fd;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        color: #1565c0;
+        margin-top: 0.5rem;
+    }
+
+    .info-badge i {
+        font-size: 0.9rem;
+    }
+
     .form-footer {
         padding: 1.5rem 2rem;
         border-top: 1px solid #eee;
@@ -158,6 +198,11 @@
         justify-content: flex-end;
         gap: 1rem;
         background: #f9f9f9;
+    }
+
+    .footer-actions {
+        display: flex;
+        gap: 1rem;
     }
 
     .btn-form {
@@ -192,6 +237,18 @@
         box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
     }
 
+    .btn-delete {
+        background: #f44336;
+        color: white;
+        padding: 0.75rem 2rem;
+    }
+
+    .btn-delete:hover {
+        background: #d32f2f;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+    }
+
     @media (max-width: 768px) {
         .form-container {
             padding: 1rem;
@@ -215,9 +272,19 @@
 
         .form-footer {
             flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-actions {
+            flex-direction: column;
+            width: 100%;
         }
 
         .btn-form {
+            width: 100%;
+        }
+
+        .btn-delete {
             width: 100%;
         }
     }
@@ -228,13 +295,20 @@
 <div class="form-container">
     <div class="form-card">
         <div class="form-header">
-            <h2>Add New Exam Batch</h2>
+            <h2>Edit Exam Batch</h2>
             <a href="{{ route('admin.exam-schedule-admin') }}" class="btn-back">Back</a>
         </div>
 
-        <form action="{{ route('admin.exam-schedule-store') }}" method="POST">
+        <form action="{{ route('admin.exam-schedule-update', $examSchedule->id) }}" method="POST">
             @csrf
+            @method('PUT')
+            
             <div class="form-body">
+                <div class="alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <p>You are editing exam batch data. Make sure all information is correct before saving.</p>
+                </div>
+
                 <div class="alert-warning">
                     <i class="fas fa-exclamation-circle"></i>
                     <p>Make sure the exam dates do not overlap with another batch.</p>
@@ -250,7 +324,7 @@
                         name="wave_name" 
                         class="form-input" 
                         placeholder="e.g. Batch 1" 
-                        value="{{ old('wave_name') }}"
+                        value="{{ old('wave_name', $examSchedule->wave_name) }}"
                         required
                     >
                     <small class="form-hint">This name will be displayed to prospective students</small>
@@ -267,7 +341,7 @@
                                 type="date" 
                                 name="start_date" 
                                 class="form-input"
-                                value="{{ old('start_date') }}"
+                                value="{{ old('start_date', date('Y-m-d', strtotime($examSchedule->start_date))) }}"
                                 required
                             >
                         </div>
@@ -277,7 +351,7 @@
                                 type="date" 
                                 name="end_date" 
                                 class="form-input"
-                                value="{{ old('end_date') }}"
+                                value="{{ old('end_date', date('Y-m-d', strtotime($examSchedule->end_date))) }}"
                                 required
                             >
                         </div>
@@ -300,10 +374,16 @@
                             name="participant_quota" 
                             class="form-input" 
                             placeholder="e.g. 100"
-                            value="{{ old('participant_quota') }}"
+                            value="{{ old('participant_quota', $examSchedule->participant_quota) }}"
                             min="1"
                         >
                         <small class="form-hint">Maximum number of participants in this batch</small>
+                        @if(isset($examSchedule->registered_count))
+                        <div class="info-badge">
+                            <i class="fas fa-users"></i>
+                            <span>Current participants: {{ $examSchedule->registered_count }}</span>
+                        </div>
+                        @endif
                         @error('participant_quota')
                             <small class="form-hint" style="color: #f44336;">{{ $message }}</small>
                         @enderror
@@ -318,8 +398,8 @@
                             required
                         >
                             <option value="">Select status</option>
-                            <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
-                            <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                            <option value="active" {{ old('status', $examSchedule->status) == 'active' ? 'selected' : '' }}>Active</option>
+                            <option value="inactive" {{ old('status', $examSchedule->status) == 'inactive' ? 'selected' : '' }}>Inactive</option>
                         </select>
                         <small class="form-hint">Batch registration status</small>
                         @error('status')
@@ -330,8 +410,10 @@
             </div>
 
             <div class="form-footer">
-                <a href="{{ route('admin.exam-schedule-admin') }}" class="btn-form btn-cancel">Cancel</a>
-                <button type="submit" class="btn-form btn-submit">Save</button>
+                <div class="footer-actions">
+                    <a href="{{ route('admin.exam-schedule-admin') }}" class="btn-form btn-cancel">Cancel</a>
+                    <button type="submit" class="btn-form btn-submit">Update</button>
+                </div>
             </div>
         </form>
     </div>
@@ -354,12 +436,34 @@ document.querySelector('input[name="end_date"]').addEventListener('change', func
 });
 
 // Confirm before submit
-document.querySelector('form').addEventListener('submit', function(e) {
+document.querySelector('form[method="POST"]:not(#deleteForm)').addEventListener('submit', function(e) {
     const batchName = document.querySelector('input[name="wave_name"]').value;
     
-    if (!confirm(`Are you sure you want to add "${batchName}"?`)) {
+    if (!confirm(`Are you sure you want to update "${batchName}"?`)) {
         e.preventDefault();
     }
 });
+
+// Confirm before delete
+function confirmDelete() {
+    const batchName = document.querySelector('input[name="wave_name"]').value;
+    
+    if (confirm(`Are you sure you want to delete "${batchName}"?\n\nThis action cannot be undone and will affect all registered participants!`)) {
+        document.getElementById('deleteForm').submit();
+    }
+}
+
+// Validate quota if there are registered participants
+@if(isset($examSchedule->registered_count) && $examSchedule->registered_count > 0)
+document.querySelector('input[name="participant_quota"]').addEventListener('change', function() {
+    const registeredCount = {{ $examSchedule->registered_count }};
+    const newQuota = parseInt(this.value);
+    
+    if (newQuota < registeredCount) {
+        alert(`Quota cannot be less than the number of registered participants (${registeredCount})!`);
+        this.value = {{ old('participant_quota', $examSchedule->participant_quota) }};
+    }
+});
+@endif
 </script>
 @endpush

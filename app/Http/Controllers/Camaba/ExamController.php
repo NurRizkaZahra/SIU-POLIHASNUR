@@ -15,12 +15,11 @@ class ExamController extends Controller
     /**
      * Halaman daftar jadwal ujian camaba
      */
-    public function index()
-    {
-        $schedules = ExamSchedule::orderBy('start_date', 'asc')->get();
-        return view('camaba.exam', compact('schedules'));
-    }
-
+public function index()
+{
+    $schedules = ExamSchedule::orderBy('id', 'desc')->get();
+    return view('camaba.exam', compact('schedules'));
+}
     /**
      * Saat camaba klik "Mulai Ujian"
      */
@@ -65,6 +64,7 @@ class ExamController extends Controller
                     ->where('exam_schedule_id', $request->exam_schedule_id)
                     ->first();
 
+<<<<<<< HEAD
         // 🔒 NEW RULE:
         // Jika sudah selesai → TIDAK BOLEH mulai lagi
         if ($exam && $exam->status === 'completed') {
@@ -72,6 +72,14 @@ class ExamController extends Controller
                 ->route('exam.success', $exam->id)
                 ->with('error', 'Anda sudah menyelesaikan ujian dan tidak dapat mengulang.');
         }
+=======
+        //🚫 BLOK kalau sudah selesai
+        if ($exam && $exam->status === 'completed') {
+        return redirect()
+         ->route('exam.success', $exam->id)
+         ->with('error', 'Anda sudah menyelesaikan ujian ini.');
+       }
+>>>>>>> 9a6694406ae37989a84bf5d3c4afda4e34028a18
 
         // Jika belum pernah, buat ujian baru
         if (!$exam) {

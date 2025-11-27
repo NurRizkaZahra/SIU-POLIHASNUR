@@ -110,6 +110,8 @@ class ExamScheduleAdminController extends Controller
                 ->with('error', 'Tidak dapat menghapus jadwal yang sudah memiliki pengajuan disetujui!');
         }
         
+        $examSchedule->exams()->delete();
+        
         $examSchedule->delete();
 
         return redirect()->route('admin.exam-schedule-admin')
