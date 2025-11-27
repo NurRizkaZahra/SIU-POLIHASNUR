@@ -118,9 +118,11 @@
         <div class="stat-card">
             <div class="stat-card-header">Selesai Ujian</div>
             <div class="stat-card-body">
+                <div class="stat-number" id="selesaiUjian">{{ $selesaiUjian ?? 0 }}</div>
                 <p class="stat-label">Pendaftar</p>
-            </div>
-        </div>
+    </div>
+</div>
+
     </div>
 
     {{-- BAR CHART --}}

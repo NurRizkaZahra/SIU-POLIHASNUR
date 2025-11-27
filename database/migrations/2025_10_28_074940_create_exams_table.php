@@ -10,9 +10,6 @@ return new class extends Migration
     {
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id'); // Foreign key ke users
-            $table->unsignedBigInteger('exam_schedule_id')->nullable(); // Foreign key ke exam_schedules
-            $table->enum('status', ['pending', 'approved', 'rejected', 'completed', 'in_progress', 'completed', 'finished'])
 
             // Relasi ke users
             $table->unsignedBigInteger('user_id');
@@ -29,7 +26,6 @@ return new class extends Migration
              * - rejected : ditolak admin
              */
             $table->enum('status', ['pending', 'approved', 'rejected', 'progress', 'completed'])
-
                   ->default('pending');
 
             // Waktu ujian
