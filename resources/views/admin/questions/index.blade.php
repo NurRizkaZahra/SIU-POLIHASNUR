@@ -5,22 +5,12 @@
 
 @section('content')
 <style>
-    /* Fix header spacing */
-    .content-wrapper {
-        padding-top: 0 !important;
-        margin-top: 0 !important;
-    }
-    
-    main {
-        padding-top: 0 !important;
-    }
-    
+    /* Questions Container - JANGAN OVERRIDE APAPUN DARI GLOBAL! */
     .questions-container {
         padding: 20px;
-        margin-top: 0;
     }
     
-    .header-actions {
+    .header-actions-bank {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -392,7 +382,7 @@
             padding: 15px;
         }
         
-        .header-actions {
+        .header-actions-bank {
             flex-direction: column;
             align-items: stretch;
         }
@@ -427,7 +417,7 @@
 
 <div class="questions-container">
     <!-- Header Actions -->
-    <div class="header-actions">
+    <div class="header-actions-bank">
         <div class="search-box">
             <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -474,7 +464,7 @@
                             @if($question->video_tutorial)
                             <span class="video-badge">
                                 <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
+                                    <path d="M2 6a2 2 0 012-2h6a2 2 0 012 6v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
                                 </svg>
                                 Video Tutorial
                             </span>
@@ -493,12 +483,12 @@
                                 <div class="answer-option {{ $option == $question->correct_answer ? 'correct' : '' }}">
                                     <span class="option-label">{{ $option }}</span>
                                     <span class="option-text">
-                                @if(is_array($choices[$option]))
-                                    {{ $choices[$option]['text'] ?? '' }} (skor: {{ $choices[$option]['score'] ?? '' }})
-                                @else
-                                    {{ $choices[$option] }}
-                                @endif
-                                </span>
+                                        @if(is_array($choices[$option]))
+                                            {{ $choices[$option]['text'] ?? '' }} (skor: {{ $choices[$option]['score'] ?? '' }})
+                                        @else
+                                            {{ $choices[$option] }}
+                                        @endif
+                                    </span>
                                     <span class="correct-indicator">✓</span>
                                 </div>
                                 @endif
@@ -579,7 +569,7 @@
 // Search functionality
 document.querySelector('.search-input').addEventListener('input', function(e) {
     const searchTerm = e.target.value.toLowerCase();
-    const questionCards = document.querySAll('.question-card');
+    const questionCards = document.querySelectorAll('.question-card');
     
     questionCards.forEach(card => {
         const questionText = card.querySelector('.question-text').textContent.toLowerCase();
@@ -587,15 +577,6 @@ document.querySelector('.search-input').addEventListener('input', function(e) {
             card.style.display = 'block';
         } else {
             card.style.display = 'none';
-        }
-    });
-});
-
-// Confirm delete
-document.querySelectorAll('.btn-delete').forEach(btn => {
-    btn.closest('form').addEventListener('submit', function(e) {
-        if (!confirm('Yakin ingin menghapus soal ini?')) {
-            e.preventDefault();
         }
     });
 });
