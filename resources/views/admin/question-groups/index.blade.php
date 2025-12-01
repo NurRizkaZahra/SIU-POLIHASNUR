@@ -12,56 +12,38 @@
     }
     
     .header-section {
-       display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-        flex-wrap: wrap;
-        gap: 15px;
-    }
-    
-    .header-title {
-        margin: 0;
-        color: #ffffff;
-        font-size: 20px;
-        font-weight: 700;
         display: flex;
+        justify-content: flex-end;
         align-items: center;
-        gap: 12px;
-    }
-    
-    .header-icon {
-        width: 36px;
-        height: 36px;
-        background: linear-gradient(135deg, #2b6cb0 0%, #1e5a9e 100%);
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
+        margin-bottom: 20px;
     }
     
     .btn-add-new {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        gap: 8px;
+        background: #fbbf24;
         color: #1e293b;
-        padding: 14px 28px;
-        border-radius: 12px;
+        padding: 10px 20px;
+        border-radius: 8px;
         text-decoration: none;
-        font-weight: 700;
-        font-size: 15px;
+        font-weight: 600;
+        font-size: 14px;
         border: none;
         cursor: pointer;
         transition: all 0.3s;
-        box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
     }
     
     .btn-add-new:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(251, 191, 36, 0.5);
+        background: #f59e0b;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
         color: #1e293b;
+    }
+    
+    .btn-icon {
+        width: 16px;
+        height: 16px;
     }
     
     .alert-success {
@@ -156,7 +138,7 @@
     
     .stat-value {
         font-size: 32px;
-        font-weight: 800;
+        font-weight: 700;
         color: #1e293b;
         line-height: 1;
     }
@@ -164,7 +146,7 @@
     .stat-label {
         color: #64748b;
         font-size: 14px;
-        font-weight: 600;
+        font-weight: 500;
         margin-top: 4px;
     }
     
@@ -177,7 +159,7 @@
         background: white;
         border: 2px solid #e5e7eb;
         border-radius: 15px;
-        padding: 25px;
+        padding: 20px;
         transition: all 0.3s;
         position: relative;
         overflow: hidden;
@@ -188,184 +170,170 @@
         position: absolute;
         top: 0;
         left: 0;
-        width: 6px;
+        width: 5px;
         height: 100%;
         background: linear-gradient(135deg, #2b6cb0 0%, #1e5a9e 100%);
-        transition: width 0.3s;
     }
     
     .group-card:hover {
         border-color: #2b6cb0;
-        box-shadow: 0 10px 30px rgba(43, 108, 176, 0.15);
-        transform: translateY(-3px);
-    }
-    
-    .group-card:hover::before {
-        width: 10px;
+        box-shadow: 0 8px 20px rgba(43, 108, 176, 0.1);
+        transform: translateY(-2px);
     }
     
     .group-header {
         display: flex;
         justify-content: space-between;
         align-items: start;
-        gap: 20px;
-        margin-bottom: 20px;
+        gap: 15px;
     }
     
     .group-info {
         flex: 1;
+        display: flex;
+        align-items: start;
+        gap: 15px;
     }
     
     .group-number {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 50px;
-        height: 50px;
+        min-width: 45px;
+        height: 45px;
         background: linear-gradient(135deg, #2b6cb0 0%, #1e5a9e 100%);
         color: white;
-        border-radius: 12px;
-        font-weight: 800;
-        font-size: 20px;
-        margin-bottom: 15px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+    
+    .group-content {
+        flex: 1;
     }
     
     .group-name {
-        font-size: 22px;
-        font-weight: 700;
+        font-size: 16px;
+        font-weight: 600;
         color: #1e293b;
-        margin-bottom: 12px;
-        line-height: 1.3;
+        margin-bottom: 10px;
+        line-height: 1.4;
     }
     
     .group-meta {
         display: flex;
         flex-wrap: wrap;
-        gap: 12px;
-        margin-bottom: 15px;
+        gap: 10px;
     }
     
     .meta-badge {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 8px 14px;
-        border-radius: 25px;
-        font-size: 13px;
-        font-weight: 700;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
     }
     
     .badge-psi {
-        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        background: #dbeafe;
         color: #1e40af;
-        border: 2px solid #3b82f6;
     }
     
     .badge-pu {
-        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        background: #d1fae5;
         color: #065f46;
-        border: 2px solid #10b981;
     }
     
     .badge-questions {
         background: #f3f4f6;
         color: #374151;
-        border: 2px solid #d1d5db;
     }
     
     .badge-video {
-        background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
-        color: #6d28d9;
-        border: 2px solid #8b5cf6;
+        background: #ede9fe;
+        color: #7c3aed;
         text-decoration: none;
         transition: all 0.3s;
     }
     
     .badge-video:hover {
         transform: scale(1.05);
-        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
     }
     
     .group-actions {
         display: flex;
-        gap: 10px;
+        gap: 8px;
     }
     
     .btn-action {
-        width: 44px;
-        height: 44px;
+        width: 38px;
+        height: 38px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        border-radius: 10px;
+        border-radius: 8px;
         border: none;
         cursor: pointer;
         transition: all 0.3s;
         text-decoration: none;
-        font-size: 18px;
     }
     
     .btn-edit {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        background: #10b981;
         color: white;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     }
     
     .btn-edit:hover {
-        transform: translateY(-3px) scale(1.05);
-        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        background: #059669;
+        transform: scale(1.05);
     }
     
     .btn-delete {
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        background: #ef4444;
         color: white;
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
     }
     
     .btn-delete:hover {
-        transform: translateY(-3px) scale(1.05);
-        box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        background: #dc2626;
+        transform: scale(1.05);
     }
     
     .empty-state {
         text-align: center;
-        padding: 80px 20px;
+        padding: 60px 20px;
         background: white;
-        border-radius: 20px;
-        border: 3px dashed #cbd5e1;
+        border-radius: 15px;
+        border: 2px dashed #cbd5e1;
     }
     
     .empty-icon {
-        width: 120px;
-        height: 120px;
-        margin: 0 auto 25px;
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 20px;
         color: #cbd5e1;
-        animation: float 3s ease-in-out infinite;
-    }
-    
-    @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
     }
     
     .empty-title {
-        font-size: 26px;
-        font-weight: 700;
+        font-size: 20px;
+        font-weight: 600;
         color: #64748b;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
     }
     
     .empty-text {
         color: #94a3b8;
-        font-size: 16px;
-        margin-bottom: 30px;
+        font-size: 14px;
+        margin-bottom: 20px;
         line-height: 1.6;
     }
     
     .pagination-wrapper {
         display: flex;
         justify-content: center;
-        margin-top: 35px;
+        margin-top: 30px;
     }
     
     @media (max-width: 768px) {
@@ -373,24 +341,15 @@
             padding: 15px;
         }
         
-        .header-section {
-            flex-direction: column;
-            align-items: stretch;
-        }
-        
-        .header-title {
-            font-size: 24px;
-        }
-        
-        .btn-add-new {
-            justify-content: center;
-        }
-        
         .stats-grid {
             grid-template-columns: 1fr;
         }
         
         .group-header {
+            flex-direction: column;
+        }
+        
+        .group-info {
             flex-direction: column;
         }
         
@@ -405,7 +364,7 @@
     <!-- Header Section -->
     <div class="header-section">
         <a href="{{ route('admin.question-groups.create') }}" class="btn-add-new">
-            <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
             Tambah Kelompok
@@ -467,38 +426,40 @@
             <div class="group-header">
                 <div class="group-info">
                     <div class="group-number">{{ $groups->firstItem() + $index }}</div>
-                    <h3 class="group-name">{{ $group->name }}</h3>
-                    
-                    <div class="group-meta">
-                        <span class="meta-badge {{ $group->type == 'PSI' ? 'badge-psi' : 'badge-pu' }}">
-                            <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
-                            </svg>
-                            {{ $group->type }}
-                        </span>
+                    <div class="group-content">
+                        <h3 class="group-name">{{ $group->name }}</h3>
                         
-                        <span class="meta-badge badge-questions">
-                            <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
-                                <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
-                            </svg>
-                            {{ $group->questions()->count() }} Soal
-                        </span>
-                        
-                        @if($group->video_tutorial)
-                        <a href="{{ $group->video_tutorial }}" target="_blank" class="meta-badge badge-video">
-                            <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
-                            </svg>
-                            Video Tutorial
-                        </a>
-                        @endif
+                        <div class="group-meta">
+                            <span class="meta-badge {{ $group->type == 'PSI' ? 'badge-psi' : 'badge-pu' }}">
+                                <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                                </svg>
+                                {{ $group->type }}
+                            </span>
+                            
+                            <span class="meta-badge badge-questions">
+                                <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                                    <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
+                                </svg>
+                                {{ $group->questions()->count() }} Soal
+                            </span>
+                            
+                            @if($group->video_tutorial)
+                            <a href="{{ $group->video_tutorial }}" target="_blank" class="meta-badge badge-video">
+                                <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M2 6a2 2 0 012-2h6a2 2 0 012 6v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
+                                </svg>
+                                Video Tutorial
+                            </a>
+                            @endif
+                        </div>
                     </div>
                 </div>
                 
                 <div class="group-actions">
                     <a href="{{ route('admin.question-groups.edit', $group->id) }}" class="btn-action btn-edit" title="Edit Kelompok">
-                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                         </svg>
                     </a>
@@ -506,11 +467,11 @@
                     <form action="{{ route('admin.question-groups.destroy', $group->id) }}" 
                           method="POST" 
                           style="display: inline;"
-                          onsubmit="return confirm('Yakin ingin menghapus kelompok \"{{ $group->name }}\"?\n\nSemua soal dalam kelompok ini akan tetap ada.')">
+                          onsubmit="return confirm('Yakin ingin menghapus kelompok \"{{ $group->name }}\"?')">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn-action btn-delete" title="Hapus Kelompok">
-                            <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                             </svg>
                         </button>
@@ -526,7 +487,7 @@
             <h2 class="empty-title">Belum Ada Kelompok Soal</h2>
             <p class="empty-text">Mulai kelompokkan soal-soal kamu berdasarkan tipe atau kategori<br>untuk memudahkan pengelolaan bank soal.</p>
             <a href="{{ route('admin.question-groups.create') }}" class="btn-add-new">
-                <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>
                 Buat Kelompok Pertama

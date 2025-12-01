@@ -24,22 +24,11 @@
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
     }
 
-    .profile-icon {
-        width: 110px;
-        height: 110px;
-        background: #1e3a8a;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 25px;
-        box-shadow: 0 5px 18px rgba(30, 58, 138, 0.35);
-    }
-
     .profile-icon svg {
         width: 58px;
         height: 58px;
         color: white;
+        border-radius: 50%;
     }
 
     .start-button {

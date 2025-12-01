@@ -40,13 +40,13 @@ public function index()
             // User baru pertama kali → izinkan pilih jadwal
             // (tidak ada tindakan, lanjut)
         } else {
-            // User SUDAH PERNAH memilih jadwal → dilarang ganti jadwal lain
+            //User SUDAH PERNAH memilih jadwal → dilarang ganti jadwal lain
             $existingSchedule = Exam::where('user_id', $user->id)->first();
 
             if ($existingSchedule->exam_schedule_id != $request->exam_schedule_id) {
                 return back()->with('error', 'Anda sudah memilih jadwal ujian sebelumnya dan tidak dapat mengganti jadwal.');
-            }
-        }
+           }
+       }
 
         $schedule = ExamSchedule::findOrFail($request->exam_schedule_id);
         $now = now();
@@ -63,8 +63,6 @@ public function index()
         $exam = Exam::where('user_id', $user->id)
                     ->where('exam_schedule_id', $request->exam_schedule_id)
                     ->first();
-
-<<<<<<< HEAD
         // 🔒 NEW RULE:
         // Jika sudah selesai → TIDAK BOLEH mulai lagi
         if ($exam && $exam->status === 'completed') {
@@ -72,14 +70,6 @@ public function index()
                 ->route('exam.success', $exam->id)
                 ->with('error', 'Anda sudah menyelesaikan ujian dan tidak dapat mengulang.');
         }
-=======
-        //🚫 BLOK kalau sudah selesai
-        if ($exam && $exam->status === 'completed') {
-        return redirect()
-         ->route('exam.success', $exam->id)
-         ->with('error', 'Anda sudah menyelesaikan ujian ini.');
-       }
->>>>>>> 9a6694406ae37989a84bf5d3c4afda4e34028a18
 
         // Jika belum pernah, buat ujian baru
         if (!$exam) {
