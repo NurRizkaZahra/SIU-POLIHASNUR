@@ -9,7 +9,18 @@
         padding: 0;
         box-sizing: border-box;
     }
-
+    /* Disable text selection */
+    .exam-wrapper {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+    .no-select {
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
     .exam-wrapper {
         background: #f5f7fa;
         min-height: 100vh;
@@ -975,5 +986,25 @@ function updateProgress() {
             e.returnValue = '';
         }
     });
+
+    // Disable copy, cut, paste, right click, select
+document.addEventListener('copy', (e) => e.preventDefault());
+document.addEventListener('cut', (e) => e.preventDefault());
+document.addEventListener('paste', (e) => e.preventDefault());
+document.addEventListener('contextmenu', (e) => e.preventDefault()); // disable right click
+
+// Disable CTRL+C, CTRL+X, CTRL+V, PRINT SCREEN
+document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) &&
+        (e.key === 'c' || e.key === 'x' || e.key === 'v' || e.key === 'p')) {
+        e.preventDefault();
+    }
+
+    // Disable Print Screen
+    if (e.key === "PrintScreen") {
+        navigator.clipboard.writeText("");
+        alert("Fitur screenshot dinonaktifkan selama ujian!");
+    }
+});
 </script>
 @endsection

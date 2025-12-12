@@ -56,14 +56,14 @@ class ExamScheduleController extends Controller
             // =====================================================
             // 1️⃣ GLOBAL CHECK: User hanya boleh ajukan ujian 1x
             // =====================================================
-            //$alreadyApplied = Exam::where('user_id', auth()->id())->exists();
+           // $alreadyApplied = Exam::where('user_id', auth()->id())->exists();
 
-            if ($alreadyApplied) {
-              return response()->json([
-                  'success' => false,
-                    'message' => 'Anda hanya dapat mengajukan jadwal ujian satu kali saja.'
-                ], 400);
-            }
+           // if ($alreadyApplied) {
+             // return response()->json([
+                //  'success' => false,
+                 //  'message' => 'Anda hanya dapat mengajukan jadwal ujian satu kali saja.'
+               // ], 400);
+           // }
 
             // Lock row jadwal ujian
             $examSchedule = ExamSchedule::lockForUpdate()->findOrFail($validated['exam_schedule_id']);

@@ -144,6 +144,7 @@ Route::middleware(['auth', 'role:camaba'])->group(function () {
     Route::post('/exam/{examScheduleId}/answer', [ExamController::class, 'answer'])->name('ujian.answer');
     Route::post('/exam/{examScheduleId}/submit', [ExamController::class, 'submit'])->name('ujian.submit');
     Route::get('/exam/{examScheduleId}/result', [ExamController::class, 'result'])->name('ujian.result');
+
 });
 
 

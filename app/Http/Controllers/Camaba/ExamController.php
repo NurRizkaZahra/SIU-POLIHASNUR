@@ -262,7 +262,6 @@ public function index()
         return redirect()->route('exam.success', $exam->id)
             ->with('success', 'Ujian telah diselesaikan.');
     }
-
     /**
      * Halaman hasil ujian camaba.
      */

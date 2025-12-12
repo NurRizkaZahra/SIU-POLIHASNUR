@@ -199,7 +199,7 @@
     <nav class="py-4 bg-white shadow-sm">
         <div class="flex items-center justify-between w-full px-4 mx-auto max-w-7xl">
             <div class="flex items-center">
-                <img src="{{ asset('images/logo_polhas.png') }}" alt="Logo Politeknik Hasnur" class="h-10"> 
+                <img src="{{ asset('images/technopreneur.png') }}" alt="Logo Politeknik Hasnur" class="h-10"> 
             </div>
             <div class="items-center hidden space-x-8 text-base md:flex">
                 <a href="{{ url('/') }}" class="font-medium text-gray-700 hover:text-polihasnur-blue">Home</a>
@@ -225,7 +225,7 @@
 
             <div class="relative flex flex-col items-start p-8 hero-content md:flex-row md:p-12">
                 <div class="z-10 text-left md:w-2/3 lg:w-1/2">
-                    <h1 class="mb-4 text-4xl font-extrabold leading-tight lg:text-5xl text-polihasnur-blue">Selamat Datang di <br> Sistem Informasi Ujian Politeknik Hasnur <br>(SIU-POLIHASNUR)</h1>
+                    <h1 class="mb-4 text-4xl font-extrabold leading-tight lg:text-5xl text-polihasnur-blue">Selamat Datang di<br> Sistem Informasi Ujian Politeknik Hasnur<br>(SIU-POLIHASNUR)</h1>
                     <p class="max-w-lg mb-8 text-base text-gray-700">Melalui sistem ini, calon mahasiswa dapat melakukan pendaftaran dan mengikuti tes secara praktis dalam satu tempat. Mari mulai perjalananmu bersama Politeknik Hasnur dan raih cita-cita melalui pendidikan vokasi terbaik.</p>
                     <div class="flex space-x-4">
                         <a href="{{ route('register') }}" class="inline-block px-8 py-3 text-base font-semibold text-white transition-all rounded-md bg-polihasnur-blue hover:bg-blue-700">Daftar Sekarang</a>
@@ -266,13 +266,13 @@
     <div class="relative max-w-full mx-auto">
 
         <!-- tombol prev -->
-        <button id="progPrev" aria-label="Prev program" class="absolute z-20 hidden md:flex items-center justify-center left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-md text-polihasnur-blue">
+        <button id="progPrev" aria-label="Prev program" class="absolute z-20 items-center justify-center hidden w-10 h-10 -translate-y-1/2 bg-white rounded-full shadow-md md:flex left-2 top-1/2 text-polihasnur-blue">
             ‹
         </button>
 
         <!-- viewport slider -->
-        <div id="programViewport" class="overflow-x-auto scroll-smooth no-scrollbar px-4 md:px-6">
-            <div id="programSlider" class="flex gap-6 items-stretch py-4">
+        <div id="programViewport" class="px-4 overflow-x-auto scroll-smooth no-scrollbar md:px-6">
+            <div id="programSlider" class="flex items-stretch gap-6 py-4">
 
                 <a href="#" class="study-card min-w-[320px] md:min-w-[320px] lg:min-w-[320px]" style="background-image: url('{{ asset('images/TO.jpg') }}');">
                     <div class="study-card-content">

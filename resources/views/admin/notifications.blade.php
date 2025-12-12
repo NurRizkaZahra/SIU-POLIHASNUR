@@ -1,6 +1,7 @@
 @extends('layouts.app-admin')
 
 @section('title', 'Notifikasi')
+@section('page-title', 'NOTIFIKASI')
 
 @section('content')
 <div class="notification-container">
