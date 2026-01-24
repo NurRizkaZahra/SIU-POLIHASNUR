@@ -74,61 +74,67 @@ class QuestionController extends Controller
     
     return view('admin.questions.edit', compact('question', 'groups'));
 }
-    public function update(Request $request, Question $question)
-    {
-        // Cek grup soal
-    $group = QuestionGroup::find($request->question_group_id);
+   public function update(Request $request, Question $question)
+{
+    // Tentukan grup berdasarkan tipe
+    if ($request->type === 'PSI') {
+        $group = QuestionGroup::find($request->question_group_id);
 
-    if (!$group) {
-        return back()->withErrors(['question_group_id' => 'Pilih kelompok soal!']);
+        if (!$group) {
+            return back()->withErrors(['question_group_id' => 'Pilih kelompok soal!']);
+        }
+    } else {
+        // PU → pakai group lama
+        $group = (object) ['type' => 'PU', 'id' => null];
     }
 
     // Rules dasar
     $rules = [
         'question_text' => 'required|string',
-        'question_group_id' => 'required|exists:question_groups,id',
         'answer_choices' => 'required|array|size:5',
     ];
 
-    // Rules untuk PU (Pilihan Umum)
-    if ($group->type == 'PU') {
-        $rules['correct_answer'] = 'required|string|in:A,B,C,D,E';
-        $rules['score'] = 'required|numeric|min:0.5';
+    // Rules PU
+    if ($group->type === 'PU') {
+        $rules['correct_answer'] = 'required|in:A,B,C,D,E';
+        $rules['score'] = 'required|numeric|min:0.1';
 
         foreach (['A','B','C','D','E'] as $opt) {
             $rules["answer_choices.$opt"] = 'required|string';
         }
     }
 
-    // Rules untuk PSI (Psikotes)
-    if ($group->type == 'PSI') {
+    // Rules PSI
+    if ($group->type === 'PSI') {
+        $rules['question_group_id'] = 'required|exists:question_groups,id';
+
         foreach (['A','B','C','D','E'] as $opt) {
             $rules["answer_choices.$opt.text"] = 'required|string';
             $rules["answer_choices.$opt.score"] = 'required|integer|min:1';
         }
     }
 
-    // Validasi
     $validated = $request->validate($rules);
 
     // Update data
     $question->update([
         'question_text' => $validated['question_text'],
         'answer_choices' => $validated['answer_choices'],
-        'correct_answer' => $group->type == 'PU' ? $validated['correct_answer'] : null,
-        'score' => $group->type == 'PU' ? $validated['score'] : null,
-        'question_group_id' => $validated['question_group_id'],
+        'correct_answer' => $group->type === 'PU' ? $validated['correct_answer'] : null,
+        'score' => $group->type === 'PU' ? $validated['score'] : null,
+        'question_group_id' => $group->id,
     ]);
 
     return redirect()->route('admin.questions.index')
         ->with('success', 'Soal berhasil diperbarui!');
 }
-public function destroy($id)
+public function destroy(Question $question)
 {
-    $question = Question::findOrFail($id);
     $question->delete();
 
     return redirect()->route('admin.questions.index')
-                     ->with('success', 'Soal berhasil dihapus!');
+        ->with('success', 'Soal berhasil dihapus!');
 }
+
+
 }

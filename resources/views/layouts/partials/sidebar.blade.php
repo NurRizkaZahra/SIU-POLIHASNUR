@@ -23,7 +23,7 @@
         </li>
 
         <li class="menu-item">
-            <a href="{{ route('camaba.registration') }}" class="menu-link {{ request()->routeIs('registration*') ? 'active' : '' }}">
+            <a href="{{ route('camaba.registration') }}" class="menu-link {{ request()->routeIs('camaba.registration') ? 'active' : '' }}">
                 <span class="menu-icon">📋</span>
                 <span>PENDAFTARAN</span>
             </a>

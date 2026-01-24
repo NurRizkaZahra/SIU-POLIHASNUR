@@ -17,7 +17,7 @@ class AdminResultController extends Controller
         // Ambil hanya 1 hasil per user (hasil terbaru)
         return Exam::with(['user', 'answers.question.group'])
             ->where('status', 'completed')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'asc')
             ->get()
             ->unique('user_id') // inilah kuncinya
             ->values()          // reset index

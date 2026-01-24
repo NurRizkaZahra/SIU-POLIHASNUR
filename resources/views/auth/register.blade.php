@@ -252,24 +252,34 @@
       </div>
       <p>Join SIU Polihasnur by filling in your details</p>
 
-      <form>
+      @if ($errors->any())
+  <div style="color:red; margin-bottom:15px;">
+    <ul>
+      @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+      @endforeach
+    </ul>
+  </div>
+@endif
+      <form method="POST" action="{{ route('register') }}">
+        @csrf
         <div class="input-group">
-          <input type="text" placeholder="Full Name" required />
+          <input type="text" name="name" placeholder="Full Name" required />
           <i class="fa fa-user"></i>
         </div>
 
         <div class="input-group">
-          <input type="email" placeholder="Email" required />
+          <input type="email" name="email" placeholder="Email" required />
           <i class="fa fa-envelope"></i>
         </div>
 
         <div class="input-group">
-          <input type="password" placeholder="Password" required />
+          <input type="password" name="password" placeholder="Password" required />
           <i class="fa fa-lock"></i>
         </div>
 
         <div class="input-group">
-          <input type="password" placeholder="Confirm Password" required />
+          <input type="password" name="password_confirmation" placeholder="Confirm Password" required />
           <i class="fa fa-lock"></i>
         </div>
 

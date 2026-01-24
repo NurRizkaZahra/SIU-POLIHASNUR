@@ -30,6 +30,17 @@ public function index()
         ]);
 
         $user = auth()->user();
+        $examRequest = Exam::where('user_id', $user->id)
+    ->where('exam_schedule_id', $request->exam_schedule_id)
+    ->first();
+
+if (!$examRequest) {
+    return back()->with('error', 'Anda belum mengajukan jadwal ujian ini.');
+}
+
+if ($examRequest->status !== 'approved') {
+    return back()->with('error', 'Pengajuan jadwal Anda belum disetujui admin.');
+}
 
         // 🔒 NEW RULE:
         // CEK apakah user sudah pernah memilih jadwal ujian

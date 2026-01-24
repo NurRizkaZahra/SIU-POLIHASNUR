@@ -257,6 +257,12 @@
                 <input type="hidden" name="type" value="{{ $currentType }}">
             </div>
 
+            {{-- ✅ TAMBAHKAN DI SINI --}}
+@if($currentType == 'PU')
+    <input type="hidden" 
+           name="question_group_id" 
+           value="{{ $question->question_group_id }}">
+@endif
             <!-- Grup PSI (Jika PSI) -->
             @if($currentType == 'PSI')
             <div class="form-group">
