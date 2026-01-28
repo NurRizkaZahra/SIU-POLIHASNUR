@@ -23,82 +23,50 @@ public function index()
     /**
      * Saat camaba klik "Mulai Ujian"
      */
-    public function start(Request $request)
-    {
-        $request->validate([
-            'exam_schedule_id' => 'required|exists:exam_schedules,id'
-        ]);
+   public function start()
+{
+    $user = auth()->user();
 
-        $user = auth()->user();
-        $examRequest = Exam::where('user_id', $user->id)
-    ->where('exam_schedule_id', $request->exam_schedule_id)
-    ->first();
+    // Ambil pengajuan jadwal yang sudah di-approve
+    $examRequest = Exam::where('user_id', $user->id)
+        ->where('status', 'approved')
+        ->whereHas('examSchedule', function ($q) {
+            $q->where('status', 'active')
+              ->whereDate('start_date', '<=', now())
+              ->whereDate('end_date', '>=', now());
+        })
+        ->latest()
+        ->first();
 
-if (!$examRequest) {
-    return back()->with('error', 'Anda belum mengajukan jadwal ujian ini.');
-}
-
-if ($examRequest->status !== 'approved') {
-    return back()->with('error', 'Pengajuan jadwal Anda belum disetujui admin.');
-}
-
-        // 🔒 NEW RULE:
-        // CEK apakah user sudah pernah memilih jadwal ujian
-        $alreadyTookSchedule = Exam::where('user_id', $user->id)
-            ->exists();
-
-        if (!$alreadyTookSchedule) {
-            // User baru pertama kali → izinkan pilih jadwal
-            // (tidak ada tindakan, lanjut)
-        } else {
-            //User SUDAH PERNAH memilih jadwal → dilarang ganti jadwal lain
-            $existingSchedule = Exam::where('user_id', $user->id)->first();
-
-            if ($existingSchedule->exam_schedule_id != $request->exam_schedule_id) {
-                return back()->with('error', 'Anda sudah memilih jadwal ujian sebelumnya dan tidak dapat mengganti jadwal.');
-           }
-       }
-
-        $schedule = ExamSchedule::findOrFail($request->exam_schedule_id);
-        $now = now();
-
-        if ($now->lt($schedule->start_date)) {
-            return back()->with('error', 'Ujian belum dibuka.');
-        }
-
-        if ($now->gt($schedule->end_date)) {
-            return back()->with('error', 'Masa ujian telah berakhir.');
-        }
-
-        // Cek apakah user sudah pernah ujian
-        $exam = Exam::where('user_id', $user->id)
-                    ->where('exam_schedule_id', $request->exam_schedule_id)
-                    ->first();
-        // 🔒 NEW RULE:
-        // Jika sudah selesai → TIDAK BOLEH mulai lagi
-        if ($exam && $exam->status === 'completed') {
-            return redirect()
-                ->route('exam.success', $exam->id)
-                ->with('error', 'Anda sudah menyelesaikan ujian dan tidak dapat mengulang.');
-        }
-
-        // Jika belum pernah, buat ujian baru
-        if (!$exam) {
-            $exam = Exam::create([
-                'user_id'           => $user->id,
-                'exam_schedule_id'  => $request->exam_schedule_id,
-                'status'            => 'in_progress',
-                'start_time'        => now()
-            ]);
-        }
-
-        // Hapus jawaban lama hanya jika status masih in_progress
-        ExamAnswer::where('exam_id', $exam->id)->delete();
-
-        return redirect()
-            ->route('exam.questions', $exam->id)
-            ->with('success', 'Ujian dimulai. Selamat mengerjakan!');
+    if (!$examRequest) {
+        return back()->with('error', 'Anda belum memiliki jadwal ujian yang disetujui atau masa ujian tidak aktif.');
     }
+
+    // Cek apakah sudah pernah ujian di jadwal ini
+    $exam = Exam::where('user_id', $user->id)
+        ->where('exam_schedule_id', $examRequest->exam_schedule_id)
+        ->whereIn('status', ['in_progress', 'completed'])
+        ->first();
+
+    // Jika sudah selesai
+    if ($exam && $exam->status === 'completed') {
+        return redirect()->route('exam.success', $exam->id);
+    }
+
+    // Jika belum pernah ujian, buat baru
+    if (!$exam) {
+        $exam = Exam::create([
+            'user_id'          => $user->id,
+            'exam_schedule_id' => $examRequest->exam_schedule_id,
+            'status'           => 'in_progress',
+            'start_time'       => now()
+        ]);
+    }
+
+    return redirect()->route('exam.questions', $exam->id);
+}
+
+
 
     /**
      * Tampilan halaman soal.
