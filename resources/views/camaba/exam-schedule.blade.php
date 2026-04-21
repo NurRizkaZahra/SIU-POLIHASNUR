@@ -163,7 +163,7 @@
                         <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
                         </svg>
-                        <input type="date" class="input-jadwal" data-gelombang-id="{{ $item->id }}">
+                        <input type="date" class="input-jadwal" data-gelombang-id="{{ $item->id }}" min="{{ $item->start_date }}" max="{{ $item->end_date }}">
                     </div>
                     <button class="btn-ajukan" onclick="ajukanJadwal({{ $item->id }})">Ajukan</button>
                 </div>
@@ -178,40 +178,60 @@
 </div>
 
 <script>
-    function ajukanJadwal(gelombangId) {
-        const dateInput = document.querySelector(`input[data-gelombang-id="${gelombangId}"]`);
-        if (!dateInput.value) {
-            alert('Silahkan pilih tanggal terlebih dahulu');
-            return;
+function ajukanJadwal(gelombangId) {
+
+    const dateInput = document.querySelector(
+        `input[data-gelombang-id="${gelombangId}"]`
+    );
+
+    if (!dateInput.value) {
+        alert('Silahkan pilih tanggal terlebih dahulu');
+        return;
+    }
+
+    fetch("{{ route('camaba.exam-schedule.store') }}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({
+            exam_schedule_id: gelombangId,
+            exam_date: dateInput.value
+        })
+    })
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        if (data.success) {
+
+            alert(
+                'Jadwal ujian untuk tanggal ' +
+                dateInput.value +
+                ' telah diajukan!'
+            );
+
+            location.reload();
+
+        } else {
+
+            alert(data.message || 'Gagal mengajukan jadwal');
+
         }
 
-        // Kirim data ke server
-        fetch("{{ route('camaba.exam-schedule.store') }}", {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json', // 🔹 tambahkan ini
-        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-    },
-    body: JSON.stringify({
-        exam_schedule_id: gelombangId,  // 🔹 ganti dari gelombang_id
     })
-})
 
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Jadwal ujian untuk tanggal ' + dateInput.value + ' telah diajukan!');
-                dateInput.value = '';
-            } else {
-                alert(data.message || 'Gagal mengajukan jadwal');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Terjadi kesalahan saat mengajukan jadwal');
-        });
-    }
+    .catch(error => {
+
+        console.error(error);
+
+        alert('Terjadi kesalahan saat mengajukan jadwal');
+
+    });
+}
 </script>
 
 @endsection

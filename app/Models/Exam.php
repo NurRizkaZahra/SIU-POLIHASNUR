@@ -15,6 +15,7 @@ class Exam extends Model
     protected $fillable = [
     'user_id',
     'exam_schedule_id',
+    'exam_date',
     'started_at',
     'finished_at',
     'status',

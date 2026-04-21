@@ -111,7 +111,7 @@
     .option-input {
         flex: 1;
     }
-    
+
     .psi-score-input {
         width: 120px;
         flex-shrink: 0;
@@ -220,92 +220,90 @@
         </div>
         @endif
 
-        <form action="{{ route('admin.questions.update', $question->id) }}" method="POST">
+        <form action="{{ route('admin.questions.update', $question->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            
+
+            {{-- Hidden: kirim type & group agar controller tahu --}}
+            <input type="hidden" name="type" value="{{ $currentType }}">
+            <input type="hidden" name="question_group_id" value="{{ $question->question_group_id }}">
+
             <!-- Pertanyaan Soal -->
             <div class="form-group">
                 <label class="form-label">
                     Pertanyaan Soal <span class="required">*</span>
                 </label>
-                <textarea 
-                    name="question_text" 
-                    class="form-input form-textarea" 
-                    placeholder="Masukkan pertanyaan soal..."
-                    required>{{ old('question_text', $question->question_text) }}</textarea>
+                <textarea
+                    name="question_text"
+                    class="form-input form-textarea"
+                    placeholder="Masukkan pertanyaan soal...">{{ old('question_text', $question->question_text) }}</textarea>
                 <div class="form-hint">Gunakan bahasa yang jelas dan mudah dipahami</div>
             </div>
 
-            @php
-                // Deteksi tipe soal dari group atau dari correct_answer
-                $currentType = 'PU';
-                if ($question->question_group_id) {
-                    $currentType = $question->group->type;
-                } elseif (!$question->correct_answer) {
-                    $currentType = 'PSI';
-                }
-            @endphp
-
-            <!-- Tipe Soal (Read Only - Informasi saja) -->
-            <div class="form-group">
-                <label class="form-label">Tipe Soal</label>
-                <div style="display: inline-block; padding: 8px 16px; background: {{ $currentType == 'PSI' ? '#dbeafe' : '#d1fae5' }}; color: {{ $currentType == 'PSI' ? '#1e40af' : '#065f46' }}; border-radius: 20px; font-weight: 600;">
-                    {{ $currentType == 'PSI' ? '🧠 Psikotes (PSI)' : '📚 Pengetahuan Umum (PU)' }}
-                </div>
-                <div class="form-hint">Tipe soal tidak dapat diubah setelah dibuat</div>
-                <input type="hidden" name="type" value="{{ $currentType }}">
-            </div>
-
-            {{-- ✅ TAMBAHKAN DI SINI --}}
-@if($currentType == 'PU')
-    <input type="hidden" 
-           name="question_group_id" 
-           value="{{ $question->question_group_id }}">
-@endif
-            <!-- Grup PSI (Jika PSI) -->
+            <!-- Gambar Soal (Khusus PSI) -->
             @if($currentType == 'PSI')
             <div class="form-group">
                 <label class="form-label">
-                    Kelompok Soal PSI <span class="required">*</span>
+                    Gambar Soal PSI
                 </label>
-                <select name="question_group_id" class="form-select" required>
-                    <option value="">-- Pilih Kelompok Soal PSI --</option>
-                    @foreach($groups as $group)
-                        @if($group->type == 'PSI')
-                        <option value="{{ $group->id }}" 
-                            {{ old('question_group_id', $question->question_group_id) == $group->id ? 'selected' : '' }}>
-                            {{ $group->name }}
-                        </option>
-                        @endif
-                    @endforeach
-                </select>
-                <div class="form-hint">Kelompok soal untuk PSI</div>
+                @if($question->question_image)
+                    <div style="margin-bottom: 10px;">
+                        <img src="{{ asset('storage/' . $question->question_image) }}"
+                             style="max-width: 200px; border-radius: 8px; border: 2px solid #e5e7eb;">
+                        <div class="form-hint">Gambar saat ini. Upload baru untuk mengganti.</div>
+                    </div>
+                @endif
+                <input
+                    type="file"
+                    name="question_image"
+                    class="form-input"
+                    accept="image/png,image/jpg,image/jpeg">
+                <div class="form-hint">Format: JPG, PNG, JPEG. Kosongkan jika tidak ingin mengganti gambar.</div>
             </div>
             @endif
 
-            <!-- Video Tutorial (Opsional) -->
+            <!-- Tipe Soal (Read Only) -->
             <div class="form-group">
-                <label class="form-label">Link Video Tutorial (Opsional)</label>
-                <input 
-                    type="url" 
-                    name="video_tutorial" 
-                    class="form-input" 
-                    placeholder="https://youtube.com/watch?v=..."
-                    value="{{ old('video_tutorial', $question->video_tutorial) }}">
-                <div class="form-hint">Link video untuk penjelasan soal (opsional)</div>
+                <label class="form-label">Kelompok Soal</label>
+                <div style="display: inline-block; padding: 8px 16px; background: {{ $currentType == 'PSI' ? '#dbeafe' : '#d1fae5' }}; color: {{ $currentType == 'PSI' ? '#1e40af' : '#065f46' }}; border-radius: 20px; font-weight: 600;">
+                    {{ $currentType == 'PSI' ? '🧠 Psikotes (PSI)' : '📚 Pengetahuan Umum (PU)' }}
+                    — {{ $question->questionGroup->name ?? '-' }}
+                </div>
+                <div class="form-hint">Tipe dan kelompok soal tidak dapat diubah setelah dibuat</div>
             </div>
 
-            <!-- Skor (Hanya untuk PU) -->
-            @if($currentType == 'PU')
+            <!-- Video Tutorial (Khusus PSI, konsisten dengan create: file upload) -->
+            @if($currentType == 'PSI')
+            <div class="form-group">
+                <label class="form-label">
+                    Video Tutorial PSI
+                </label>
+                @if($question->video_tutorial)
+                    <div style="margin-bottom: 10px;">
+                        <a href="{{ $question->video_tutorial }}" target="_blank">
+                             Lihat Video Tutorial
+                        </a>
+                        <div class="form-hint">Video saat ini. Upload baru untuk mengganti.</div>
+                    </div>
+                @endif
+                <input
+                    type="url"
+                    name="video_tutorial"
+                    class="form-input"
+                    placeholder="Masukkan link video tutorial (YouTube)"
+                    value="{{ old('video_tutorial', $question->video_tutorial) }}">
+            </div>
+            @endif
+
+            <!-- Skor (Khusus PU) -->
             <div class="form-group">
                 <label class="form-label">
                     Skor <span class="required">*</span>
                 </label>
-                <input 
-                    type="number" 
-                    name="score" 
-                    class="form-input" 
+                <input
+                    type="number"
+                    name="score"
+                    class="form-input"
                     placeholder="Masukkan skor..."
                     value="{{ old('score', $question->score) }}"
                     step="0.1"
@@ -313,7 +311,6 @@
                     required>
                 <div class="form-hint">Bobot poin untuk soal ini jika dijawab benar</div>
             </div>
-            @endif
 
             <!-- Pilihan Jawaban -->
             <div class="answers-section">
@@ -322,7 +319,7 @@
                 </label>
 
                 @if($currentType == 'PU')
-                <!-- Tampilan PU: Text + Radio Button -->
+                {{-- ===== JAWABAN PU: Text Input ===== --}}
                 <div class="form-hint" style="margin-bottom: 15px;">
                     <span class="correct-answer-hint">Pilih radio button untuk jawaban yang benar</span>
                 </div>
@@ -330,49 +327,52 @@
                 @foreach(['A', 'B', 'C', 'D', 'E'] as $option)
                 <div class="answer-item">
                     <div class="option-label-box">{{ $option }}</div>
-                    <input 
-                        type="text" 
-                        name="answer_choices[{{ $option }}]" 
-                        class="form-input option-input" 
+                    <input
+                        type="text"
+                        name="answer_choices[{{ $option }}]"
+                        class="form-input option-input"
                         placeholder="Masukkan pilihan jawaban {{ $option }}..."
-                        value="{{ old('answer_choices.' . $option, $question->answer_choices[$option] ?? '') }}"
-                        required>
+                        value="{{ old("answer_choices.$option", $question->answer_choices[$option] ?? '') }}">
                     <div class="option-radio">
-                        <input 
-                            type="radio" 
-                            name="correct_answer" 
+                        <input
+                            type="radio"
+                            name="correct_answer"
                             value="{{ $option }}"
-                            {{ old('correct_answer', $question->correct_answer) == $option ? 'checked' : '' }}
-                            required>
+                            {{ old('correct_answer', $question->correct_answer) == $option ? 'checked' : '' }}>
                     </div>
                 </div>
                 @endforeach
 
                 @else
-                <!-- Tampilan PSI: Text + Skor per Pilihan -->
+                {{-- ===== JAWABAN PSI: Image Upload ===== --}}
                 <div class="form-hint" style="margin-bottom: 15px;">
-                    Masukkan teks pilihan dan skor untuk setiap opsi jawaban
+                    <span class="correct-answer-hint">Pilih jawaban yang benar</span>
                 </div>
 
                 @foreach(['A', 'B', 'C', 'D', 'E'] as $option)
                 <div class="answer-item">
                     <div class="option-label-box">{{ $option }}</div>
-                    <input 
-                        type="text" 
-                        name="answer_choices[{{ $option }}][text]" 
-                        class="form-input option-input" 
-                        placeholder="Teks pilihan {{ $option }}..."
-                        value="{{ old('answer_choices.' . $option . '.text', $question->answer_choices[$option]['text'] ?? '') }}"
-                        required>
-                    <input 
-                        type="number" 
-                        name="answer_choices[{{ $option }}][score]" 
-                        class="form-input psi-score-input" 
-                        placeholder="Skor"
-                        value="{{ old('answer_choices.' . $option . '.score', $question->answer_choices[$option]['score'] ?? '') }}"
-                        min="1"
-                        step="1"
-                        required>
+
+                    <div class="option-input">
+                        @if(isset($question->answer_choices[$option]['image']))
+                            <img src="{{ asset('storage/' . $question->answer_choices[$option]['image']) }}"
+                                 style="max-width: 120px; margin-bottom: 8px; border-radius: 6px; border: 2px solid #e5e7eb;">
+                            <div class="form-hint" style="margin-bottom: 6px;">Gambar saat ini. Upload baru untuk mengganti.</div>
+                        @endif
+                        <input
+                            type="file"
+                            name="answer_choices[{{ $option }}][image]"
+                            class="form-input"
+                            accept="image/png,image/jpg,image/jpeg">
+                    </div>
+
+                    <div class="option-radio">
+                        <input
+                            type="radio"
+                            name="correct_answer"
+                            value="{{ $option }}"
+                            {{ old('correct_answer', $question->correct_answer) == $option ? 'checked' : '' }}>
+                    </div>
                 </div>
                 @endforeach
                 @endif
@@ -398,7 +398,6 @@
 </div>
 
 <script>
-// Konfirmasi sebelum submit
 document.querySelector('form').addEventListener('submit', function(e) {
     if (!confirm('Apakah Anda yakin ingin menyimpan perubahan soal ini?')) {
         e.preventDefault();

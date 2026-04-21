@@ -335,11 +335,11 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Sekolah Asal: <span style="color: red;">*</span></label>
-                        <input type="text" name="school_name" placeholder="Nama sekolah" required>
+                        <input type="text" name="school_name" value="{{ old('school_name', $educationData->school_name ?? '') }}" placeholder="Nama sekolah" required>
                     </div>
                     <div class="form-group">
                         <label>Nomor Pokok Sekolah Nasional (NPSN): <span style="color: red;">*</span></label>
-                        <input type="text" name="school_code" placeholder="NPSN" required>
+                        <input type="text" name="school_code" value="{{ old('school_code', $educationData->school_code ?? '') }}" placeholder="NPSN" required>
                     </div>
                 </div>
 
@@ -347,13 +347,13 @@
             <div class="form-group">
                 <label>Alamat Sekolah: <span style="color: red;">*</span></label>
                 <input type="text" name="school_address"
-                       value="{{ old('school_address', $user->educationData->school_address ?? '') }}"
+                       value="{{ old('school_address', $educationData->school_address ?? '') }}"
                        placeholder="Masukkan Alamat Lengkap" required>
             </div>
             <div class="form-group">
                 <label>Jurusan/Program Keahlian: <span style="color: red;">*</span></label>
                 <input type="text" name="major"
-                       value="{{ old('major', $user->educationData->major ?? '') }}"
+                       value="{{ old('major', $educationData->major ?? '') }}"
                        placeholder="Program keahlian" required>
             </div>
         </div>
@@ -362,13 +362,13 @@
             <div class="form-group">
                 <label>Tahun Masuk: <span style="color: red;">*</span></label>
                 <input type="text" name="year_of_entry"
-                       value="{{ old('year_of_entry', $user->educationData->year_of_entry ?? '') }}"
+                       value="{{ old('year_of_entry', $educationData->year_of_entry ?? '') }}"
                        placeholder="Tahun" required>
             </div>
             <div class="form-group">
                 <label>Prestasi Akademik dan Nilai Akademik: </label>
                 <input type="text" name="achievement"
-                       value="{{ old('achievement', $user->educationData->achievement ?? '') }}"
+                       value="{{ old('achievement', $educationData->achievement ?? '') }}"
                        placeholder="Prestasi">
             </div>
         </div>
@@ -376,7 +376,7 @@
         <div class="form-group">
             <label>Nomor Induk Siswa Nasional (NISN): <span style="color: red;">*</span></label>
             <input type="text" name="nisn"
-                   value="{{ old('nisn', $user->educationData->nisn ?? '') }}"
+                   value="{{ old('nisn', $educationData->nisn ?? '') }}"
                    placeholder="NISN" required>
         </div>
 
@@ -399,11 +399,11 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Nama Ayah/Wali: <span style="color: red;">*</span></label>
-                        <input type="text" name="father_name" placeholder="Nama ayah" required>
+                       <input type="text" name="father_name" value="{{ $keluarga->father_name ?? '' }}" placeholder="Nama ayah" required>
                     </div>
                     <div class="form-group">
                         <label>Jumlah Anak: <span style="color: red;">*</span></label>
-                        <input type="number" name="number_of_children" placeholder="Jumlah" required>
+                        <input type="number" name="number_of_children" value="{{ $keluarga->number_of_children ?? '' }}" placeholder="Jumlah" required>
                     </div>
                 </div>
 

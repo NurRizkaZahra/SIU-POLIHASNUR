@@ -185,7 +185,7 @@
             </div>
             <div class="info-row">
                 <span class="info-label">✅ Soal Terjawab:</span>
-                <span class="info-value">{{ $answeredCount }} soal</span>
+                <span class="info-value">{{ $answeredQuestions }} soal</span>
             </div>
             <div class="info-row">
                 <span class="info-label">⏱️ Durasi:</span>

@@ -45,6 +45,7 @@ class ExamScheduleController extends Controller
     {
         $validated = $request->validate([
             'exam_schedule_id' => 'required|exists:exam_schedules,id',
+            'exam_date' => 'required|date'
         ],[
             'exam_schedule_id.required' => 'Jadwal ujian harus dipilih.',
             'exam_schedule_id.exists' => 'Jadwal ujian tidak valid.',
@@ -52,6 +53,7 @@ class ExamScheduleController extends Controller
 
         try {
             DB::beginTransaction();
+            $examSchedule = ExamSchedule::findOrFail($validated['exam_schedule_id']);
 
             // =====================================================
             // 1️⃣ GLOBAL CHECK: User hanya boleh ajukan ujian 1x
@@ -66,7 +68,16 @@ class ExamScheduleController extends Controller
            // }
 
             // Lock row jadwal ujian
-            $examSchedule = ExamSchedule::lockForUpdate()->findOrFail($validated['exam_schedule_id']);
+           $selectedDate = Carbon::parse($validated['exam_date']);
+$startDate = Carbon::parse($examSchedule->start_date);
+$endDate = Carbon::parse($examSchedule->end_date);
+
+if ($selectedDate->lt($startDate) || $selectedDate->gt($endDate)) {
+    return response()->json([
+        'success' => false,
+        'message' => 'Tanggal yang dipilih tidak berada dalam rentang gelombang.'
+    ], 400);
+}
 
             // 2️⃣ Cek apakah pendaftaran gelombang dibuka
             if (!$examSchedule->isRegistrationOpen()) {
@@ -100,6 +111,7 @@ class ExamScheduleController extends Controller
             $exam = Exam::create([
                 'user_id' => auth()->id(),
                 'exam_schedule_id' => $validated['exam_schedule_id'],
+                'exam_date' => $validated['exam_date'],
                 'status' => Exam::STATUS_PENDING,
             ]);
 
@@ -117,12 +129,13 @@ class ExamScheduleController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
+
             Log::error('Error submitting exam application: ' . $e->getMessage());
 
             return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan. Silakan coba lagi.'
-            ], 500);
+               'success' => false,
+               'message' => 'Terjadi kesalahan. Silakan coba lagi.'
+           ], 500);
         }
     }
 

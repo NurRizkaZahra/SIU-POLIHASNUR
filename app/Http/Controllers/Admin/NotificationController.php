@@ -62,8 +62,21 @@ class NotificationController extends Controller
             }
 
             // Approve exam
-            $exam->update(['status' => Exam::STATUS_APPROVED]);
+           $exam->update(['status' => Exam::STATUS_APPROVED]);
 
+$notification = \App\Models\Notification::where('user_id', $exam->user_id)
+    ->where('exam_schedule_id', $exam->exam_schedule_id)
+    ->where('type', 'exam')
+    ->latest()
+    ->first();
+
+// if ($notification) {
+//     $notification->update([
+//         'title' => 'Pengajuan Jadwal Disetujui',
+//         'message' => 'Pengajuan jadwal ujian Anda telah disetujui admin.',
+//         'is_read' => false
+//     ]);
+// }
             DB::commit();
 
             // Log activity
@@ -107,6 +120,19 @@ class NotificationController extends Controller
 
             // Reject exam
             $exam->update(['status' => Exam::STATUS_REJECTED]);
+
+$notification = \App\Models\Notification::where('user_id', $exam->user_id)
+    ->where('exam_schedule_id', $exam->exam_schedule_id)
+    ->where('type', 'exam')
+    ->latest()
+    ->first();
+
+if ($notification) {
+    $notification->update([
+    'title' => 'Pengajuan Jadwal Ditolak',
+    'message' => 'Pengajuan jadwal ujian Anda ditolak admin.'
+]);
+}
 
             DB::commit();
 

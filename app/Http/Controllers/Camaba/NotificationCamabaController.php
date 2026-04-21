@@ -12,24 +12,31 @@ class NotificationCamabaController extends Controller
     /**
      * Display a listing of notifications for the authenticated camaba user.
      */
-    public function index()
-    {
-        // Ambil notifikasi user yang login dengan relasi jadwalUjian
-        $notifications = Notification::with('jadwalUjian')
-            ->where('user_id', Auth::id())
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function($notif) {
-                // Format timestamp untuk tampilan human readable
-                $notif->timestamp = $notif->created_at->diffForHumans();
-                return $notif;
-            });
-        
-        // Hitung jumlah notifikasi yang belum dibaca
-        $unreadCount = $notifications->where('is_read', false)->count();
-        
-        return view('camaba.notifikasi', compact('notifications', 'unreadCount'));
-    }
+   
+  public function index()
+{
+    // update dulu notif unread jadi read
+    Notification::where('user_id', Auth()->id())
+        ->where('is_read', false)
+        ->update(['is_read' => true]);
+
+    // ambil ulang data setelah update
+    $notifications = Notification::with('examSchedule')
+        ->where('user_id', Auth::id())
+        ->orderBy('created_at', 'desc')
+        ->get()
+        ->map(function($notif) {
+            $notif->timestamp = $notif->created_at->diffForHumans();
+            return $notif;
+        });
+
+    // hitung ulang unread dari database langsung
+    $unreadCount = Notification::where('user_id', Auth::id())
+        ->where('is_read', false)
+        ->count();
+
+    return view('camaba.notifikasi', compact('notifications', 'unreadCount'));
+}
 
     /**
      * Mark a notification as read.

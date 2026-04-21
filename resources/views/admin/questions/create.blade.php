@@ -185,7 +185,7 @@
         </div>
         @endif
 
-        <form action="{{ route('admin.questions.store') }}" method="POST">
+        <form action="{{ route('admin.questions.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             
             <!-- Pertanyaan Soal -->
@@ -196,59 +196,57 @@
                 <textarea 
                     name="question_text" 
                     class="form-input form-textarea" 
-                    placeholder="Masukkan pertanyaan soal..."
-                    required>{{ old('question_text') }}</textarea>
+                    placeholder="Masukkan pertanyaan soal...">{{ old('question_text') }}</textarea>
                 <div class="form-hint">Gunakan bahasa yang jelas dan mudah dipahami</div>
             </div>
 
-            <!-- Tipe Soal -->
-            <div class="form-group">
-                <label class="form-label">
-                    Tipe Soal <span class="required">*</span>
-                </label>
-                <div style="display: flex; gap: 20px; margin-top: 10px;">
-                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                        <input 
-                            type="radio" 
-                            name="type" 
-                            value="PU" 
-                            {{ old('type', 'PU') == 'PU' ? 'checked' : '' }}
-                            onchange="toggleQuestionType()"
-                            id="type-pu"
-                            style="width: 18px; height: 18px;">
-                        <span style="font-weight: 500;">Pengetahuan Umum (PU)</span>
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                        <input 
-                            type="radio" 
-                            name="type" 
-                            value="PSI" 
-                            {{ old('type') == 'PSI' ? 'checked' : '' }}
-                            onchange="toggleQuestionType()"
-                            id="type-psi"
-                            style="width: 18px; height: 18px;">
-                        <span style="font-weight: 500;">Psikotes (PSI)</span>
-                    </label>
-                </div>
-                <div class="form-hint">PU = soal individual | PSI = soal dengan kelompok</div>
-            </div>
+           <div class="form-group" id="psi-video-field" style="display:none;">
+    <label class="form-label">
+        Video Tutorial PSI
+    </label>
+    <input 
+        type="url" 
+        name="video_tutorial"
+        class="form-input psi-video-input"
+        placeholder="Masukkan link video (YouTube / Google Drive / dll)">
+</div>
+
+<div class="form-group">
+    <label class="form-label">
+        Kelompok Soal <span class="required">*</span>
+    </label>
+
+    <div style="display:flex; gap:20px; flex-wrap:wrap;">
+
+        @foreach($groups as $group)
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+            <input 
+                type="radio"
+                name="question_group_id"
+                value="{{ $group->id }}"
+                data-type="{{ $group->type }}"
+                onchange="toggleQuestionType()"
+                style="width:18px; height:18px;">
+            <span style="font-weight:500;">
+                {{ $group->name }}
+            </span>
+        </label>
+        @endforeach
+
+    </div>
+</div>
 
             <!-- Grup PSI (Wajib untuk PSI) -->
-            <div class="form-group" id="group-field" style="display: none;">
+            <div class="form-group" id="psi-question-image" style="display: none;">
                 <label class="form-label">
-                    Kelompok Soal PSI <span class="required">*</span>
+                    Upload Gambar Soal PSI <span class="required">*</span>
                 </label>
-                <select name="question_group_id" id="question_group_id" class="form-select">
-                    <option value="">-- Pilih Kelompok Soal PSI --</option>
-                    @foreach($groups as $group)
-                        @if($group->type == 'PSI')
-                        <option value="{{ $group->id }}" {{ old('question_group_id') == $group->id ? 'selected' : '' }}>
-                            {{ $group->name }}
-                        </option>
-                        @endif
-                    @endforeach
-                </select>
-                <div class="form-hint">Soal PSI wajib memilih kelompok soal yang sudah dibuat</div>
+                <input 
+                    type="file" 
+                    name="question_image"
+                    class="form-input"
+                    accept="image/*">
+                <div class="form-hint">Format: JPG, PNG, JPEG</div>
             </div>
 
             <!-- Skor (Hanya untuk PU) -->
@@ -311,33 +309,35 @@
                     @endforeach
                 </div>
 
-                <!-- Tampilan untuk PSI: Text + Skor per Pilihan -->
+                <!-- Tampilan untuk PSI: Upload Gambar-->
                 <div id="psi-answers" style="display: none;">
-                    <div class="form-hint" style="margin-bottom: 15px;">
-                        Masukkan teks pilihan dan skor untuk setiap opsi jawaban
-                    </div>
 
-                    @foreach(['A', 'B', 'C', 'D', 'E'] as $option)
-                    <div class="answer-item">
-                        <div class="option-label-box">{{ $option }}</div>
-                        <input 
-                            type="text" 
-                            name="answer_choices[{{ $option }}][text]" 
-                            class="form-input option-input psi-choice-text" 
-                            placeholder="Teks pilihan {{ $option }}..."
-                            value="{{ old("answer_choices.$option.text") }}">
-                        <input 
-                            type="number" 
-                            name="answer_choices[{{ $option }}][score]" 
-                            class="form-input psi-score-input psi-choice-score" 
-                            placeholder="Skor"
-                            value="{{ old("answer_choices.$option.score") }}"
-                            min="1"
-                            step="1">
-                    </div>
-                    @endforeach
-                </div>
-            </div>
+    <div class="form-hint" style="margin-bottom: 15px;">
+        <span class="correct-answer-hint">Pilih jawaban yang benar</span>
+    </div>
+
+    @foreach(['A', 'B', 'C', 'D', 'E'] as $option)
+    <div class="answer-item">
+        <div class="option-label-box">{{ $option }}</div>
+
+        <!-- Upload gambar jawaban -->
+        <input 
+            type="file" 
+            name="answer_choices[{{ $option }}][image]" 
+            class="form-input psi-choice-image"
+            accept="image/*">
+
+        <!-- Radio correct -->
+        <div class="option-radio">
+            <input 
+                type="radio" 
+                name="correct_answer" 
+                value="{{ $option }}">
+        </div>
+    </div>
+    @endforeach
+
+</div>
 
             <!-- Form Actions -->
             <div class="form-actions">
@@ -360,66 +360,53 @@
 
 <script>
 function toggleQuestionType() {
-    const type = document.querySelector('input[name="type"]:checked').value;
-    
-    const groupField = document.getElementById('group-field');
-    const scoreField = document.getElementById('score-field');
+
+    const selected = document.querySelector('input[name="question_group_id"]:checked');
+    const type = selected ? selected.dataset.type : null;
+    const psiQuestionImage = document.getElementById('psi-question-image');
     const puAnswers = document.getElementById('pu-answers');
     const psiAnswers = document.getElementById('psi-answers');
-    
-    const scoreInput = document.getElementById('score-input');
-    const groupSelect = document.getElementById('question_group_id');
-    
-    // Input PU
+    const scoreField = document.getElementById('score-field');
+
+     const psiVideoField = document.getElementById('psi-video-field');
+
     const puChoiceInputs = document.querySelectorAll('.pu-choice-input');
     const puCorrectRadios = document.querySelectorAll('.pu-correct-radio');
-    
-    // Input PSI
-    const psiChoiceTexts = document.querySelectorAll('.psi-choice-text');
-    const psiChoiceScores = document.querySelectorAll('.psi-choice-score');
-    
+    const psiImages = document.querySelectorAll('.psi-choice-image');
+    const psiVideoInput = document.querySelector('.psi-video-input');
+
     if (type === 'PU') {
-        // ✅ Tampilkan field PU
-        groupField.style.display = 'none';
-        scoreField.style.display = 'block';
+
+        psiQuestionImage.style.display = 'none';
         puAnswers.style.display = 'block';
         psiAnswers.style.display = 'none';
+        scoreField.style.display = 'block';
 
-        // ✅ Aktifkan PU inputs
-        scoreInput.disabled = false;
         puChoiceInputs.forEach(i => i.disabled = false);
         puCorrectRadios.forEach(i => i.disabled = false);
+        psiImages.forEach(i => i.disabled = true);
+        psiVideoField.style.display = 'none';
+        psiVideoInput.disabled = true;
 
-        // 🚫 Nonaktifkan PSI inputs
-        groupSelect.disabled = true;
-        psiChoiceTexts.forEach(i => i.disabled = true);
-        psiChoiceScores.forEach(i => i.disabled = true);
-        
-    } else { // PSI
-        // ✅ Tampilkan field PSI
-        groupField.style.display = 'block';
-        scoreField.style.display = 'none';
+    } else { // TES1-4
+
+        psiQuestionImage.style.display = 'block';
         puAnswers.style.display = 'none';
         psiAnswers.style.display = 'block';
+        scoreField.style.display = 'block';
 
-        // ✅ Aktifkan PSI inputs
-        groupSelect.disabled = false;
-        psiChoiceTexts.forEach(i => i.disabled = false);
-        psiChoiceScores.forEach(i => i.disabled = false);
-
-        // 🚫 Nonaktifkan PU inputs
-        scoreInput.disabled = true;
         puChoiceInputs.forEach(i => i.disabled = true);
         puCorrectRadios.forEach(i => i.disabled = true);
+        psiImages.forEach(i => i.disabled = false);
+        psiVideoField.style.display = 'block';
+        psiVideoInput.disabled = false;
     }
 }
 
-// Jalankan saat halaman pertama kali dimuat
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
     toggleQuestionType();
 
-    // Update otomatis saat klik tipe
-    document.querySelectorAll('input[name="type"]').forEach(radio => {
+    document.querySelectorAll('input[name="question_group_id"]').forEach(radio => {
         radio.addEventListener('change', toggleQuestionType);
     });
 });

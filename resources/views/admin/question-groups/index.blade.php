@@ -413,7 +413,9 @@
             <div class="stat-header">
                 <div class="stat-icon purple">🎥</div>
             </div>
-            <div class="stat-value">{{ $groups->whereNotNull('video_tutorial')->count() }}</div>
+            <div class="stat-value">
+    {{ $groups->filter(fn($g) => $g->questions()->whereNotNull('video_tutorial')->exists())->count() }}
+</div>
             <div class="stat-label">Dengan Video</div>
         </div>
     </div>
@@ -444,18 +446,23 @@
                                 </svg>
                                 {{ $group->questions()->count() }} Soal
                             </span>
-                            
-                            @if($group->video_tutorial)
-                            <a href="{{ $group->video_tutorial }}" target="_blank" class="meta-badge badge-video">
-                                <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M2 6a2 2 0 012-2h6a2 2 0 012 6v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
-                                </svg>
-                                Video Tutorial
-                            </a>
-                            @endif
                         </div>
                     </div>
                 </div>
+                <a href="{{ route('admin.questions.index', ['group_id' => $group->id]) }}"
+   class="btn-action"
+title="Lihat Soal"
+style="background: #3b82f6; color: white;">
+<svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M2.458 12C3.732 7.943 7.523 5 12 5
+             c4.477 0 8.268 2.943 9.542 7
+             -1.274 4.057-5.065 7-9.542 7
+             -4.477 0-8.268-2.943-9.542-7z"/>
+</svg>
+</a>
                 
                 <div class="group-actions">
                     <a href="{{ route('admin.question-groups.edit', $group->id) }}" class="btn-action btn-edit" title="Edit Kelompok">

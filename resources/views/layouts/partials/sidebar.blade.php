@@ -16,7 +16,7 @@
     <ul class="menu">
         @role('camaba')
         <li class="menu-item">
-            <a href="{{ route('dashboard.camaba') }}" class="menu-link {{ request()->routeIs('dashboard.camaba') ? 'active' : '' }}">
+            <a href="{{ route('camaba.dashboard') }}" class="menu-link {{ request()->routeIs('camaba.dashboard') ? 'active' : '' }}">
                 <span class="menu-icon">🏠</span>
                 <span>BERANDA</span>
             </a>
@@ -37,7 +37,7 @@
         </li>
 
         <li class="menu-item">
-            <a href="{{ route('camaba.exam') }}" class="menu-link {{ request()->routeIs('camaba.exam') ? 'active' : '' }}">
+            <a href="{{ route('camaba.exam.index') }}" class="menu-link {{ request()->routeIs('camaba.exam.index') ? 'active' : '' }}">
                 <span class="menu-icon">📝</span>
                 <span>UJIAN</span>
             </a>

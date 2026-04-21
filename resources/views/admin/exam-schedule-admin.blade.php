@@ -260,7 +260,7 @@
                 <input type="date" class="date-input" name="end_date" value="{{ $schedule->end_date->format('Y-m-d') }}" required>
             </div>
             <input type="hidden" name="wave_name" value="{{ $schedule->wave_name }}">
-            <input type="hidden" name="quota" value="{{ $schedule->quota }}">
+            <input type="hidden" name="participant_quota" value="{{ $schedule->participant_quota }}">
             <input type="hidden" name="status" value="{{ $schedule->status }}">
             <button type="submit" class="btn-save">Save</button>
         </form>

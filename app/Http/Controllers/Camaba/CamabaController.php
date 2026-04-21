@@ -81,18 +81,25 @@ class CamabaController extends Controller
     // =============================
     public function registration()
 {
-    $personal = PersonalData::where('id_user', Auth::id())->first();
-    $education = EducationData::where('id_user', Auth::id())->first();
-    $family = FamilyData::where('id_user', Auth::id())->first();
-    return view('camaba.registration', compact('personal', 'education', 'family'));
+    $personalData = PersonalData::where('id_user', Auth::id())->first();
+    $educationData = EducationData::where('id_user', Auth::id())->first();
+    $keluarga = FamilyData::where('id_user', Auth::id())->first();
+    return view('camaba.registration', compact('personalData', 'educationData', 'keluarga'));
 }
 
-   public function pendaftaranLanjutan()
+  public function pendaftaranLanjutan()
 {
-    $data = session('data_pendaftaran', []);
-    $admissionPaths = AdmissionPath::all();
+    $path = AdmissionPath::where('id_user', Auth::id())->first();
+
+    $programTerpilih = ProgramSelection::where('user_id', Auth::id())->first();
+
     $studyPrograms = StudyProgram::all();
-    return view('camaba.registration-advanced', compact('data', 'admissionPaths', 'studyPrograms'));
+
+    return view('camaba.registration-advanced', compact(
+        'path',
+        'programTerpilih',
+        'studyPrograms'
+    ));
 }
 
     // =============================
@@ -137,7 +144,8 @@ class CamabaController extends Controller
             ]
         );
 
-        return redirect()->back()->with('success', 'Data diri berhasil disimpan!');
+        return redirect()->route('camaba.registration')
+    ->with('success', 'Data diri berhasil disimpan!');
     }
 
     // =============================
@@ -168,7 +176,8 @@ class CamabaController extends Controller
             ]
         );
 
-        return redirect()->back()->with('success', 'Data pendidikan berhasil disimpan!');
+     return redirect()->route('camaba.registration')
+    ->with('success', 'Data pendidikan berhasil disimpan!');
     }
 
     // =============================
@@ -203,8 +212,10 @@ class CamabaController extends Controller
             ]
         );
 
-        return redirect()->back()->with('success', 'Data keluarga berhasil disimpan!');
+        return redirect()->route('camaba.registration')
+    ->with('success', 'Data keluarga berhasil disimpan!');
     }
+
 
     // =============================
     // SIMPAN JALUR MASUK

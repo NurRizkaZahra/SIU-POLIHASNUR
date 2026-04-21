@@ -283,7 +283,7 @@
     </div>
     @endif
 
-    <form action="{{ route('camaba.data-jalur.simpan') }}" method="POST">
+    <form action="{{ route('camaba.admission-path.save') }}" method="POST">
         @csrf
 
        <!-- JALUR MASUK -->
@@ -310,7 +310,7 @@
                 @foreach ($jalurList as $jalur)
                     <label>
                         <input type="radio" name="path_name" value="{{ $jalur }}" 
-                        {{ isset($path) && $path->path_name == $jalur ? 'checked' : '' }}
+                        {{ old('path_name', $path->path_name ?? '') == $jalur ? 'checked' : '' }}
                         required>
                         {{ $jalur }}
                     </label>
@@ -326,7 +326,7 @@
 </form>
 
     <!-- PILIHAN JURUSAN -->
-<form action="{{ route('camaba.data-prodi.simpan') }}" method="POST">
+<form action="{{ route('camaba.program-selection.save') }}" method="POST">
     @csrf
     <div class="form-section">
         <div class="section-header" onclick="toggleFormSection(this)">
@@ -341,13 +341,14 @@
                 <div class="checkbox-container">
                     <div class="checkbox-group" id="pilihan1-group">
                        @foreach ($studyPrograms as $program)
-    <label>
-        <input type="checkbox" 
-               name="id_program_1" 
-               value="{{ $program->id_program }}"
-               {{ isset($programTerpilih) && $programTerpilih->id_program_1 == $program->id_program ? 'checked' : '' }}>
-        {{ $program->program_name }}
-    </label>
+<label>
+    <input type="radio"
+           name="id_program_1"
+           value="{{ $program->id_program }}"
+           {{ old('id_program_1', $programTerpilih->id_program_1 ?? '') == $program->id_program ? 'checked' : '' }}
+           required>
+    {{ $program->program_name }}
+</label>
 @endforeach
 
                     </div>
@@ -359,14 +360,15 @@
                 <h3 class="pilihan-title">Pilihan 2 <span style="color: red;">*</span></h3>
                 <div class="checkbox-container">
                     <div class="checkbox-group" id="pilihan2-group">
-                        @foreach ($studyPrograms as $program)
-    <label>
-        <input type="checkbox" 
-               name="id_program_2" 
-               value="{{ $program->id_program }}"
-               {{ isset($programTerpilih) && $programTerpilih->id_program_2 == $program->id_program ? 'checked' : '' }}>
-        {{ $program->program_name }}
-    </label>
+                      @foreach ($studyPrograms as $program)
+<label>
+    <input type="radio"
+           name="id_program_2"
+           value="{{ $program->id_program }}"
+           {{ old('id_program_2', $programTerpilih->id_program_2 ?? '') == $program->id_program ? 'checked' : '' }}
+           required>
+    {{ $program->program_name }}
+</label>
 @endforeach
 
                     </div>
@@ -381,7 +383,7 @@
 
 <!-- Done Button di dalam container, bukan fixed -->
 <div class="done-wrapper">
-    <a href="{{ route('dashboard.camaba') }}" class="done-btn">Done</a>
+    <a href="{{ route('camaba.dashboard') }}" class="done-btn">Done</a>
 </div>
 
 <script>
@@ -403,47 +405,6 @@
                 setTimeout(() => alert.remove(), 500);
             }, 5000);
         });
-
-        // Make checkboxes work like radio buttons (only one can be selected per group)
-        setupCheckboxGroups();
     });
-
-    function setupCheckboxGroups() {
-        // Handle Pilihan 1
-        const pilihan1Group = document.getElementById('pilihan1-group');
-        if (pilihan1Group) {
-            const pilihan1Checkboxes = pilihan1Group.querySelectorAll('input[type="checkbox"]');
-            
-            pilihan1Checkboxes.forEach(function(checkbox) {
-                checkbox.addEventListener('change', function() {
-                    if (this.checked) {
-                        pilihan1Checkboxes.forEach(function(cb) {
-                            if (cb !== checkbox) {
-                                cb.checked = false;
-                            }
-                        });
-                    }
-                });
-            });
-        }
-
-        // Handle Pilihan 2
-        const pilihan2Group = document.getElementById('pilihan2-group');
-        if (pilihan2Group) {
-            const pilihan2Checkboxes = pilihan2Group.querySelectorAll('input[type="checkbox"]');
-            
-            pilihan2Checkboxes.forEach(function(checkbox) {
-                checkbox.addEventListener('change', function() {
-                    if (this.checked) {
-                        pilihan2Checkboxes.forEach(function(cb) {
-                            if (cb !== checkbox) {
-                                cb.checked = false;
-                            }
-                        });
-                    }
-                });
-            });
-        }
-    }
 </script>
 @endsection

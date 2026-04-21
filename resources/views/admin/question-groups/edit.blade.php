@@ -209,18 +209,6 @@
                 <div class="form-hint">Pilih tipe kelompok sesuai kategori soal</div>
             </div>
 
-            <!-- Video Tutorial -->
-            <div class="form-group">
-                <label class="form-label">Link Video Tutorial (Opsional)</label>
-                <input 
-                    type="url" 
-                    name="video_tutorial" 
-                    class="form-input" 
-                    placeholder="https://youtube.com/watch?v=..."
-                    value="{{ old('video_tutorial', $questionGroup->video_tutorial) }}">
-                <div class="form-hint">Link video penjelasan untuk kelompok soal ini (opsional)</div>
-            </div>
-
             <!-- Form Actions -->
             <div class="form-actions">
                 <a href="{{ route('admin.question-groups.index') }}" class="btn btn-cancel">

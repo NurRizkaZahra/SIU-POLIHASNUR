@@ -48,7 +48,7 @@ class User extends Authenticatable
 
     public function admissionPath()
     {
-        return $this->hasOne(\App\Models\AdmissionPath::class, 'id_user');
+        return $this->hasOne(\App\Models\AdmissionPath::class, 'id_user', 'id');
     }
 
     public function programSelection()

@@ -9,7 +9,6 @@ class QuestionGroup extends Model
     protected $fillable = [
         'name',
         'type',
-        'video_tutorial'
     ];
 
     public function questions()

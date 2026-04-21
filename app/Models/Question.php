@@ -8,9 +8,11 @@ class Question extends Model
 {
     protected $fillable = [
     'question_text',
+    'question_image',
     'answer_choices',
     'correct_answer',
     'score',
+    'video_tutorial',
     'question_group_id'
 ];
 

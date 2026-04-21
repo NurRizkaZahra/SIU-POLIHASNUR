@@ -33,7 +33,6 @@ class QuestionGroupController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'type' => 'required|in:PU,PSI',
-            'video_tutorial' => 'nullable|url',
         ]);
 
         QuestionGroup::create($validated);
@@ -59,7 +58,6 @@ class QuestionGroupController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'type' => 'required|in:PU,PSI',
-            'video_tutorial' => 'nullable|url',
         ]);
 
         $questionGroup->update($validated);

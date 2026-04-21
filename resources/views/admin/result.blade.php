@@ -6,14 +6,12 @@
 
 @section('content')
 <style>
-/* Main Container */
 .result-container {
     padding: 2rem;
     background: #f8f9fa;
     min-height: calc(100vh - 100px);
 }
 
-/* Card Wrapper */
 .result-card {
     background: white;
     border-radius: 16px;
@@ -21,9 +19,8 @@
     overflow: hidden;
 }
 
-/* Header Section */
 .result-header {
-    padding: 2rem 2rem 1.5rem 2rem;
+    padding: 2rem 2.5rem 1.5rem 2.5rem;
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     border-bottom: 2px solid #e9ecef;
 }
@@ -44,9 +41,8 @@
     margin-bottom: 0;
 }
 
-/* Action Bar */
 .action-bar {
-    padding: 1.5rem 2rem;
+    padding: 1.25rem 2.5rem;
     background: #f8f9fa;
     border-bottom: 1px solid #e9ecef;
     display: flex;
@@ -63,7 +59,7 @@
 
 .search-input {
     width: 100%;
-    padding: 0.75rem 1rem 0.75rem 3rem;
+    padding: 0.7rem 1rem 0.7rem 3rem;
     border: 2px solid #dee2e6;
     border-radius: 12px;
     font-size: 0.95rem;
@@ -96,10 +92,10 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
+    padding: 0.7rem 1.4rem;
     border-radius: 12px;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     text-decoration: none;
     border: none;
     cursor: pointer;
@@ -128,32 +124,44 @@
 .btn-print:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(30, 90, 150, 0.4);
+    color: white;
 }
 
-/* Table Container */
+/* ===== TABLE ===== */
 .table-container {
-    padding: 2rem;
+    padding: 1.5rem 2.5rem 2rem 2.5rem;
 }
 
 .result-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
+    table-layout: fixed;
 }
 
-/* Table Head */
+/* Lebar kolom — 6 kolom */
+.result-table colgroup col:nth-child(1) { width: 75px; }
+.result-table colgroup col:nth-child(2) { width: 25%; }
+.result-table colgroup col:nth-child(3) { width: 25%; }
+.result-table colgroup col:nth-child(4) { width: 130px; }
+.result-table colgroup col:nth-child(5) { width: 150px; }
+.result-table colgroup col:nth-child(6) { width: 120px; }
+
+/* HEAD */
 .result-table thead {
     background: linear-gradient(135deg, #1e5a96 0%, #2471b9 100%);
 }
 
 .result-table thead th {
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1.25rem;
     color: white;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.6px;
     border: none;
+    vertical-align: middle;
+    white-space: nowrap;
 }
 
 .result-table thead th:first-child {
@@ -164,24 +172,53 @@
     border-radius: 0 12px 0 0;
 }
 
-/* Table Body */
+/* Center: No, Nilai PU, Skor Psikotes, IQ */
+.result-table thead th.col-no,
+.result-table thead th.col-pu,
+.result-table thead th.col-psi,
+.result-table thead th.col-iq {
+    text-align: center;
+}
+
+/* Left: Nama, Sekolah */
+.result-table thead th.col-name,
+.result-table thead th.col-school {
+    text-align: left;
+    padding-left: 1.5rem;
+}
+
+/* BODY */
 .result-table tbody tr {
-    transition: all 0.2s ease;
-    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s ease;
 }
 
 .result-table tbody tr:hover {
-    background: #f8f9fa;
-    transform: scale(1.002);
+    background: #f4f8fd;
 }
 
-.result-table tbody tr:last-child {
-    border-bottom: none;
+.result-table tbody tr:not(:last-child) td {
+    border-bottom: 1px solid #f0f2f5;
 }
 
 .result-table tbody td {
-    padding: 1.5rem 1.5rem;
+    padding: 1rem 1.25rem;
     border: none;
+    vertical-align: middle;
+}
+
+/* Center: No, Nilai PU, Skor Psikotes, IQ */
+.result-table tbody td.col-no,
+.result-table tbody td.col-pu,
+.result-table tbody td.col-psi,
+.result-table tbody td.col-iq {
+    text-align: center;
+}
+
+/* Left: Nama, Sekolah */
+.result-table tbody td.col-name,
+.result-table tbody td.col-school {
+    text-align: left;
+    padding-left: 1.5rem;
 }
 
 /* Number Badge */
@@ -189,21 +226,26 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-    color: #000;
+    color: #78350f;
     font-weight: 700;
-    font-size: 1.1rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+    font-size: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(251, 191, 36, 0.3);
 }
 
-/* Name Text - NO AVATAR! */
 .name-text {
     font-weight: 600;
-    font-size: 1.05rem;
+    font-size: 1rem;
     color: #2c3e50;
+}
+
+.school-text {
+    font-weight: 500;
+    font-size: 0.93rem;
+    color: #555;
 }
 
 /* Score Badge */
@@ -211,33 +253,42 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.7rem 1.5rem;
-    border-radius: 12px;
+    padding: 0.55rem 1rem;
+    border-radius: 10px;
     font-weight: 700;
-    font-size: 1.1rem;
-    min-width: 85px;
-    transition: all 0.2s ease;
+    font-size: 1rem;
+    min-width: 75px;
+    transition: transform 0.15s ease;
 }
 
 .score-badge:hover {
     transform: scale(1.05);
 }
 
+/* Biru — Nilai PU */
 .score-pu {
     background: linear-gradient(135deg, #1e5a96 0%, #2471b9 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(30, 90, 150, 0.3);
+    box-shadow: 0 3px 10px rgba(30, 90, 150, 0.25);
 }
 
+/* Kuning — Skor Psikotes */
 .score-psi {
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-    color: #000;
-    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+    background: linear-gradient(135deg, #1e5a96 0%, #2471b9 100%);
+    color: white;
+    box-shadow: 0 3px 10px rgba(251, 191, 36, 0.25);
+}
+
+/* Biru — IQ (sama dengan Nilai PU) */
+.score-iq {
+    background: linear-gradient(135deg, #1e5a96 0%, #2471b9 100%);
+    color: white;
+    box-shadow: 0 3px 10px rgba(30, 90, 150, 0.25);
 }
 
 /* Footer */
 .result-footer {
-    padding: 1.5rem 2rem;
+    padding: 1.25rem 2.5rem;
     background: #f8f9fa;
     border-top: 1px solid #e9ecef;
     text-align: center;
@@ -245,7 +296,7 @@
 
 .footer-text {
     color: #6c757d;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 500;
 }
 
@@ -256,24 +307,24 @@
 }
 
 .empty-icon {
-    font-size: 5rem;
+    font-size: 4.5rem;
     color: #dee2e6;
     margin-bottom: 1rem;
 }
 
 .empty-title {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 600;
     color: #6c757d;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
 }
 
 .empty-subtitle {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: #adb5bd;
 }
 
-/* Responsive */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .result-container {
         padding: 1rem;
@@ -281,12 +332,14 @@
 
     .result-header,
     .action-bar,
-    .table-container {
-        padding: 1.5rem;
+    .table-container,
+    .result-footer {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
     }
 
     .result-title {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
 
     .action-bar {
@@ -299,7 +352,6 @@
 
     .action-buttons {
         width: 100%;
-        justify-content: stretch;
     }
 
     .btn-action {
@@ -308,28 +360,42 @@
     }
 
     .result-table {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        table-layout: auto;
     }
 
     .result-table thead th,
     .result-table tbody td {
-        padding: 1rem;
+        padding: 0.85rem 0.75rem;
+    }
+
+    .result-table thead th.col-name,
+    .result-table tbody td.col-name,
+    .result-table thead th.col-school,
+    .result-table tbody td.col-school {
+        padding-left: 0.75rem;
     }
 
     .number-badge {
-        width: 38px;
-        height: 38px;
-        font-size: 0.95rem;
+        width: 34px;
+        height: 34px;
+        font-size: 0.88rem;
     }
 
     .score-badge {
-        padding: 0.6rem 1.2rem;
-        font-size: 1rem;
-        min-width: 75px;
+        padding: 0.45rem 0.75rem;
+        font-size: 0.88rem;
+        min-width: 58px;
+    }
+
+    /* Sembunyikan Asal Sekolah & IQ di layar kecil */
+    .col-school,
+    .col-iq {
+        display: none;
     }
 }
 
-/* Print Styles */
+/* ===== PRINT ===== */
 @media print {
     .result-container {
         padding: 0;
@@ -342,11 +408,17 @@
 
     .result-card {
         box-shadow: none;
+        border-radius: 0;
     }
 
     .result-header {
         background: white;
         border-bottom: 2px solid #000;
+        padding: 1rem 1.5rem;
+    }
+
+    .table-container {
+        padding: 0 1.5rem 1.5rem;
     }
 
     .result-table thead {
@@ -363,7 +435,6 @@
 
     .result-table tbody tr:hover {
         background: none;
-        transform: none;
     }
 
     tr {
@@ -374,7 +445,7 @@
 
 <div class="result-container">
     <div class="result-card">
-        
+
         {{-- HEADER --}}
         <div class="result-header">
             <h1 class="result-title">
@@ -390,9 +461,9 @@
         <div class="action-bar">
             <div class="search-wrapper">
                 <i class="bi bi-search search-icon"></i>
-                <input 
-                    type="text" 
-                    class="search-input" 
+                <input
+                    type="text"
+                    class="search-input"
                     id="searchInput"
                     placeholder="Ketik nama peserta untuk mencari..."
                 >
@@ -413,34 +484,49 @@
         {{-- TABLE --}}
         <div class="table-container">
             <table class="result-table">
+                <colgroup>
+                    <col>
+                    <col>
+                    <col>
+                    <col>
+                    <col>
+                    <col>
+                </colgroup>
                 <thead>
                     <tr>
-                        <th class="text-center" style="width: 100px;">No</th>
-                        <th style="width: auto;">Nama Peserta</th>
-                        <th class="text-center" style="width: 180px;">Nilai PU</th>
-                        <th class="text-center" style="width: 180px;">Nilai Psikotes</th>
+                        <th class="col-no">No</th>
+                        <th class="col-name">Nama Peserta</th>
+                        <th class="col-school">Asal Sekolah</th>
+                        <th class="col-pu">Nilai PU</th>
+                        <th class="col-psi">Nilai Psikotes</th>
+                        <th class="col-iq">IQ</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
                     @forelse ($exams as $i => $exam)
                         <tr class="table-row">
-                            <td class="text-center">
+                            <td class="col-no">
                                 <span class="number-badge">{{ $i + 1 }}</span>
                             </td>
-                            <td>
-                                {{-- NO AVATAR, JUST NAME --}}
+                            <td class="col-name">
                                 <span class="name-text">{{ $exam['name'] }}</span>
                             </td>
-                            <td class="text-center">
+                            <td class="col-school">
+                                <span class="school-text">{{ $exam['school'] ?? '-' }}</span>
+                            </td>
+                            <td class="col-pu">
                                 <span class="score-badge score-pu">{{ $exam['pu'] }}</span>
                             </td>
-                            <td class="text-center">
-                                <span class="score-badge score-psi">{{ $exam['psi'] }}</span>
+                            <td class="col-psi">
+                                <span class="score-badge score-psi">{{ $exam['psi_score'] }}</span>
+                            </td>
+                            <td class="col-iq">
+                                <span class="score-badge score-iq">{{ $exam['iq'] }}</span>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4">
+                            <td colspan="6">
                                 <div class="empty-state">
                                     <i class="bi bi-inbox empty-icon"></i>
                                     <p class="empty-title">Belum ada hasil ujian</p>
@@ -468,64 +554,56 @@
 
 {{-- JAVASCRIPT --}}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('searchInput');
     const tableBody = document.getElementById('tableBody');
     const allRows = Array.from(tableBody.querySelectorAll('.table-row'));
     const totalData = allRows.length;
 
-    if (totalData > 0) {
-        searchInput.addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase().trim();
-            let visibleCount = 0;
+    if (totalData === 0) return;
 
-            allRows.forEach(row => {
-                const nameText = row.querySelector('.name-text');
-                if (nameText) {
-                    const name = nameText.textContent.toLowerCase();
-                    if (name.includes(searchTerm)) {
-                        row.style.display = '';
-                        visibleCount++;
-                    } else {
-                        row.style.display = 'none';
-                    }
-                }
-            });
+    searchInput.addEventListener('input', function (e) {
+        const term = e.target.value.toLowerCase().trim();
+        let visible = 0;
 
-            // Update footer text
-            const showingText = document.getElementById('showingText');
-            if (showingText) {
-                showingText.innerHTML = `
-                    <i class="bi bi-info-circle me-1"></i>
-                    Menampilkan <strong>${visibleCount}</strong> dari <strong>${totalData}</strong> peserta
-                `;
-            }
-
-            // Show/hide no results message
-            const existingNoResults = document.getElementById('noResults');
-            
-            if (visibleCount === 0) {
-                if (!existingNoResults) {
-                    const noResultsRow = document.createElement('tr');
-                    noResultsRow.id = 'noResults';
-                    noResultsRow.innerHTML = `
-                        <td colspan="4">
-                            <div class="empty-state">
-                                <i class="bi bi-search empty-icon"></i>
-                                <p class="empty-title">Tidak ada hasil yang ditemukan</p>
-                                <p class="empty-subtitle">Coba kata kunci pencarian yang lain</p>
-                            </div>
-                        </td>
-                    `;
-                    tableBody.appendChild(noResultsRow);
-                }
+        allRows.forEach(row => {
+            const name = row.querySelector('.name-text');
+            if (name && name.textContent.toLowerCase().includes(term)) {
+                row.style.display = '';
+                visible++;
             } else {
-                if (existingNoResults) {
-                    existingNoResults.remove();
-                }
+                row.style.display = 'none';
             }
         });
-    }
+
+        const showingText = document.getElementById('showingText');
+        if (showingText) {
+            showingText.innerHTML = `
+                <i class="bi bi-info-circle me-1"></i>
+                Menampilkan <strong>${visible}</strong> dari <strong>${totalData}</strong> peserta
+            `;
+        }
+
+        const existing = document.getElementById('noResults');
+        if (visible === 0) {
+            if (!existing) {
+                const row = document.createElement('tr');
+                row.id = 'noResults';
+                row.innerHTML = `
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <i class="bi bi-search empty-icon"></i>
+                            <p class="empty-title">Tidak ada hasil yang ditemukan</p>
+                            <p class="empty-subtitle">Coba kata kunci pencarian yang lain</p>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            }
+        } else {
+            if (existing) existing.remove();
+        }
+    });
 });
 </script>
 @endsection

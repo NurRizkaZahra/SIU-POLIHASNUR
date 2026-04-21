@@ -15,7 +15,7 @@ class AdminResultController extends Controller
     private function getUniqueExams()
     {
         // Ambil hanya 1 hasil per user (hasil terbaru)
-        return Exam::with(['user', 'answers.question.group'])
+        return Exam::with(['user.educationData', 'answers.question.group'])
             ->where('status', 'completed')
             ->orderBy('created_at', 'asc')
             ->get()
@@ -35,11 +35,26 @@ class AdminResultController extends Controller
                         $scorePSI += $answer->score;
                     }
                 }
+                $iqMapping = [
+    16 => 66, 17 => 70, 18 => 73, 19 => 76,
+    20 => 79, 21 => 81, 22 => 83, 23 => 84,
+    24 => 86, 25 => 87, 26 => 89, 27 => 91,
+    28 => 92, 29 => 94, 30 => 96, 31 => 97,
+    32 => 99, 33 => 102, 34 => 105, 35 => 107,
+    36 => 109, 37 => 118, 38 => 123, 39 => 127,
+    40 => 133, 41 => 139
+];
+
+$nilaiIQ = $iqMapping[$scorePSI] ?? 0;
+
+$nilaiPU = $scorePU * 4;
 
                 return [
                     'name' => $exam->user->name,
-                    'pu'   => number_format($scorePU, 1),
-                    'psi'  => number_format($scorePSI, 1),
+                    'school' => optional($exam->user->educationData)->school_name ?? '-',
+                    'pu'   => $nilaiPU,
+                    'psi_score'  => $scorePSI,
+                    'iq'   => $nilaiIQ,
                 ];
             });
     }
@@ -64,7 +79,7 @@ class AdminResultController extends Controller
         $sheet = $spreadsheet->getActiveSheet();
 
         // Title
-        $sheet->mergeCells('A1:D1');
+        $sheet->mergeCells('A1:F1');
         $sheet->setCellValue('A1', 'HASIL UJIAN PMB POLIHASNUR 2026');
         $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(14);
         $sheet->getStyle('A1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
@@ -72,8 +87,10 @@ class AdminResultController extends Controller
         // Header
         $sheet->setCellValue('A3', 'No');
         $sheet->setCellValue('B3', 'Nama Peserta');
-        $sheet->setCellValue('C3', 'Nilai PU');
-        $sheet->setCellValue('D3', 'Nilai Psikotes');
+        $sheet->setCellValue('C3', 'Asal Sekolah');
+        $sheet->setCellValue('D3', 'Nilai PU');
+        $sheet->setCellValue('E3', 'Skor Psikotes');
+        $sheet->setCellValue('F3', 'IQ');
 
         // Style header
         $headerStyle = [
@@ -84,17 +101,20 @@ class AdminResultController extends Controller
             ],
             'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
         ];
-        $sheet->getStyle('A3:D3')->applyFromArray($headerStyle);
+        $sheet->getStyle('A3:F3')->applyFromArray($headerStyle);
 
         // Data
         $row = 4;
         foreach ($exams as $index => $exam) {
             $sheet->setCellValue('A' . $row, $index + 1);
             $sheet->setCellValue('B' . $row, $exam['name']);
-            $sheet->setCellValue('C' . $row, $exam['pu']);
-            $sheet->setCellValue('D' . $row, $exam['psi']);
+            $sheet->setCellValue('C' . $row, $exam['school']);
+            $sheet->setCellValue('D' . $row, $exam['pu']);
+            $sheet->setCellValue('E' . $row, $exam['psi_score']);
+            $sheet->setCellValue('F' . $row, $exam['iq']);
 
-            $sheet->getStyle('A' . $row . ':D' . $row)
+
+            $sheet->getStyle('A' . $row . ':F' . $row)
                 ->getAlignment()
                 ->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
@@ -102,7 +122,7 @@ class AdminResultController extends Controller
         }
 
         // Auto size
-        foreach(range('A','D') as $col) {
+        foreach(range('A','F') as $col) {
             $sheet->getColumnDimension($col)->setAutoSize(true);
         }
 
@@ -114,7 +134,7 @@ class AdminResultController extends Controller
                 ],
             ],
         ];
-        $sheet->getStyle('A3:D' . ($row - 1))->applyFromArray($styleArray);
+        $sheet->getStyle('A3:F' . ($row - 1))->applyFromArray($styleArray);
 
         // Download
         $writer = new Xlsx($spreadsheet);

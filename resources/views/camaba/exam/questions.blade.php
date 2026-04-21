@@ -9,18 +9,21 @@
         padding: 0;
         box-sizing: border-box;
     }
+
     /* Disable text selection */
     .exam-wrapper {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
     .no-select {
-    user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-}
+        user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+
     .exam-wrapper {
         background: #f5f7fa;
         min-height: 100vh;
@@ -172,6 +175,7 @@
         margin-bottom: 1.5rem;
     }
 
+    /* ===== VIDEO CONTAINER ===== */
     .video-container {
         margin-bottom: 1.5rem;
         border-radius: 10px;
@@ -182,9 +186,54 @@
     .video-container video {
         width: 100%;
         max-width: 100%;
+        max-height: 360px;
         display: block;
+        object-fit: contain;
+        background: #000;
     }
 
+    .video-container iframe {
+        display: block;
+        width: 100%;
+        height: 360px;
+        border: none;
+        border-radius: 10px;
+    }
+
+    /* ===== QUESTION IMAGES ===== */
+    .question-image-wrap {
+        margin-top: 12px;
+        text-align: left;
+    }
+
+    .question-image-wrap img {
+        max-width: 280px;
+        width: 100%;
+        max-height: 200px;
+        height: auto;
+        object-fit: contain;
+        border-radius: 8px;
+        display: block;
+        border: 1px solid #e0e0e0;
+    }
+
+    /* ===== OPTION IMAGES ===== */
+    .option-image-wrap {
+        margin-top: 6px;
+    }
+
+    .option-image-wrap img {
+        max-width: 120px;
+        max-height: 80px;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 6px;
+        display: block;
+        border: 1px solid #e0e0e0;
+    }
+
+    /* Question Header */
     .question-header {
         display: flex;
         justify-content: space-between;
@@ -218,7 +267,7 @@
     }
 
     .question-text {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         line-height: 1.7;
         color: #2c3e50;
         margin-bottom: 1.75rem;
@@ -240,7 +289,7 @@
         cursor: pointer;
         transition: all 0.3s ease;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
     }
 
     .option-item:hover {
@@ -261,7 +310,7 @@
 
     .option-label {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 0.9rem;
         cursor: pointer;
         width: 100%;
@@ -280,6 +329,7 @@
         color: #2980b9;
         font-size: 0.95rem;
         flex-shrink: 0;
+        margin-top: 2px;
     }
 
     .option-item.selected .option-letter {
@@ -334,7 +384,7 @@
     }
 
     .btn-prev:hover:not(:disabled) {
-        background: #cdbf07;
+        background: #b8aa06;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(127, 140, 141, 0.3);
     }
@@ -386,14 +436,8 @@
     }
 
     @keyframes modalSlideIn {
-        from {
-            opacity: 0;
-            transform: translateY(-50px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(-50px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
 
     .modal-box h3 {
@@ -428,81 +472,37 @@
         transition: all 0.3s ease;
     }
 
-    .btn-cancel {
-        background: #95a5a6;
-        color: white;
-    }
-
-    .btn-cancel:hover {
-        background: #7f8c8d;
-    }
-
-    .btn-confirm {
-        background: #27ae60;
-        color: white;
-    }
-
-    .btn-confirm:hover {
-        background: #1e8449;
-    }
+    .btn-cancel  { background: #95a5a6; color: white; }
+    .btn-cancel:hover  { background: #7f8c8d; }
+    .btn-confirm { background: #27ae60; color: white; }
+    .btn-confirm:hover { background: #1e8449; }
 
     /* Responsive */
     @media (max-width: 1024px) {
-        .exam-container {
-            flex-direction: column;
-        }
-
-        .question-sidebar {
-            width: 100%;
-            position: relative;
-            top: 0;
-        }
-
-        .question-grid {
-            grid-template-columns: repeat(8, 1fr);
-        }
+        .exam-container { flex-direction: column; }
+        .question-sidebar { width: 100%; position: relative; top: 0; }
+        .question-grid { grid-template-columns: repeat(8, 1fr); }
     }
 
     @media (max-width: 768px) {
-        .exam-wrapper {
-            padding: 1rem;
-        }
-
-        .exam-info-bar {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .progress-section {
-            max-width: 100%;
-        }
-
-        .question-grid {
-            grid-template-columns: repeat(5, 1fr);
-        }
-
-        .question-card {
-            padding: 1.5rem;
-        }
-
-        .navigation-controls {
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .btn-exam {
-            width: 100%;
-            justify-content: center;
-        }
+        .exam-wrapper { padding: 1rem; }
+        .exam-info-bar { flex-direction: column; align-items: stretch; }
+        .progress-section { max-width: 100%; }
+        .question-grid { grid-template-columns: repeat(5, 1fr); }
+        .question-card { padding: 1.25rem; }
+        .navigation-controls { flex-direction: column; gap: 1rem; }
+        .btn-exam { width: 100%; justify-content: center; }
+        .question-image-wrap img { max-width: 100%; }
+        .video-container video,
+        .video-container iframe { height: 220px; }
     }
 </style>
 
 <div class="exam-wrapper">
+
     <!-- Info Bar -->
     <div class="exam-info-bar">
-        <div class="session-badge" id="sessionBadge">
-            Pengetahuan Umum
-        </div>
+        <div class="session-badge" id="sessionBadge">Pengetahuan Umum</div>
 
         <div class="progress-section">
             <div class="progress-bar-wrapper">
@@ -524,13 +524,14 @@
 
     <!-- Main Container -->
     <div class="exam-container">
+
         <!-- Sidebar Navigation -->
         <aside class="question-sidebar">
             <div class="sidebar-title">Navigasi Soal</div>
             <div class="question-grid" id="questionGrid">
                 @foreach($questions as $index => $q)
-                    <div class="question-number-box" 
-                         data-index="{{ $index }}" 
+                    <div class="question-number-box"
+                         data-index="{{ $index }}"
                          data-question-id="{{ $q->id }}"
                          onclick="goToQuestion({{ $index }})">
                         {{ $index + 1 }}
@@ -542,13 +543,9 @@
         <!-- Question Content -->
         <div class="question-content-area">
             <div class="question-card">
+
                 <!-- Video Tutorial (untuk PSI) -->
-                <div class="video-container" id="videoContainer" style="display: none;">
-                    <video id="tutorialVideo" controls>
-                        <source src="" type="video/mp4">
-                        Browser Anda tidak mendukung video.
-                    </video>
-                </div>
+                <div class="video-container" id="videoContainer" style="display: none;"></div>
 
                 <!-- Question Header -->
                 <div class="question-header">
@@ -561,14 +558,10 @@
                 </div>
 
                 <!-- Question Text -->
-                <div class="question-text" id="questionText">
-                    <!-- Question akan dimuat di sini -->
-                </div>
+                <div class="question-text" id="questionText"></div>
 
                 <!-- Options -->
-                <div class="options-wrapper" id="optionsContainer">
-                    <!-- Options akan dimuat di sini -->
-                </div>
+                <div class="options-wrapper" id="optionsContainer"></div>
             </div>
 
             <!-- Navigation Buttons -->
@@ -625,268 +618,225 @@
 </div>
 
 <script>
+    const groupId = {{ $groupId }};
     // Data dari Backend
-    const examId = {{ $exam->id }};
-    const questions = @json($questions->values());
-    const savedAnswers = @json($savedAnswers);
-    const csrfToken = '{{ csrf_token() }}';
+    const examId      = {{ $exam->id }};
+    const questions   = @json($questions->values());
+    // FIX: hanya simpan jawaban yang relevan dengan soal di halaman ini
+    const questionIds = questions.map(q => q.id);
+    const rawAnswers  = @json($savedAnswers);
+    const csrfToken   = '{{ csrf_token() }}';
 
-    // State
+    // State — filter savedAnswers agar hanya berisi soal yang ada di halaman ini
     let currentIndex = 0;
-    let answers = { ...savedAnswers };
-    let timerInterval = null;
+    let answers = {};
+    for (const [key, val] of Object.entries(rawAnswers)) {
+        if (questionIds.includes(parseInt(key))) {
+            answers[key] = val;
+        }
+    }
+
+    let timerInterval    = null;
     let remainingSeconds = 300; // 5 menit untuk testing
 
     // Initialize
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('Total soal:', questions.length);
-        console.log('Questions:', questions);
-        
+    document.addEventListener('DOMContentLoaded', function () {
         loadQuestion(0);
         updateQuestionGrid();
         updateProgress();
         startTimer();
     });
 
-// Load Question
-function loadQuestion(index) {
-    if (index < 0 || index >= questions.length) return;
+    // =====================
+    // Load Question
+    // =====================
+    function loadQuestion(index) {
+        if (index < 0 || index >= questions.length) return;
 
-    currentIndex = index;
-    const question = questions[index];
+        currentIndex = index;
+        const question = questions[index];
 
-    // ✅ DEBUG: Log semua info question
-    console.log('=== Loading Question ===');
-    console.log('Index:', index + 1);
-    console.log('Question ID:', question.id);
-    console.log('Question:', question.question_text);
-    console.log('Group:', question.group);
-    console.log('Is First in Group:', question.is_first_in_group);
-    console.log('Video Tutorial:', question.group?.video_tutorial);
-    console.log('======================');
+        document.getElementById('currentNumber').textContent = index + 1;
 
-    // Update current number
-    document.getElementById('currentNumber').textContent = index + 1;
+        const sessionBadge   = document.getElementById('sessionBadge');
+        const typeBadge      = document.getElementById('typeBadge');
+        const videoContainer = document.getElementById('videoContainer');
 
-    // Update session badge & type badge
-    const sessionBadge = document.getElementById('sessionBadge');
-    const typeBadge = document.getElementById('typeBadge');
-    const videoContainer = document.getElementById('videoContainer');
-    const tutorialVideo = document.getElementById('tutorialVideo');
-    
-    // Check if question has group and group type
-    if (question.group && question.group.type === 'PSI') {
-        sessionBadge.textContent = 'Psikotes - ' + question.group.name;
-        typeBadge.textContent = 'Psikotes';
-        typeBadge.className = 'question-type-badge badge-psi';
+        if (question.group && question.group.type === 'PSI') {
+            sessionBadge.textContent  = 'Psikotes - ' + question.group.name;
+            typeBadge.textContent     = 'Psikotes';
+            typeBadge.className       = 'question-type-badge badge-psi';
 
-        // ✅ SHOW VIDEO HANYA JIKA ada video & soal pertama dalam grup
-        if (question.group.video_tutorial && question.is_first_in_group) {
-            console.log('✅ Showing video for first question in group');
-            
-            const videoUrl = question.group.video_tutorial;
-            
-            // ✅ CEK APAKAH YOUTUBE ATAU MP4 LOKAL
-            if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
-                console.log('📹 YouTube video detected');
-                
-                // Convert ke embed URL
-                let embedUrl = videoUrl;
-                if (videoUrl.includes('watch?v=')) {
-                    const videoId = videoUrl.split('watch?v=')[1].split('&')[0];
-                    embedUrl = `https://www.youtube.com/embed/${videoId}`;
-                } else if (videoUrl.includes('youtu.be/')) {
-                    const videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
-                    embedUrl = `https://www.youtube.com/embed/${videoId}`;
-                } else if (!videoUrl.includes('embed')) {
-                    console.warn('⚠️ YouTube URL format tidak dikenali:', videoUrl);
-                }
-                
-                // Tampilkan YouTube dengan iframe
-                videoContainer.innerHTML = `
-                    <iframe 
-                        id="youtubePlayer"
-                        width="100%" 
-                        height="400" 
-                        src="${embedUrl}" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen
-                        style="border-radius: 10px;">
-                    </iframe>
-                `;
-                videoContainer.style.display = 'block';
-                console.log('✅ YouTube iframe loaded:', embedUrl);
-            } 
-            else {
-                // ✅ VIDEO LOKAL (MP4)
-                console.log('🎬 Local video detected');
-                
-                // Reset innerHTML ke video element
-                videoContainer.innerHTML = `
-                    <video id="tutorialVideo" controls controlsList="nodownload" preload="metadata" style="width: 100%; border-radius: 10px;">
-                        <source src="" type="video/mp4">
-                        Browser Anda tidak mendukung pemutaran video.
-                    </video>
-                `;
-                
-                const video = document.getElementById('tutorialVideo');
-                video.src = videoUrl;
-                video.load();
-                
-                // Handle video errors
-                video.onerror = function() {
-                    console.error('❌ Video gagal dimuat:', videoUrl);
+            if (question.group.video_tutorial && question.is_first_in_group) {
+                const videoUrl = question.group.video_tutorial;
+
+                if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+                    let embedUrl = videoUrl;
+                    if (videoUrl.includes('watch?v=')) {
+                        const vid = videoUrl.split('watch?v=')[1].split('&')[0];
+                        embedUrl  = `https://www.youtube.com/embed/${vid}`;
+                    } else if (videoUrl.includes('youtu.be/')) {
+                        const vid = videoUrl.split('youtu.be/')[1].split('?')[0];
+                        embedUrl  = `https://www.youtube.com/embed/${vid}`;
+                    }
                     videoContainer.innerHTML = `
-                        <div style="padding: 20px; text-align: center; color: #e74c3c; background: #fee; border-radius: 10px;">
-                            <i class="bi bi-exclamation-triangle" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                            <p style="margin: 0; font-weight: 600;">Video tutorial tidak dapat dimuat</p>
-                            <p style="margin: 5px 0 0 0; font-size: 0.9rem;">Silakan lanjutkan mengerjakan soal</p>
-                        </div>
-                    `;
-                };
-                
-                video.onloadeddata = function() {
-                    console.log('✅ Video berhasil dimuat:', videoUrl);
-                };
-                
+                        <iframe
+                            src="${embedUrl}"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>`;
+                } else {
+                    videoContainer.innerHTML = `
+                        <video id="tutorialVideo" controls controlsList="nodownload" preload="metadata">
+                            <source src="${videoUrl}" type="video/mp4">
+                            Browser Anda tidak mendukung pemutaran video.
+                        </video>`;
+
+                    const video = videoContainer.querySelector('video');
+                    video.onerror = () => {
+                        videoContainer.innerHTML = `
+                            <div style="padding:20px;text-align:center;color:#e74c3c;background:#fee;border-radius:10px;">
+                                <p style="font-weight:600;">Video tutorial tidak dapat dimuat</p>
+                                <p style="font-size:0.9rem;margin-top:4px;">Silakan lanjutkan mengerjakan soal</p>
+                            </div>`;
+                    };
+                }
                 videoContainer.style.display = 'block';
+            } else {
+                videoContainer.style.display = 'none';
+                videoContainer.innerHTML = '';
             }
         } else {
-            console.log('❌ Video tidak ditampilkan:', {
-                'Ada video?': !!question.group.video_tutorial,
-                'Soal pertama?': question.is_first_in_group
-            });
+            sessionBadge.textContent = 'Pengetahuan Umum';
+            typeBadge.textContent    = 'Pengetahuan Umum';
+            typeBadge.className      = 'question-type-badge badge-pu';
             videoContainer.style.display = 'none';
-            videoContainer.innerHTML = `
-                <video id="tutorialVideo" controls>
-                    <source src="" type="video/mp4">
-                </video>
-            `;
+            videoContainer.innerHTML = '';
         }
-    } else {
-        // Soal PU - no video
-        sessionBadge.textContent = 'Pengetahuan Umum';
-        typeBadge.textContent = 'Pengetahuan Umum';
-        typeBadge.className = 'question-type-badge badge-pu';
-        videoContainer.style.display = 'none';
-        videoContainer.innerHTML = `
-            <video id="tutorialVideo" controls>
-                <source src="" type="video/mp4">
-            </video>
-        `;
+
+        // Question text + image
+        let questionHtml = question.question_text ?? '';
+        if (question.question_image) {
+            questionHtml += `
+                <div class="question-image-wrap">
+                    <img src="/storage/${question.question_image}" alt="Gambar soal">
+                </div>`;
+        }
+        document.getElementById('questionText').innerHTML = questionHtml;
+
+        // Options
+        const optionsContainer = document.getElementById('optionsContainer');
+        optionsContainer.innerHTML = '';
+
+        ['A', 'B', 'C', 'D', 'E'].forEach(letter => {
+            const optionText  = question['option_' + letter.toLowerCase()] ?? '';
+            const optionImage = question['option_' + letter.toLowerCase() + '_image'];
+            const isSelected  = answers[question.id] === letter;
+
+            // Skip kosong (tidak ada teks dan tidak ada gambar)
+            if (!optionText && !optionImage) return;
+
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'option-item' + (isSelected ? ' selected' : '');
+            optionDiv.onclick   = (e) => selectOption(e, letter, question.id);
+
+            optionDiv.innerHTML = `
+                <input type="radio"
+                    name="answers[${question.id}]"
+                    id="option${letter}"
+                    value="${letter}"
+                    ${isSelected ? 'checked' : ''}>
+                <label class="option-label" for="option${letter}">
+                    <span class="option-letter">${letter}</span>
+                    <span class="option-text">
+                        ${optionText ? optionText : ''}
+                        ${optionImage
+                            ? `<div class="option-image-wrap">
+                                    <img src="/storage/${optionImage}" alt="Pilihan ${letter}">
+                               </div>`
+                            : ''}
+                    </span>
+                </label>`;
+
+            optionsContainer.appendChild(optionDiv);
+        });
+
+        updateNavigationButtons();
+        updateQuestionGrid();
     }
 
-    // Load question text
-    document.getElementById('questionText').innerHTML = question.question_text;
+    // =====================
+    // Select Option — FIX: gunakan parameter event eksplisit
+    // =====================
+    function selectOption(e, letter, questionId) {
+        document.querySelectorAll('.option-item').forEach(opt => opt.classList.remove('selected'));
+        e.currentTarget.classList.add('selected');
 
-    // Load options
-    const optionsContainer = document.getElementById('optionsContainer');
-    optionsContainer.innerHTML = '';
+        const radio = document.getElementById(`option${letter}`);
+        if (radio) radio.checked = true;
 
-    ['A', 'B', 'C', 'D', 'E'].forEach(letter => {
-        const isSelected = answers[question.id] === letter;
-        const optionDiv = document.createElement('div');
-        optionDiv.className = 'option-item' + (isSelected ? ' selected' : '');
-        optionDiv.onclick = () => selectOption(letter, question.id);
-        
-        optionDiv.innerHTML = `
-            <input type="radio" name="answers[${question.id}]" id="option${letter}" value="${letter}" ${isSelected ? 'checked' : ''}>
-            <label class="option-label" for="option${letter}">
-                <span class="option-letter">${letter}</span>
-                <span class="option-text">${question['option_' + letter.toLowerCase()]}</span>
-            </label>
-        `;
-        
-        optionsContainer.appendChild(optionDiv);
-    });
+        answers[questionId] = letter;
 
-    // Update navigation buttons
-    updateNavigationButtons();
-    updateQuestionGrid();
-}
+        saveAnswer(questionId, letter);
+        updateQuestionGrid();
+        updateProgress();
+    }
 
-// Select Option
-function selectOption(letter, questionId) {
-    // Update UI
-    document.querySelectorAll('.option-item').forEach(opt => opt.classList.remove('selected'));
-    event.currentTarget.classList.add('selected');
-    document.getElementById(`option${letter}`).checked = true;
+    // =====================
+    // Save Answer via AJAX
+    // =====================
+    function saveAnswer(questionId, selectedAnswer) {
+        fetch(`/exam/${examId}/save-answer`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+            body: JSON.stringify({
+                question_id:     questionId,
+                selected_answer: selectedAnswer,
+            }),
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (!data.success) console.error('❌ Gagal menyimpan jawaban');
+        })
+        .catch(err => console.error('❌ Error saving answer:', err));
+    }
 
-    // Save to state
-    answers[questionId] = letter;
+    // =====================
+    // Update Progress — FIX: max 100%
+    // =====================
+    function updateProgress() {
+        const answeredCount = Object.keys(answers).length;
+        const total         = questions.length;
+        const progress      = total > 0 ? Math.min(Math.round((answeredCount / total) * 100), 100) : 0;
 
-    // Save to backend
-    saveAnswer(questionId, letter);
+        document.getElementById('progressBar').style.width = progress + '%';
+        document.getElementById('progressPercent').textContent = progress;
+    }
 
-    // Update grid & progress
-    updateQuestionGrid();
-    updateProgress();
-}
-
-// Save Answer via AJAX
-function saveAnswer(questionId, selectedAnswer) {
-    fetch(`/exam/${examId}/save-answer`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken,
-        },
-        body: JSON.stringify({
-            question_id: questionId,
-            selected_answer: selectedAnswer,
-        }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            console.log('✅ Jawaban tersimpan untuk soal #' + questionId + ': ' + selectedAnswer);
-        } else {
-            console.error('❌ Gagal menyimpan jawaban');
-        }
-    })
-    .catch(error => console.error('❌ Error saving answer:', error));
-}
-
-// Update Progress
-function updateProgress() {
-    const answeredCount = Object.keys(answers).length;
-    const progress = Math.round((answeredCount / questions.length) * 100);
-    
-    document.getElementById('progressBar').style.width = progress + '%';
-    document.getElementById('progressPercent').textContent = progress;
-    
-    console.log(`📊 Progress: ${answeredCount}/${questions.length} (${progress}%)`);
-}
-
+    // =====================
     // Update Question Grid
+    // =====================
     function updateQuestionGrid() {
         document.querySelectorAll('.question-number-box').forEach((box, index) => {
             const questionId = questions[index].id;
-            
             box.classList.remove('active', 'answered');
-            
-            if (index === currentIndex) {
-                box.classList.add('active');
-            }
-            
-            if (answers[questionId]) {
-                box.classList.add('answered');
-            }
+            if (index === currentIndex) box.classList.add('active');
+            if (answers[questionId])    box.classList.add('answered');
         });
     }
 
+    // =====================
     // Navigation
+    // =====================
     function previousQuestion() {
-        if (currentIndex > 0) {
-            loadQuestion(currentIndex - 1);
-        }
+        if (currentIndex > 0) loadQuestion(currentIndex - 1);
     }
 
     function nextQuestion() {
-        if (currentIndex < questions.length - 1) {
-            loadQuestion(currentIndex + 1);
-        }
+        if (currentIndex < questions.length - 1) loadQuestion(currentIndex + 1);
     }
 
     function goToQuestion(index) {
@@ -894,44 +844,42 @@ function updateProgress() {
     }
 
     function updateNavigationButtons() {
-        const btnPrev = document.getElementById('btnPrev');
-        const btnNext = document.getElementById('btnNext');
+        const btnPrev   = document.getElementById('btnPrev');
+        const btnNext   = document.getElementById('btnNext');
         const btnSubmit = document.getElementById('btnSubmit');
 
         btnPrev.disabled = currentIndex === 0;
 
         if (currentIndex === questions.length - 1) {
-            btnNext.style.display = 'none';
+            btnNext.style.display   = 'none';
             btnSubmit.style.display = 'inline-flex';
         } else {
-            btnNext.style.display = 'inline-flex';
+            btnNext.style.display   = 'inline-flex';
             btnSubmit.style.display = 'none';
         }
     }
 
+    // =====================
     // Timer
+    // =====================
     function startTimer() {
         timerInterval = setInterval(() => {
             remainingSeconds--;
-
             if (remainingSeconds <= 0) {
                 clearInterval(timerInterval);
                 timeUp();
                 return;
             }
-
             updateTimerDisplay();
         }, 1000);
     }
 
     function updateTimerDisplay() {
-        const minutes = Math.floor(remainingSeconds / 60);
-        const seconds = remainingSeconds % 60;
+        const m = Math.floor(remainingSeconds / 60);
+        const s = remainingSeconds % 60;
+        document.getElementById('timerDisplay').textContent =
+            `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 
-        const display = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-        document.getElementById('timerDisplay').textContent = display;
-
-        // Warning color if < 1 minute
         if (remainingSeconds < 60) {
             document.getElementById('timerDisplay').style.color = '#e74c3c';
         }
@@ -941,10 +889,11 @@ function updateProgress() {
         document.getElementById('timeUpModal').style.display = 'flex';
     }
 
+    // =====================
     // Submit Modal
+    // =====================
     function showSubmitModal() {
-        const answeredCount = Object.keys(answers).length;
-        document.getElementById('modalAnsweredCount').textContent = answeredCount;
+        document.getElementById('modalAnsweredCount').textContent = Object.keys(answers).length;
         document.getElementById('submitModal').style.display = 'flex';
     }
 
@@ -952,7 +901,9 @@ function updateProgress() {
         document.getElementById('submitModal').style.display = 'none';
     }
 
+    // =====================
     // Submit Exam
+    // =====================
     function submitExam() {
     clearInterval(timerInterval);
 
@@ -967,7 +918,14 @@ function updateProgress() {
     csrfInput.value = csrfToken;
     form.appendChild(csrfInput);
 
-    // Answers
+    // TAMBAHKAN INI (FIX UTAMA)
+    const groupInput = document.createElement('input');
+    groupInput.type = 'hidden';
+    groupInput.name = 'group_id';
+    groupInput.value = groupId;
+    form.appendChild(groupInput);
+
+    // answers
     for (const [questionId, answer] of Object.entries(answers)) {
         const input = document.createElement('input');
         input.type = 'hidden';
@@ -979,32 +937,26 @@ function updateProgress() {
     document.body.appendChild(form);
     form.submit();
 }
-    // Prevent page close/reload
+    // =====================
+    // Security
+    // =====================
     window.addEventListener('beforeunload', (e) => {
-        if (remainingSeconds > 0) {
-            e.preventDefault();
-            e.returnValue = '';
-        }
+        if (remainingSeconds > 0) { e.preventDefault(); e.returnValue = ''; }
     });
 
-    // Disable copy, cut, paste, right click, select
-document.addEventListener('copy', (e) => e.preventDefault());
-document.addEventListener('cut', (e) => e.preventDefault());
-document.addEventListener('paste', (e) => e.preventDefault());
-document.addEventListener('contextmenu', (e) => e.preventDefault()); // disable right click
+    document.addEventListener('copy',        (e) => e.preventDefault());
+    document.addEventListener('cut',         (e) => e.preventDefault());
+    document.addEventListener('paste',       (e) => e.preventDefault());
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
 
-// Disable CTRL+C, CTRL+X, CTRL+V, PRINT SCREEN
-document.addEventListener('keydown', function(e) {
-    if ((e.ctrlKey || e.metaKey) &&
-        (e.key === 'c' || e.key === 'x' || e.key === 'v' || e.key === 'p')) {
-        e.preventDefault();
-    }
-
-    // Disable Print Screen
-    if (e.key === "PrintScreen") {
-        navigator.clipboard.writeText("");
-        alert("Fitur screenshot dinonaktifkan selama ujian!");
-    }
-});
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && ['c','x','v','p'].includes(e.key)) {
+            e.preventDefault();
+        }
+        if (e.key === 'PrintScreen') {
+            navigator.clipboard.writeText('');
+            alert('Fitur screenshot dinonaktifkan selama ujian!');
+        }
+    });
 </script>
 @endsection

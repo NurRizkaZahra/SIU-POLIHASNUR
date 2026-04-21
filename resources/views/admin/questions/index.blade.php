@@ -5,7 +5,6 @@
 
 @section('content')
 <style>
-    /* Questions Container - JANGAN OVERRIDE APAPUN DARI GLOBAL! */
     .questions-container {
         padding: 20px;
     }
@@ -471,8 +470,17 @@
                             @endif
                         </div>
                         
-                        <div class="question-text">{{ $question->question_text }}</div>
-                        
+                        <div class="question-text">
+    {{ $question->question_text }}
+</div>
+
+@if($question->question_image)
+<div style="margin-top:10px;">
+    <img 
+        src="{{ asset('storage/'.$question->question_image) }}" 
+        style="max-width:220px; border-radius:8px; border:1px solid #ddd;">
+</div>
+@endif
                         <div class="answers-list">
                             @php
                                $choices = $question->answer_choices ?? [];
@@ -483,12 +491,30 @@
                                 <div class="answer-option {{ $option == $question->correct_answer ? 'correct' : '' }}">
                                     <span class="option-label">{{ $option }}</span>
                                     <span class="option-text">
-                                        @if(is_array($choices[$option]))
-                                            {{ $choices[$option]['text'] ?? '' }} (skor: {{ $choices[$option]['score'] ?? '' }})
-                                        @else
-                                            {{ $choices[$option] }}
-                                        @endif
-                                    </span>
+
+@if(is_array($choices[$option]))
+
+    {{-- Jika pilihan berupa gambar (PSI) --}}
+    @if(isset($choices[$option]['image']))
+        <img 
+            src="{{ asset('storage/'.$choices[$option]['image']) }}" 
+            style="width:80px; height:80px; object-fit:contain; border-radius:6px;"
+        >
+    @endif
+
+    {{-- Jika ada text --}}
+    @if(isset($choices[$option]['text']))
+        {{ $choices[$option]['text'] }}
+    @endif
+
+@else
+
+    {{-- Untuk soal PU --}}
+    {{ $choices[$option] }}
+
+@endif
+
+</span>
                                     <span class="correct-indicator">✓</span>
                                 </div>
                                 @endif

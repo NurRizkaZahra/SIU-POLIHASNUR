@@ -304,7 +304,7 @@
                 <div class="detail-row">
                     <div class="detail-item">
                         <span class="detail-label">Gelombang</span>
-                        <span class="detail-value">{{ $notif->gelombang ?? 'Gelombang 1' }}</span>
+                        <span class="detail-value">{{ $notif->examSchedule->wave_name ?? '-' }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Status</span>
@@ -324,7 +324,9 @@
                     <div class="detail-item">
                         <span class="detail-label">Tanggal Ujian</span>
                         <span class="detail-value">
-                            {{ \Carbon\Carbon::parse($notif->tanggal_mulai)->format('d M Y') }}
+                          {{ $notif->examSchedule?->start_date
+    ? \Carbon\Carbon::parse($notif->examSchedule->start_date)->format('d M Y')
+    : '-' }}
                         </span>
                     </div>
                 </div>
@@ -345,10 +347,19 @@
             <div class="notif-actions">
                 @switch($notif->status)
                     @case('approved')
-                        <button class="btn-action btn-start" onclick="startExam({{ $notif->exam_schedule_id }})">
-                            ▶️ Mulai Ujian
-                        </button>
-                        @break
+    @if($notif->examSchedule)
+        <form action="{{ route('camaba.exam.begin', $notif->examSchedule->id) }}" method="POST">
+            @csrf
+            <button type="submit" class="btn-action btn-start">
+                ▶️ Mulai Ujian
+            </button>
+        </form>
+    @else
+        <button class="btn-action btn-waiting" disabled>
+            Jadwal tidak tersedia
+        </button>
+    @endif
+@break
                     
                     @case('rejected')
                         <button class="btn-action btn-contact" onclick="contactAdmin()">
@@ -372,39 +383,5 @@
         @endforelse
     </div>
 </div>
-
-<script>
-function startExam(examScheduleId) {
-    if (!examScheduleId) {
-        alert('ID Jadwal Ujian tidak ditemukan. Silakan hubungi admin.');
-        return;
-    }
-    
-    if (confirm('Apakah Anda siap memulai ujian sekarang?\n\nPastikan Anda sudah siap dan memiliki koneksi internet yang stabil.')) {
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/camaba/exam/start';
-        
-        const csrfInput = document.createElement('input');
-        csrfInput.type = 'hidden';
-        csrfInput.name = '_token';
-        csrfInput.value = document.querySelector('meta[name="csrf-token"]').content;
-        form.appendChild(csrfInput);
-        
-        const examInput = document.createElement('input');
-        examInput.type = 'hidden';
-        examInput.name = 'exam_schedule_id';
-        examInput.value = examScheduleId;
-        form.appendChild(examInput);
-        
-        document.body.appendChild(form);
-        form.submit();
-    }
-}
-
-function contactAdmin() {
-    alert('Hubungi admin melalui:\n\n📧 Email: admin@polihasnur.ac.id\n📞 Telepon: (0274) 123-4567');
-}
-</script>
 
 @endsection

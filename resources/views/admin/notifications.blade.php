@@ -53,14 +53,15 @@
                     </div>
                     @endif
 
-                    @if($exam->examSchedule)
-                    <div class="info-row">
-                        <strong>Gelombang:</strong> {{ $exam->examSchedule->wave_name }}
-                    </div>
-                    <div class="info-row">
-                        <strong>Tanggal:</strong> {{ $exam->examSchedule->start_date->format('d M Y') }} - {{ $exam->examSchedule->end_date->format('d M Y') }}
-                    </div>
-                    @endif
+                   @if($exam->examSchedule)
+<div class="info-row">
+    <strong>Gelombang:</strong> {{ $exam->examSchedule->wave_name }}
+</div>
+<div class="info-row">
+    <strong>Tanggal Ujian:</strong> 
+    {{ \Carbon\Carbon::parse($exam->examSchedule->exam_date)->format('d M Y') }}
+</div>
+@endif
 
                     @if($exam->start_time && $exam->end_time)
                     <div class="info-row">
