@@ -204,7 +204,7 @@
         </div>
 
         <!-- Back Button -->
-        <a href="{{ route('dashboard.camaba') }}" class="btn-back">
+        <a href="{{ route('camaba.dashboard') }}" class="btn-back">
             Kembali ke Dashboard
         </a>
     </div>

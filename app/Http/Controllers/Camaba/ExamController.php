@@ -238,7 +238,7 @@ class ExamController extends Controller
 
     if ($exam->status === 'completed') {
         return redirect()
-            ->route('exam.success', ['examId' => $exam->id])
+            ->route('camaba.exam.success', ['examId' => $exam->id])
             ->with('error', 'Ujian sudah diselesaikan. Anda tidak bisa membuka soal lagi.');
     }
 
@@ -328,7 +328,7 @@ class ExamController extends Controller
             ->firstOrFail();
 
         if ($exam->status === 'completed') {
-            return redirect()->route('exam.success', $exam->id)
+            return redirect()->route('camaba.exam.success', $exam->id)
                 ->with('error', 'Ujian ini sudah selesai.');
         }
 
@@ -398,7 +398,7 @@ class ExamController extends Controller
             'iq'          => $iq
         ]);
 
-      return redirect()->route('exam.success', [
+      return redirect()->route('camaba.exam.success', [
     'examId' => $exam->id
 ])->with('group_id', $request->group_id);
 
@@ -422,9 +422,15 @@ class ExamController extends Controller
      */
    public function success(Request $request, $examId)
 {
-    $groupId = session('group_id'); // FIX DISINI
+    $exam = Exam::with('examSchedule')->findOrFail($examId);
 
-    $exam = Exam::findOrFail($examId);
+    $groupId = session('group_id');
+
+    if (!$groupId) {
+        $groupId = ExamAnswer::where('exam_id', $examId)
+            ->join('questions', 'questions.id', '=', 'exam_answers.question_id')
+            ->value('questions.question_group_id');
+    }
 
     $totalQuestions = Question::where('question_group_id', $groupId)->count();
 
@@ -436,10 +442,13 @@ class ExamController extends Controller
         })
         ->count();
 
+    $duration = $exam->examSchedule->duration ?? 0;
+
     return view('camaba.exam.success', compact(
         'exam',
         'totalQuestions',
-        'answeredQuestions'
+        'answeredQuestions',
+        'duration'
     ));
 }
 }

@@ -601,7 +601,7 @@
         </p>
         <div class="modal-buttons">
             <button class="btn-modal btn-cancel" onclick="closeSubmitModal()">Batal</button>
-            <button class="btn-modal btn-confirm" onclick="submitExam()">Ya, Selesai</button>
+            <button type="button" class="btn-modal btn-confirm" onclick="submitExam()">Ya, selesai</button>
         </div>
     </div>
 </div>
@@ -786,7 +786,7 @@
     // Save Answer via AJAX
     // =====================
     function saveAnswer(questionId, selectedAnswer) {
-        fetch(`/exam/${examId}/save-answer`, {
+            fetch(`/camaba/exam/${examId}/save-answer`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -909,7 +909,7 @@
 
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = `/exam/${examId}/submit`;
+    form.action = `/camaba/exam/submit/${examId}`;
 
     // CSRF
     const csrfInput = document.createElement('input');
