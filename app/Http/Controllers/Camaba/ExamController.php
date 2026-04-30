@@ -33,7 +33,7 @@ class ExamController extends Controller
         ->get();
 
     // ambil exam aktif user
-    $exam = Exam::where('user_id', $user->id) 
+    $exam = Exam::where('user_id', $user->id)
         ->whereIn('status', ['approved', 'in_progress', 'completed'])
         ->latest()
         ->first();
@@ -48,21 +48,36 @@ class ExamController extends Controller
 
     if ($exam) {
 
-        // cek apakah sudah pernah jawab soal PU
-        $completedTests['pengetahuan_umum'] =
-            ExamAnswer::where('exam_id', $exam->id)
+        /**
+         * CEK PENGETAHUAN UMUM
+         */
+        $totalPU = Question::whereHas('group', function ($q) {
+            $q->where('type', 'PU');
+        })->count();
+
+        $answeredPU = ExamAnswer::where('exam_id', $exam->id)
             ->whereIn('question_id', function ($q) {
+
                 $q->select('id')
                   ->from('questions')
                   ->whereIn('question_group_id', function ($qq) {
+
                       $qq->select('id')
                          ->from('question_groups')
                          ->where('type', 'PU');
-                  });
-            })
-            ->exists();
 
-        // cek psikotes 1–4
+                  });
+
+            })
+            ->count();
+
+        $completedTests['pengetahuan_umum'] =
+            ($answeredPU == $totalPU);
+
+
+        /**
+         * CEK PSIKOTES 1–4
+         */
         $psiGroups = QuestionGroup::where('type', 'PSI')
             ->orderBy('id', 'asc')
             ->take(4)
@@ -73,11 +88,15 @@ class ExamController extends Controller
             $completedTests['psikotes_' . ($index + 1)] =
                 ExamAnswer::where('exam_id', $exam->id)
                 ->whereIn('question_id', function ($q) use ($groupId) {
+
                     $q->select('id')
                       ->from('questions')
                       ->where('question_group_id', $groupId);
+
                 })
-                ->exists();
+                ->count()
+                ==
+                Question::where('question_group_id', $groupId)->count();
         }
     }
 
@@ -173,46 +192,33 @@ class ExamController extends Controller
 {
     $user = auth()->user();
 
-    $examRequest = Exam::where('user_id', $user->id)
-    ->whereIn('status', ['approved', 'in_progress', 'completed'])
-    ->whereHas('examSchedule', function ($q) {
-        $q->where('status', 'active')
-          ->whereDate('start_date', '<=', now())
-          ->whereDate('end_date', '>=', now());
-    })
-    ->latest()
-    ->first();
+    // ambil exam yang valid
+    $exam = Exam::where('user_id', $user->id)
+        ->whereIn('status', ['approved', 'in_progress'])
+        ->whereHas('examSchedule', function ($q) {
+            $q->where('status', 'active')
+              ->whereDate('start_date', '<=', now())
+              ->whereDate('end_date', '>=', now());
+        })
+        ->latest()
+        ->first();
 
-    if (!$examRequest) {
+    if (!$exam) {
         return back()->with('error', 'Anda belum memiliki jadwal ujian yang disetujui atau masa ujian tidak aktif.');
     }
 
-    $exam = Exam::where('user_id', $user->id)
-        ->where('exam_schedule_id', $examRequest->exam_schedule_id)
-        ->whereIn('status', ['in_progress', 'completed'])
-        ->first();
-
-    if ($exam && $exam->status === 'completed') {
-
-        // jangan redirect success dulu karena mungkin masih ada tes lain
+    // ✅ kalau masih approved → mulai ujian
+    if ($exam->status === 'approved') {
         $exam->update([
-            'status' => 'in_progress'
-        ]);
-    }
-
-    if (!$exam) {
-
-        $examRequest->update([
             'status' => 'in_progress',
-            'start_time' => now()
+            'started_at' => now()
         ]);
 
+        // tandai notifikasi sudah dibaca
         \App\Models\Notification::where('user_id', $user->id)
             ->where('message', 'like', '%ujian%')
             ->where('is_read', false)
             ->update(['is_read' => true]);
-
-        $exam = $examRequest;
     }
 
     // validasi group_id wajib ada
@@ -246,6 +252,7 @@ class ExamController extends Controller
 
     $questions = Question::with('group')
         ->where('question_group_id', $groupId)
+        ->orderBy('id')
         ->get()
         ->map(function ($question) {
 
@@ -287,8 +294,8 @@ class ExamController extends Controller
 }
 
             return (object) $formatted;
-        })
-        ->shuffle();
+
+        });
 
     $totalQuestions = $questions->count();
 
@@ -300,7 +307,78 @@ class ExamController extends Controller
         ->pluck('selected_answer', 'question_id')
         ->toArray();
 
-    $timeRemaining = $exam->examSchedule->duration * 60;
+   $group = QuestionGroup::findOrFail($groupId);
+
+
+/**
+ * VALIDASI: PU wajib selesai sebelum PSI
+ */
+if ($group->type == 'PSI') {
+
+    $totalPU = Question::whereHas('group', function ($q) {
+        $q->where('type', 'PU');
+    })->count();
+
+    $answeredPU = ExamAnswer::where('exam_id', $exam->id)
+    ->whereIn('question_id', function ($q) {
+
+        $q->select('id')
+          ->from('questions')
+          ->whereIn('question_group_id', function ($qq) {
+
+              $qq->select('id')
+                 ->from('question_groups')
+                 ->where('type', 'PU');
+
+          });
+
+    })
+    ->count();
+
+    if ($answeredPU < $totalPU) {
+
+        return redirect()
+            ->route('camaba.exam.index')
+            ->with('error', 'Selesaikan Pengetahuan Umum terlebih dahulu.');
+    }
+}
+
+
+/**
+ * VALIDASI: harus selesaikan PSI sebelumnya dulu
+ */
+$previousGroup = QuestionGroup::where('type', $group->type)
+    ->where('id', '<', $groupId)
+    ->orderBy('id', 'desc')
+    ->first();
+
+if ($previousGroup) {
+
+    $previousTotal = Question::where(
+        'question_group_id',
+        $previousGroup->id
+    )->count();
+
+    $previousAnswered = ExamAnswer::where('exam_id', $exam->id)
+        ->whereIn('question_id', function ($q) use ($previousGroup) {
+
+            $q->select('id')
+              ->from('questions')
+              ->where('question_group_id', $previousGroup->id);
+
+        })
+        ->count();
+
+    if ($previousAnswered < $previousTotal) {
+
+        return redirect()
+            ->route('camaba.exam.index')
+            ->with('error', 'Selesaikan tes sebelumnya terlebih dahulu.');
+    }
+}
+
+
+$timeRemaining = $group->duration * 60;
 
     return view('camaba.exam.questions', [
         'exam'            => $exam,
@@ -320,102 +398,195 @@ class ExamController extends Controller
      * ⚠️ TIDAK DIUBAH SAMA SEKALI
      */
     public function submit(Request $request, $examId)
-    {
-        $user = auth()->user();
-
-        $exam = Exam::where('id', $examId)
-            ->where('user_id', $user->id)
-            ->firstOrFail();
-
-        if ($exam->status === 'completed') {
-            return redirect()->route('camaba.exam.success', $exam->id)
-                ->with('error', 'Ujian ini sudah selesai.');
-        }
-
-        foreach ($request->answers as $questionId => $answer) {
-
-            $question = Question::with('group')->find($questionId);
-            if (!$question) continue;
-
-            $type  = $question->group ? $question->group->type : 'PU';
-            $score = 0;
-
-            if ($type == 'PU') {
-                if (strtoupper($answer) == strtoupper($question->correct_answer)) {
-                    $score = floatval($question->score);
-                }
-            }
-
-            if ($type == 'PSI') {
-                $choices  = $question->answer_choices;
-                $selected = strtoupper($answer);
-                if (isset($choices[$selected]['score'])) {
-                    $score = floatval($choices[$selected]['score']);
-                }
-            }
-
-            ExamAnswer::updateOrCreate(
-                ['exam_id' => $exam->id, 'question_id' => $questionId],
-                ['selected_answer' => $answer, 'score' => $score]
-            );
-        }
-
-        $answers   = ExamAnswer::where('exam_id', $exam->id)->get();
-        $scorePU   = 0;
-        $scorePSI  = 0;
-        $correctPU = 0;
-        $totalPU   = 0;
-
-        foreach ($answers as $ans) {
-            $question = Question::with('group')->find($ans->question_id);
-            if (!$question) continue;
-
-            $type = $question->group ? $question->group->type : 'PU';
-
-            if ($type == 'PU') {
-                $totalPU++;
-                if (strtoupper($ans->selected_answer) == strtoupper($question->correct_answer)) {
-                    $correctPU++;
-                }
-            }
-
-            if ($type == 'PSI') {
-                $scorePSI += floatval($ans->score);
-            }
-        }
-
-        if ($totalPU > 0) {
-            $scorePU = $correctPU * (100 / $totalPU);
-        }
-
-        $iq = $this->convertIQ(round($scorePSI));
-
-        $exam->update([
-            'status'      => 'completed',
-            'finished_at' => now(),
-            'score_pu'    => round($scorePU, 2),
-            'score_psi'   => round($scorePSI, 2),
-            'iq'          => $iq
-        ]);
-
-      return redirect()->route('camaba.exam.success', [
-    'examId' => $exam->id
-])->with('group_id', $request->group_id);
-
-    }
-    private function convertIQ($score)
 {
-    $map = [
-        16=>66,17=>70,18=>73,19=>76,20=>79,
-        21=>81,22=>83,23=>84,24=>86,25=>87,
-        26=>89,27=>91,28=>92,29=>94,30=>96,
-        31=>97,32=>99,33=>102,34=>105,35=>107,
-        36=>109,37=>118,38=>123,39=>127,40=>133,41=>139
-    ];
+    $user = auth()->user();
 
-    return $map[$score] ?? null;
+    $groupId = $request->group_id;
+
+    if (!$groupId) {
+        return back()->with('error', 'Group soal tidak ditemukan.');
+    }
+
+    $exam = Exam::where('id', $examId)
+        ->where('user_id', $user->id)
+        ->firstOrFail();
+
+    if ($exam->status === 'completed') {
+        return redirect()->route('camaba.exam.success', $exam->id)
+            ->with('error', 'Ujian ini sudah selesai.');
+    }
+
+    if (!$request->has('answers')) {
+        return back()->with('error', 'Jawaban tidak ditemukan.');
+    }
+
+    /**
+     * 🔥 SIMPAN JAWABAN
+     */
+    foreach ($request->answers as $questionId => $answer) {
+
+        $question = Question::with('group')->find($questionId);
+        if (!$question) continue;
+
+        $type  = $question->group->type ?? 'PU';
+        $answer = strtoupper($answer); // ✅ FIX WAJIB
+        $score = 0;
+
+        // ✅ PU
+        if ($type == 'PU') {
+            if ($answer == strtoupper($question->correct_answer)) {
+                $score = floatval($question->score ?? 0);
+            }
+        }
+
+        // ✅ PSI
+      if ($type == 'PSI') {
+    if (trim(strtoupper($answer)) == trim(strtoupper($question->correct_answer))) {
+        $score = floatval($question->score ?? 0);
+    }
 }
 
+        ExamAnswer::updateOrCreate(
+            [
+                'exam_id' => $exam->id,
+                'question_id' => $questionId
+            ],
+            [
+                'selected_answer' => $answer,
+                'score' => $score
+            ]
+        );
+    }
+
+    /**
+     * 🔥 HITUNG SCORE PU
+     */
+    $totalPU = Question::whereHas('group', function ($q) {
+        $q->where('type', 'PU');
+    })->count();
+
+    $correctPU = ExamAnswer::where('exam_id', $exam->id)
+        ->join('questions', 'questions.id', '=', 'exam_answers.question_id')
+        ->join('question_groups', 'question_groups.id', '=', 'questions.question_group_id')
+        ->where('question_groups.type', 'PU')
+        ->whereColumn('exam_answers.selected_answer', 'questions.correct_answer')
+        ->count();
+
+        
+    $scorePU = $totalPU > 0 ? ($correctPU / $totalPU) * 100 : 0;
+
+    /**
+     * 🔥 HITUNG SCORE PSI
+     */
+    $scorePSI = ExamAnswer::where('exam_id', $exam->id)
+    ->join('questions', 'questions.id', '=', 'exam_answers.question_id')
+    ->join('question_groups', 'question_groups.id', '=', 'questions.question_group_id')
+    ->where('question_groups.type', 'PSI')
+    ->sum('exam_answers.score') ?? 0;
+
+    /**
+     * 🔥 HITUNG PROGRESS PSI
+     */
+    $psiGroups = QuestionGroup::where('type', 'PSI')->pluck('id');
+    $completedPsiGroups = 0;
+
+    foreach ($psiGroups as $psiGroupId) {
+
+        $total = Question::where('question_group_id', $psiGroupId)->count();
+
+        $answered = ExamAnswer::where('exam_id', $exam->id)
+            ->whereIn('question_id', function ($q) use ($psiGroupId) {
+                $q->select('id')
+                  ->from('questions')
+                  ->where('question_group_id', $psiGroupId);
+            })
+            ->count();
+
+        if ($total > 0 && $total == $answered) {
+            $completedPsiGroups++;
+        }
+    }
+
+    /**
+     * 🔥 HITUNG IQ
+     */
+    $iq = null;
+
+    if ($completedPsiGroups == count($psiGroups)) {
+        $iq = $this->convertIQ(round($scorePSI));
+    }
+    $answeredPU = ExamAnswer::where('exam_id', $exam->id)
+    ->join('questions', 'questions.id', '=', 'exam_answers.question_id')
+    ->join('question_groups', 'question_groups.id', '=', 'questions.question_group_id')
+    ->where('question_groups.type', 'PU')
+    ->count();
+
+$status = ($answeredPU == $totalPU && $completedPsiGroups == count($psiGroups))
+    ? 'completed'
+    : 'in_progress';
+    /**
+     * 🔥 UPDATE EXAM (INI YANG PENTING)
+     */
+    $exam->update([
+        'status' => $status,
+        'finished_at' => $status === 'completed' ? now() : null,
+        'score_pu' => round($scorePU, 2),
+        'score_psi' => round($scorePSI, 2),
+        'iq' => $iq
+    ]);
+
+    session(['group_id' => $groupId]);
+
+    return redirect()->route('camaba.exam.success', [
+        'examId' => $exam->id
+    ]);
+}
+public function saveAnswer(Request $request, $examId)
+{
+    $data = $request->json()->all();
+
+    $questionId = $data['question_id'] ?? null;
+    $answer     = strtoupper($data['selected_answer'] ?? '');
+
+    if (!$questionId || !$answer) {
+        return response()->json(['success' => false, 'msg' => 'Data kosong']);
+    }
+
+    $exam = Exam::findOrFail($examId);
+
+    $question = Question::with('group')->find($questionId);
+    if (!$question) {
+        return response()->json(['success' => false, 'msg' => 'Soal tidak ditemukan']);
+    }
+
+    $type = $question->group->type ?? 'PU';
+    $score = 0;
+
+    if ($type == 'PU') {
+        if ($answer == strtoupper($question->correct_answer)) {
+            $score = floatval($question->score ?? 0);
+        }
+    }
+
+   if ($type == 'PSI') {
+    if (trim(strtoupper($answer)) == trim(strtoupper($question->correct_answer))) {
+        $score = floatval($question->score ?? 0);
+    }
+}
+
+    ExamAnswer::updateOrCreate(
+        [
+            'exam_id' => $examId,
+            'question_id' => $questionId
+        ],
+        [
+            'selected_answer' => $answer,
+            'score' => $score
+        ]
+    );
+
+    return response()->json(['success' => true]);
+}
     /**
      * Halaman hasil ujian camaba.
      * ⚠️ TIDAK DIUBAH SAMA SEKALI
@@ -424,31 +595,95 @@ class ExamController extends Controller
 {
     $exam = Exam::with('examSchedule')->findOrFail($examId);
 
+    /**
+     * Ambil group_id dari session
+     */
     $groupId = session('group_id');
 
+    /**
+     * Jika session kosong → ambil group terakhir yang dikerjakan
+     */
     if (!$groupId) {
+
         $groupId = ExamAnswer::where('exam_id', $examId)
             ->join('questions', 'questions.id', '=', 'exam_answers.question_id')
+            ->orderBy('exam_answers.updated_at', 'desc')
             ->value('questions.question_group_id');
     }
 
+    /**
+     * Jika masih kosong juga → fallback ke group pertama exam
+     */
+    if (!$groupId) {
+
+        $groupId = QuestionGroup::orderBy('id', 'asc')->value('id');
+    }
+
+    /**
+     * Ambil data group
+     */
+    $group = QuestionGroup::find($groupId);
+
+    /**
+     * Hitung total soal dalam group
+     */
     $totalQuestions = Question::where('question_group_id', $groupId)->count();
 
+    /**
+     * Hitung jumlah soal yang dijawab user dalam group
+     */
     $answeredQuestions = ExamAnswer::where('exam_id', $examId)
         ->whereIn('question_id', function ($query) use ($groupId) {
+
             $query->select('id')
                   ->from('questions')
                   ->where('question_group_id', $groupId);
+
         })
         ->count();
 
-    $duration = $exam->examSchedule->duration ?? 0;
+    /**
+     * Ambil durasi group
+     */
+    $duration = $group->duration ?? 0;
 
+    $nextGroup = QuestionGroup::where('type', $group->type)
+    ->where('id', '>', $group->id)
+    ->orderBy('id')
+    ->first();
+    /**
+     * Kirim ke view
+     */
     return view('camaba.exam.success', compact(
         'exam',
+        'group',
         'totalQuestions',
         'answeredQuestions',
-        'duration'
+        'duration',
+        'nextGroup'
     ));
+}
+private function convertIQ($score)
+{
+    $map = [
+        16=>66,17=>70,18=>73,19=>76,20=>79,
+        21=>81,22=>83,23=>84,24=>86,25=>87,
+        26=>89,27=>91,28=>92,29=>94,30=>96,
+        31=>97,32=>99,33=>102,34=>105,35=>107,
+        36=>109,37=>111,38=>113,39=>115,40=>117,
+        41=>119,42=>121,43=>123,44=>125,45=>127,
+        46=>129,47=>131,48=>133,49=>135,50=>137,
+        51=>139,52=>141,53=>143,54=>145
+    ];
+
+    if ($score < 16) {
+        return 65;
+    }
+
+    if ($score > 54) {
+        return 146;
+    }
+
+    return $map[$score];
 }
 }

@@ -33,6 +33,7 @@ class QuestionGroupController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'type' => 'required|in:PU,PSI',
+            'duration' => 'required|integer|min:1'
         ]);
 
         QuestionGroup::create($validated);
@@ -58,6 +59,7 @@ class QuestionGroupController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'type' => 'required|in:PU,PSI',
+            'duration' => 'required|integer|min:1'
         ]);
 
         $questionGroup->update($validated);

@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\AdminResultController;
 use App\Http\Controllers\Camaba\ExamController;
 use App\Http\Controllers\Camaba\CamabaController;
 use App\Http\Controllers\Camaba\ExamScheduleController;
+use App\Http\Controllers\Camaba\NotificationCamabaController;
 // PROFILE
 use App\Http\Controllers\ProfileController;
 
@@ -229,11 +230,11 @@ Route::middleware(['auth', 'role:camaba'])
     // NOTIFICATIONS
     // ======================
     Route::get('/notifications',
-        [ExamScheduleController::class, 'notifications']
+        [NotificationCamabaController::class, 'index']
     )->name('notifications');
 
     Route::delete('/notifications/{id}',
-        [ExamScheduleController::class, 'deleteNotification']
+        [NotificationCamabaController::class, 'delete']
     )->name('notifications.delete');
 
 
@@ -308,6 +309,10 @@ Route::middleware(['auth', 'role:camaba'])
         Route::get('/questions/{examId}/{groupId}',
             [ExamController::class, 'questions']
         )->name('questions');
+
+        Route::post('/{examId}/save-answer',
+            [ExamController::class, 'saveAnswer'])  
+        ->name('saveAnswer');
 
         Route::post('/submit/{examId}',
             [ExamController::class, 'submit']

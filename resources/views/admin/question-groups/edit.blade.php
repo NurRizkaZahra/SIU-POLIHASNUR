@@ -208,6 +208,22 @@
                 </select>
                 <div class="form-hint">Pilih tipe kelompok sesuai kategori soal</div>
             </div>
+            
+            <!-- Durasi Ujian -->
+<div class="form-group">
+    <label class="form-label">
+        Durasi (Menit) <span class="required">*</span>
+    </label>
+    <input 
+        type="number" 
+        name="duration" 
+        class="form-input"
+        placeholder="Contoh: 30"
+        min="1"
+        value="{{ old('duration', $questionGroup->duration) }}"
+        required>
+    <div class="form-hint">Masukkan durasi pengerjaan kelompok soal dalam menit</div>
+</div>
 
             <!-- Form Actions -->
             <div class="form-actions">

@@ -618,9 +618,9 @@
 </div>
 
 <script>
+    const examId = {{ $exam->id }};
     const groupId = {{ $groupId }};
-    // Data dari Backend
-    const examId      = {{ $exam->id }};
+    const timerKey = `exam_timer_${examId}_${groupId}`;
     const questions   = @json($questions->values());
     // FIX: hanya simpan jawaban yang relevan dengan soal di halaman ini
     const questionIds = questions.map(q => q.id);
@@ -637,13 +637,14 @@
     }
 
     let timerInterval    = null;
-    let remainingSeconds = 300; // 5 menit untuk testing
+    let remainingSeconds = {{ $timeRemaining }};
 
     // Initialize
     document.addEventListener('DOMContentLoaded', function () {
         loadQuestion(0);
         updateQuestionGrid();
         updateProgress();
+        updateTimerDisplay();
         startTimer();
     });
 
@@ -743,7 +744,7 @@
             optionDiv.innerHTML = `
                 <input type="radio"
                     name="answers[${question.id}]"
-                    id="option${letter}"
+                    id="option${question.id}_${letter}"
                     value="${letter}"
                     ${isSelected ? 'checked' : ''}>
                 <label class="option-label" for="option${letter}">
@@ -772,7 +773,7 @@
         document.querySelectorAll('.option-item').forEach(opt => opt.classList.remove('selected'));
         e.currentTarget.classList.add('selected');
 
-        const radio = document.getElementById(`option${letter}`);
+        const radio = document.getElementById(`option${questionId}_${letter}`)
         if (radio) radio.checked = true;
 
         answers[questionId] = letter;
@@ -786,24 +787,29 @@
     // Save Answer via AJAX
     // =====================
     function saveAnswer(questionId, selectedAnswer) {
-            fetch(`/camaba/exam/${examId}/save-answer`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken,
-            },
-            body: JSON.stringify({
-                question_id:     questionId,
-                selected_answer: selectedAnswer,
-            }),
-        })
-        .then(r => r.json())
-        .then(data => {
-            if (!data.success) console.error('❌ Gagal menyimpan jawaban');
-        })
-        .catch(err => console.error('❌ Error saving answer:', err));
-    }
 
+    fetch(`/camaba/exam/${examId}/save-answer`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+        },
+        body: JSON.stringify({
+            question_id: questionId,
+            selected_answer: selectedAnswer,
+        }),
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log(data);
+        if (!data.success) {
+            console.error('❌ Gagal menyimpan jawaban');
+        } else {
+            console.log('✅ Tersimpan');
+        }
+    })
+    .catch(err => console.error('❌ Error:', err));
+}
     // =====================
     // Update Progress — FIX: max 100%
     // =====================
@@ -863,16 +869,34 @@
     // Timer
     // =====================
     function startTimer() {
-        timerInterval = setInterval(() => {
-            remainingSeconds--;
-            if (remainingSeconds <= 0) {
-                clearInterval(timerInterval);
-                timeUp();
-                return;
-            }
-            updateTimerDisplay();
-        }, 1000);
+
+    const storedEndTime = localStorage.getItem(timerKey);
+
+    let endTime;
+
+    if (storedEndTime) {
+        endTime = parseInt(storedEndTime);
+    } else {
+        endTime = Date.now() + (remainingSeconds * 1000);
+        localStorage.setItem(timerKey, endTime);
     }
+
+    timerInterval = setInterval(() => {
+
+        const now = Date.now();
+        remainingSeconds = Math.floor((endTime - now) / 1000);
+
+        if (remainingSeconds <= 0) {
+            clearInterval(timerInterval);
+            localStorage.removeItem(timerKey);
+            timeUp();
+            return;
+        }
+
+        updateTimerDisplay();
+
+    }, 1000);
+}
 
     function updateTimerDisplay() {
         const m = Math.floor(remainingSeconds / 60);
@@ -906,6 +930,7 @@
     // =====================
     function submitExam() {
     clearInterval(timerInterval);
+    localStorage.removeItem(timerKey);
 
     const form = document.createElement('form');
     form.method = 'POST';

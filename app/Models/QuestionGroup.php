@@ -9,6 +9,7 @@ class QuestionGroup extends Model
     protected $fillable = [
         'name',
         'type',
+        'duration'
     ];
 
     public function questions()

@@ -14,7 +14,8 @@ class Notification extends Model
         'type',
         'title',
         'message',
-        'exam_schedule_id',   // FIXED: dulunya 'jadwal_ujian_id'
+        'exam_schedule_id',
+        'exam_id',   
         'is_read',
     ];
 
@@ -73,15 +74,15 @@ class Notification extends Model
     /**
      * Buat notif approval jadwal ujian
      */
-    public static function createExamApprovedNotification($userId, $examScheduleId)
+    public static function createExamApprovedNotification($userId, $examScheduleId, $examId)
 {
     return self::create([
         'user_id' => $userId,
         'type' => 'exam',
         'title' => 'Exam Request Approved',
         'message' => 'Your exam request has been approved.',
-        // 'exam_id' => $examId,
         'exam_schedule_id' => $examScheduleId,
+        'exam_id' => $examId,
         'is_read' => 0,
     ]);
 }

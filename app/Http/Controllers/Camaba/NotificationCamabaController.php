@@ -15,27 +15,24 @@ class NotificationCamabaController extends Controller
    
   public function index()
 {
-    // update dulu notif unread jadi read
-    Notification::where('user_id', Auth()->id())
-        ->where('is_read', false)
-        ->update(['is_read' => true]);
+    $user = auth()->user();
 
-    // ambil ulang data setelah update
-    $notifications = Notification::with('examSchedule')
-        ->where('user_id', Auth::id())
-        ->orderBy('created_at', 'desc')
-        ->get()
-        ->map(function($notif) {
-            $notif->timestamp = $notif->created_at->diffForHumans();
-            return $notif;
-        });
+    $notifications = \App\Models\Notification::where('user_id', $user->id)
+        ->with(['examSchedule', 'exam'])
+        ->latest()
+        ->get();
 
-    // hitung ulang unread dari database langsung
-    $unreadCount = Notification::where('user_id', Auth::id())
-        ->where('is_read', false)
+    // hitung jumlah notifikasi belum dibaca
+    $unreadCount = \App\Models\Notification::where('user_id', $user->id)
+        ->where('is_read', 0)
         ->count();
 
-    return view('camaba.notifikasi', compact('notifications', 'unreadCount'));
+    // tandai semua sudah dibaca (optional)
+    \App\Models\Notification::where('user_id', $user->id)
+        ->where('is_read', 0)
+        ->update(['is_read' => 1]);
+
+    return view('camaba.notifications', compact('notifications', 'unreadCount'));
 }
 
     /**

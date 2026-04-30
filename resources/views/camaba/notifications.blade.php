@@ -290,7 +290,7 @@
     <!-- Notification List -->
     <div class="notif-list">
         @forelse($notifications as $notif)
-        <div class="notif-card {{ $notif->is_read ? '' : 'unread' }} {{ $notif->status }}">
+        <div class="notif-card {{ $notif->is_read ? '' : 'unread' }} {{ $notif->exam->status ?? 'pending' }}">
             <div class="notif-top">
                 <h3 class="notif-title">{{ $notif->title }}</h3>
                 @if(!$notif->is_read)
@@ -308,8 +308,8 @@
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Status</span>
-                        <span class="badge-status {{ $notif->status }}">
-                            @switch($notif->status)
+                        <span class="badge-status {{ $notif->exam->status ?? 'pending' }}">
+                            @switch($notif->exam->status ?? 'pending')
                                 @case('approved')
                                     ✓ Disetujui
                                     @break
@@ -332,7 +332,7 @@
                 </div>
             </div>
             
-            @if($notif->status == 'rejected' && $notif->rejection_reason)
+            @if(($notif->exam->status ?? 'pending') == 'rejected' && $notif->rejection_reason)
             <div style="background: #fee2e2; border: 1px solid #ef4444; border-radius: 8px; padding: 12px; margin-bottom: 15px;">
                 <p style="margin: 0; font-size: 13px; color: #991b1b;">
                     <strong>Alasan Penolakan:</strong> {{ $notif->rejection_reason }}
@@ -345,7 +345,7 @@
             </div>
             
             <div class="notif-actions">
-                @switch($notif->status)
+                @switch($notif->exam->status ?? 'pending')
                     @case('approved')
     @if($notif->examSchedule)
         <form action="{{ route('camaba.exam.begin', $notif->examSchedule->id) }}" method="POST">

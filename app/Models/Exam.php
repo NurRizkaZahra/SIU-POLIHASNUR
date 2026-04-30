@@ -19,7 +19,9 @@ class Exam extends Model
     'started_at',
     'finished_at',
     'status',
-    'score',
+    'score_pu',
+    'score_psi',
+    'iq',
     ];
 
     protected $casts = [

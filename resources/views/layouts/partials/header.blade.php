@@ -10,9 +10,11 @@
 
     <div class="header-actions">
        @php
-$unreadNotif = \App\Models\Notification::where('user_id', auth()->id())
-    ->where('is_read', false)
-    ->count();
+$unreadNotif = auth()->check()
+    ? \App\Models\Notification::where('user_id', auth()->id())
+        ->where('is_read', false)
+        ->count()
+    : 0;
 @endphp
 
 <a href="{{ route('camaba.notifications') }}" class="icon-btn" title="Notifikasi" style="position: relative;">

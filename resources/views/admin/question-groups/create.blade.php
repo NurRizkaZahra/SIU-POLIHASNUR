@@ -170,7 +170,24 @@
                 </select>
                 <div class="form-hint">Pilih tipe kelompok sesuai kategori soal</div>
             </div>
-
+{{-- penambahan durasi --}}
+            <div class="form-group">
+    <label class="form-label">
+        Durasi (Menit) <span class="required">*</span>
+    </label>
+    <input 
+        type="number" 
+        name="duration"
+        class="form-input"
+        placeholder="Contoh: 30"
+        value="{{ old('duration') }}"
+        min="1"
+        required
+    >
+    <div class="form-hint">
+        Lama waktu pengerjaan untuk kelompok soal ini (dalam menit)
+    </div>
+</div>
             <!-- Form Actions -->
             <div class="form-actions">
                 <a href="{{ route('admin.question-groups.index') }}" class="btn btn-cancel">
