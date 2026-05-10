@@ -1,12 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Form Pendaftaran Lanjutan')
+@section('title', 'SIU-POLIHASNUR - Form Pendaftaran Lanjutan')
 
-@section('page-title', 'PENDAFTARAN LANJUTAN') 
+@section('page-title', 'PENDAFTARAN LANJUTAN')
 
 @section('content')
 <style>
-    /* Form Pendaftaran Lanjutan Styles */
+    /* =====================
+       FORM PENDAFTARAN LANJUTAN
+    ===================== */
     .pendaftaran-container {
         max-width: 1000px;
         margin: 15px auto;
@@ -52,6 +54,7 @@
         font-weight: bold;
         font-size: 16px;
         transition: transform 0.3s ease;
+        flex-shrink: 0;
     }
 
     .chevron-icon.open {
@@ -66,8 +69,16 @@
     }
 
     .section-body.open {
-        max-height: none; /* Ubah dari 2500px ke none */
+        /* Nilai besar agar semua konten dinamis (program studi) bisa tampil */
+        max-height: 3000px;
         padding: 30px 25px;
+    }
+
+    /* Clearfix agar float save-btn tidak collapse container */
+    .section-body.open::after {
+        content: '';
+        display: table;
+        clear: both;
     }
 
     .form-group {
@@ -111,15 +122,14 @@
         accent-color: #1e5a96;
     }
 
-    /* Perbaikan untuk checkbox container */
+    /* Checkbox container dengan scroll */
     .checkbox-container {
-        max-height: 300px; /* Batasi tinggi */
-        overflow-y: auto; /* Enable scroll */
+        max-height: 300px;
+        overflow-y: auto;
         padding-right: 10px;
         margin-top: 8px;
     }
 
-    /* Custom scrollbar */
     .checkbox-container::-webkit-scrollbar {
         width: 8px;
     }
@@ -161,12 +171,13 @@
         background: #e3f2fd;
     }
 
-    .checkbox-group input[type="checkbox"] {
+    .checkbox-group input[type="checkbox"],
+    .checkbox-group input[type="radio"] {
         width: 18px;
         height: 18px;
         cursor: pointer;
         accent-color: #1e5a96;
-        flex-shrink: 0; /* Prevent checkbox from shrinking */
+        flex-shrink: 0;
     }
 
     .pilihan-section {
@@ -249,23 +260,118 @@
         border: 1px solid #f5c6cb;
     }
 
-    /* Responsive */
+    /* =====================
+       RESPONSIVE — TABLET (≤ 1024px)
+    ===================== */
+    @media (max-width: 1024px) {
+        .pendaftaran-container {
+            max-width: 100%;
+            padding: 20px;
+        }
+
+        /* Radio jalur masuk: dari auto-fit minmax 150px → 2 kolom */
+        .radio-group {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    /* =====================
+       RESPONSIVE — MOBILE (≤ 768px)
+    ===================== */
     @media (max-width: 768px) {
+        .pendaftaran-container {
+            padding: 12px;
+            margin: 10px auto;
+        }
+
+        /* Section header lebih kompak */
+        .section-header {
+            padding: 14px 16px;
+            font-size: 14px;
+        }
+
+        /* Section body padding lebih kecil */
+        .section-body.open {
+            padding: 20px 16px;
+        }
+
+        /* Radio jalur masuk → 1 kolom */
         .radio-group {
             grid-template-columns: 1fr;
+            gap: 8px;
         }
 
+        .radio-group label {
+            padding: 8px 10px;
+            font-size: 13px;
+        }
+
+        /* Checkbox/radio program studi → 1 kolom */
         .checkbox-group {
             grid-template-columns: 1fr;
+            gap: 8px;
         }
 
+        .checkbox-group label {
+            padding: 8px 12px;
+            font-size: 13px;
+            min-height: 40px;
+        }
+
+        /* Checkbox container: lebih tinggi sedikit di mobile
+           agar tidak terlalu pendek dengan 1 kolom */
+        .checkbox-container {
+            max-height: 220px;
+        }
+
+        /* Pilihan title sedikit lebih kecil */
+        .pilihan-title {
+            font-size: 14px;
+        }
+
+        /* Save button full-width di mobile */
+        .save-btn {
+            float: none;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        /* Done button lebih kompak */
+        .done-btn {
+            padding: 12px 40px;
+            font-size: 15px;
+        }
+    }
+
+    /* =====================
+       RESPONSIVE — SMALL MOBILE (≤ 480px)
+    ===================== */
+    @media (max-width: 480px) {
         .pendaftaran-container {
-            padding: 15px;
+            padding: 10px;
+        }
+
+        .section-header {
+            padding: 12px 14px;
+            font-size: 13px;
+        }
+
+        .section-body.open {
+            padding: 14px 12px;
+        }
+
+        .pilihan-section {
+            margin-bottom: 20px;
         }
 
         .done-btn {
-            padding: 12px 40px;
-            font-size: 16px;
+            width: 100%;
+            text-align: center;
+            padding: 12px 20px;
+        }
+
+        .done-wrapper {
+            padding-bottom: 30px;
         }
     }
 </style>
@@ -283,126 +389,112 @@
     </div>
     @endif
 
+    {{-- JALUR MASUK --}}
     <form action="{{ route('camaba.admission-path.save') }}" method="POST">
         @csrf
-
-       <!-- JALUR MASUK -->
-<div class="form-section">
-    <div class="section-header" onclick="toggleFormSection(this)">
-        <span>JALUR MASUK</span>
-        <div class="chevron-icon open">∨</div>
-    </div>
-
-    <div class="section-body open">
-
-        <div class="form-group">
-            <div class="radio-group">
-
-                @php
-                $jalurList = [
-                    'Mandiri',
-                    'Beasiswa Unggulan',
-                    'Berdikari',
-                    'KIP-Kuliah'
-                ];
-                @endphp
-
-                @foreach ($jalurList as $jalur)
-                    <label>
-                        <input type="radio" name="path_name" value="{{ $jalur }}" 
-                        {{ old('path_name', $path->path_name ?? '') == $jalur ? 'checked' : '' }}
-                        required>
-                        {{ $jalur }}
-                    </label>
-                @endforeach
-
+        <div class="form-section">
+            <div class="section-header" onclick="toggleFormSection(this)">
+                <span>JALUR MASUK</span>
+                <div class="chevron-icon open">∨</div>
             </div>
-        </div>
 
-        <button type="submit" class="save-btn">Save</button>
-    </div>
-</div>
+            <div class="section-body open">
+                <div class="form-group">
+                    <div class="radio-group">
+                        @php
+                            $jalurList = ['Mandiri', 'Beasiswa Unggulan', 'Berdikari', 'KIP-Kuliah'];
+                        @endphp
 
-</form>
-
-    <!-- PILIHAN JURUSAN -->
-<form action="{{ route('camaba.program-selection.save') }}" method="POST">
-    @csrf
-    <div class="form-section">
-        <div class="section-header" onclick="toggleFormSection(this)">
-            <span>PILIHAN JURUSAN</span>
-            <div class="chevron-icon open">∨</div>
-        </div>
-        <div class="section-body open">
-
-            <!-- Pilihan 1 -->
-            <div class="pilihan-section">
-                <h3 class="pilihan-title">Pilihan 1 <span style="color: red;">*</span></h3>
-                <div class="checkbox-container">
-                    <div class="checkbox-group" id="pilihan1-group">
-                       @foreach ($studyPrograms as $program)
-<label>
-    <input type="radio"
-           name="id_program_1"
-           value="{{ $program->id_program }}"
-           {{ old('id_program_1', $programTerpilih->id_program_1 ?? '') == $program->id_program ? 'checked' : '' }}
-           required>
-    {{ $program->program_name }}
-</label>
-@endforeach
-
+                        @foreach ($jalurList as $jalur)
+                            <label>
+                                <input type="radio" name="path_name" value="{{ $jalur }}"
+                                {{ old('path_name', $path->path_name ?? '') == $jalur ? 'checked' : '' }}
+                                required>
+                                {{ $jalur }}
+                            </label>
+                        @endforeach
                     </div>
                 </div>
+
+                <button type="submit" class="save-btn">Save</button>
             </div>
+        </div>
+    </form>
 
-            <!-- Pilihan 2 -->
-            <div class="pilihan-section">
-                <h3 class="pilihan-title">Pilihan 2 <span style="color: red;">*</span></h3>
-                <div class="checkbox-container">
-                    <div class="checkbox-group" id="pilihan2-group">
-                      @foreach ($studyPrograms as $program)
-<label>
-    <input type="radio"
-           name="id_program_2"
-           value="{{ $program->id_program }}"
-           {{ old('id_program_2', $programTerpilih->id_program_2 ?? '') == $program->id_program ? 'checked' : '' }}
-           required>
-    {{ $program->program_name }}
-</label>
-@endforeach
+    {{-- PILIHAN JURUSAN --}}
+    <form action="{{ route('camaba.program-selection.save') }}" method="POST">
+        @csrf
+        <div class="form-section">
+            <div class="section-header" onclick="toggleFormSection(this)">
+                <span>PILIHAN JURUSAN</span>
+                <div class="chevron-icon open">∨</div>
+            </div>
+            <div class="section-body open">
 
+                {{-- Pilihan 1 --}}
+                <div class="pilihan-section">
+                    <h3 class="pilihan-title">Pilihan 1 <span style="color: red;">*</span></h3>
+                    <div class="checkbox-container">
+                        <div class="checkbox-group" id="pilihan1-group">
+                            @foreach ($studyPrograms as $program)
+                            <label>
+                                <input type="radio"
+                                       name="id_program_1"
+                                       value="{{ $program->id_program }}"
+                                       {{ old('id_program_1', $programTerpilih->id_program_1 ?? '') == $program->id_program ? 'checked' : '' }}
+                                       required>
+                                {{ $program->program_name }}
+                            </label>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
+
+                {{-- Pilihan 2 --}}
+                <div class="pilihan-section">
+                    <h3 class="pilihan-title">Pilihan 2 <span style="color: red;">*</span></h3>
+                    <div class="checkbox-container">
+                        <div class="checkbox-group" id="pilihan2-group">
+                            @foreach ($studyPrograms as $program)
+                            <label>
+                                <input type="radio"
+                                       name="id_program_2"
+                                       value="{{ $program->id_program }}"
+                                       {{ old('id_program_2', $programTerpilih->id_program_2 ?? '') == $program->id_program ? 'checked' : '' }}
+                                       required>
+                                {{ $program->program_name }}
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="save-btn">Save</button>
             </div>
-
-            <button type="submit" class="save-btn">Save</button>
         </div>
+    </form>
+
+    {{-- Done Button --}}
+    <div class="done-wrapper">
+        <a href="{{ route('camaba.dashboard') }}" class="done-btn">Done</a>
     </div>
-</form>
-
-
-<!-- Done Button di dalam container, bukan fixed -->
-<div class="done-wrapper">
-    <a href="{{ route('camaba.dashboard') }}" class="done-btn">Done</a>
 </div>
 
 <script>
     function toggleFormSection(header) {
-        const body = header.nextElementSibling;
+        const body    = header.nextElementSibling;
         const chevron = header.querySelector('.chevron-icon');
-        
         body.classList.toggle('open');
         chevron.classList.toggle('open');
     }
 
     // Auto-hide alerts after 5 seconds
-    document.addEventListener('DOMContentLoaded', function() {
-        const alerts = document.querySelectorAll('.alert');
-        alerts.forEach(alert => {
-            setTimeout(() => {
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.alert').forEach(function (alert) {
+            setTimeout(function () {
                 alert.style.transition = 'opacity 0.5s ease';
-                alert.style.opacity = '0';
-                setTimeout(() => alert.remove(), 500);
+                alert.style.opacity    = '0';
+                setTimeout(function () { alert.remove(); }, 500);
             }, 5000);
         });
     });

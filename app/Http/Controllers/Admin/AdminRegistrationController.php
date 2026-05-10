@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdminRegistrationController extends Controller
 {
@@ -51,4 +52,20 @@ class AdminRegistrationController extends Controller
 
         return view('admin.registration-details', compact('camaba'));
     }
+
+    public function downloadPdf($id)
+{
+    $camaba = User::with([
+        'personalData',
+        'educationData',
+        'familyData',
+        'admissionPath',
+        'programSelection.program1',
+        'programSelection.program2'
+    ])->findOrFail($id);
+
+    $pdf = Pdf::loadView('admin.pdf-detail', compact('camaba'));
+
+    return $pdf->download('detail-pendaftar.pdf');
+}
 }

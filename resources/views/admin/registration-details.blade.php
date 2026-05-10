@@ -91,6 +91,30 @@
         transform: translateY(-2px);
         color: white;
     }
+    .button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.btn-download {
+    background: #198754;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.btn-download:hover {
+    background: #146c43;
+    transform: translateY(-2px);
+    color: white;
+}
 </style>
 
 <div class="pendaftaran-container">
@@ -272,6 +296,12 @@
     {{-- Tombol kembali --}}
     <div class="mt-4 text-center">
         <a href="{{ route('admin.registration') }}" class="btn-back">← Kembali</a>
+        <a href="{{ route('admin.registration.pdf', $camaba->id) }}"
+       class="btn-download"
+       target="_blank">
+        Download PDF
+    </a>
     </div>
+
 </div>
 @endsection

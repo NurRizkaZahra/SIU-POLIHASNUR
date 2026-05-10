@@ -124,6 +124,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         [AdminRegistrationController::class, 'updateExamStatus']
     )->name('admin.registration.update-status');
 
+    Route::get('/admin/registration/{id}/pdf', [App\Http\Controllers\Admin\AdminRegistrationController::class, 'downloadPdf'])
+    ->name('admin.registration.pdf');
+
     Route::get('/admin/registration/print/all',
         [AdminRegistrationController::class, 'print']
     )->name('admin.registration.print');

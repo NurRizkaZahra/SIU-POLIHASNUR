@@ -1,11 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'PMB-POLHAS - Jadwal Ujian')
+@section('title', 'SIU-POLIHASNUR - Jadwal Ujian')
 
-@section('page-title', 'JADWAL UJIAN') 
+@section('page-title', 'JADWAL UJIAN')
 
 @section('content')
 <style>
+    /* Override padding .content khusus halaman ini */
     .content {
         flex: 1;
         padding: 40px 50px;
@@ -45,6 +46,8 @@
         font-weight: 600;
         font-size: 14px;
         margin: 0;
+        /* Pastikan judul tidak overflow di layar sempit */
+        word-break: break-word;
     }
 
     .gelombang-content {
@@ -84,6 +87,8 @@
         color: #333;
         font-weight: 500;
         width: 100%;
+        /* Mencegah input date meluap di mobile */
+        min-width: 0;
     }
 
     .input-wrapper input::placeholder {
@@ -129,23 +134,103 @@
         transform: translateY(-1px);
     }
 
-    @media (max-width: 768px) {
+    /* =====================
+       RESPONSIVE — TABLET (≤ 1024px)
+    ===================== */
+    @media (max-width: 1024px) {
         .content {
-            padding: 30px 20px;
+            padding: 30px 30px;
         }
 
+        .gelombang-container {
+            max-width: 100%;
+        }
+
+        /* Input date sedikit lebih kecil agar muat berdampingan dengan tombol */
+        .input-wrapper {
+            flex: 0 0 200px;
+        }
+    }
+
+    /* =====================
+       RESPONSIVE — MOBILE (≤ 768px)
+    ===================== */
+    @media (max-width: 768px) {
+        .content {
+            padding: 20px 16px;
+        }
+
+        .gelombang-container {
+            gap: 15px;
+        }
+
+        .gelombang-header {
+            padding: 12px 16px;
+        }
+
+        .gelombang-title {
+            font-size: 13px;
+        }
+
+        .gelombang-content {
+            padding: 16px;
+        }
+
+        /* Stack input date dan tombol secara vertikal */
         .gelombang-input-group {
             flex-direction: column;
-            align-items: flex-start;
+            align-items: stretch;
+            gap: 12px;
+        }
+
+        /* Input wrapper full-width */
+        .input-wrapper {
+            flex: none;
+            width: 100%;
+        }
+
+        /* Tombol full-width */
+        .btn-ajukan {
+            width: 100%;
+            padding: 12px 20px;
+        }
+    }
+
+    /* =====================
+       RESPONSIVE — SMALL MOBILE (≤ 480px)
+    ===================== */
+    @media (max-width: 480px) {
+        .content {
+            padding: 16px 12px;
+        }
+
+        .gelombang-item {
+            border-radius: 10px;
+        }
+
+        .gelombang-header {
+            padding: 10px 14px;
+        }
+
+        .gelombang-title {
+            font-size: 12px;
+        }
+
+        .gelombang-content {
+            padding: 14px 12px;
         }
 
         .input-wrapper {
-            flex: 1;
-            width: 100%;
+            padding: 10px 16px;
+        }
+
+        .input-wrapper input {
+            font-size: 13px;
         }
 
         .btn-ajukan {
-            width: 100%;
+            font-size: 13px;
+            padding: 11px 20px;
         }
     }
 </style>
@@ -155,7 +240,11 @@
         @forelse($examSchedules as $item)
         <div class="gelombang-item">
             <div class="gelombang-header">
-                <h3 class="gelombang-title">{{ $item->wave_name }} ({{ \Carbon\Carbon::parse($item->start_date)->format('d-m-Y') }} - {{ \Carbon\Carbon::parse($item->end_date)->format('d-m-Y') }})</h3>
+                <h3 class="gelombang-title">
+                    {{ $item->wave_name }}
+                    ({{ \Carbon\Carbon::parse($item->start_date)->format('d-m-Y') }} -
+                    {{ \Carbon\Carbon::parse($item->end_date)->format('d-m-Y') }})
+                </h3>
             </div>
             <div class="gelombang-content">
                 <div class="gelombang-input-group">
@@ -163,7 +252,11 @@
                         <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
                         </svg>
-                        <input type="date" class="input-jadwal" data-gelombang-id="{{ $item->id }}" min="{{ $item->start_date }}" max="{{ $item->end_date }}">
+                        <input type="date"
+                               class="input-jadwal"
+                               data-gelombang-id="{{ $item->id }}"
+                               min="{{ $item->start_date }}"
+                               max="{{ $item->end_date }}">
                     </div>
                     <button class="btn-ajukan" onclick="ajukanJadwal({{ $item->id }})">Ajukan</button>
                 </div>
@@ -179,7 +272,6 @@
 
 <script>
 function ajukanJadwal(gelombangId) {
-
     const dateInput = document.querySelector(
         `input[data-gelombang-id="${gelombangId}"]`
     );
@@ -201,35 +293,22 @@ function ajukanJadwal(gelombangId) {
             exam_date: dateInput.value
         })
     })
-
     .then(response => response.json())
-
     .then(data => {
-
         if (data.success) {
-
             alert(
                 'Jadwal ujian untuk tanggal ' +
                 dateInput.value +
                 ' telah diajukan!'
             );
-
             location.reload();
-
         } else {
-
             alert(data.message || 'Gagal mengajukan jadwal');
-
         }
-
     })
-
     .catch(error => {
-
         console.error(error);
-
         alert('Terjadi kesalahan saat mengajukan jadwal');
-
     });
 }
 </script>

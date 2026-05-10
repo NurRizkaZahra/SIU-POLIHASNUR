@@ -15,7 +15,9 @@
         height: 100vh;
     }
 
-    /* Sidebar */
+    /* =====================
+       SIDEBAR
+    ===================== */
     .sidebar {
         width: 250px;
         background: linear-gradient(180deg, #1e5a96 0%, #0d3d6b 100%);
@@ -32,8 +34,22 @@
         overflow-y: auto;
     }
 
+    /* Desktop: sidebar bisa di-toggle dengan geser ke kiri */
     .sidebar.closed {
         transform: translateX(-250px);
+    }
+
+    /* Overlay backdrop untuk mobile */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    .sidebar-overlay.show {
+        display: block;
     }
 
     .logo {
@@ -116,19 +132,27 @@
         height: 20px;
     }
 
-    /* Main Content */
+    /* =====================
+       MAIN CONTENT
+    ===================== */
     .main-content {
         flex: 1;
         display: flex;
         flex-direction: column;
         margin-left: 250px;
         transition: margin-left 0.3s ease;
+        min-width: 0;
+        /* Penting: mencegah konten meluap ke sidebar */
+        overflow-x: hidden;
     }
 
     .main-content.expanded {
         margin-left: 0;
     }
 
+    /* =====================
+       HEADER
+    ===================== */
     .header {
         background: linear-gradient(90deg, #1e5a96 0%, #0d3d6b 100%);
         color: white;
@@ -136,12 +160,16 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-shrink: 0;
     }
 
     .header-left {
         display: flex;
         align-items: center;
         gap: 15px;
+        min-width: 0;
+        /* Memungkinkan title menyusut saat layar sempit */
+        flex: 1;
     }
 
     .menu-toggle {
@@ -152,6 +180,7 @@
         display: flex;
         flex-direction: column;
         gap: 4px;
+        flex-shrink: 0;
     }
 
     .menu-toggle span {
@@ -164,12 +193,16 @@
     .header-title {
         font-size: 22px;
         font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .header-actions {
         display: flex;
         gap: 20px;
         align-items: center;
+        flex-shrink: 0;
     }
 
     .icon-btn {
@@ -184,19 +217,19 @@
         justify-content: center;
     }
 
-    .close-btn {
-        font-size: 32px;
-        font-weight: 300;
-        line-height: 1;
-    }
-
+    /* =====================
+       CONTENT
+    ===================== */
     .content {
         flex: 1;
         padding: 0;
         overflow-y: auto;
+        overflow-x: hidden;
     }
 
-    /* Hero Section */
+    /* =====================
+       HERO SECTION
+    ===================== */
     .hero-section {
         position: relative;
         width: 100%;
@@ -318,7 +351,9 @@
         left: -10px;
     }
 
-    /* Section Content */
+    /* =====================
+       SECTION CONTENT
+    ===================== */
     .section-content {
         padding: 40px 30px;
     }
@@ -374,6 +409,7 @@
         font-weight: bold;
         font-size: 14px;
         transition: transform 0.3s ease;
+        flex-shrink: 0;
     }
 
     .chevron-icon.open {
@@ -400,35 +436,250 @@
         border-left: 3px solid #1e5a96;
     }
 
-    /* Responsive */
+    /* =====================
+       DROPDOWN (dari header.blade.php)
+    ===================== */
+    .profile-dropdown {
+        position: relative;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 110%;
+        background: white;
+        color: #111827;
+        min-width: 240px;
+        border-radius: 8px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        z-index: 999;
+        overflow: hidden;
+    }
+
+    .dropdown-menu.show {
+        display: block;
+        animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .dropdown-header {
+        background: #1e40af;
+        color: white;
+        padding: 12px;
+    }
+
+    .user-info strong {
+        display: block;
+        font-size: 16px;
+        margin-bottom: 4px;
+    }
+
+    .user-info small {
+        display: block;
+        font-size: 13px;
+        opacity: 0.8;
+    }
+
+    .dropdown-divider {
+        height: 1px;
+        background: #e5e7eb;
+        margin: 0;
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 15px;
+        text-decoration: none;
+        color: #111827;
+        transition: background 0.2s;
+        width: 100%;
+        border: none;
+        background: none;
+        cursor: pointer;
+        text-align: left;
+        font-size: 14px;
+    }
+
+    .dropdown-item:hover { background: #f3f4f6; }
+
+    .logout-btn { color: #dc2626; }
+    .logout-btn:hover { background: #fee2e2; }
+
+    /* =====================
+       RESPONSIVE — TABLET (≤ 1024px)
+    ===================== */
+    @media (max-width: 1024px) {
+        .hero-section {
+            height: 420px;
+            padding: 0 40px;
+        }
+
+        .badge-kampus {
+            right: 30px;
+            font-size: 15px;
+            padding: 15px 20px;
+        }
+
+        .hero-title {
+            font-size: 26px;
+        }
+
+        .section-content {
+            padding: 30px 20px;
+        }
+    }
+
+    /* =====================
+       RESPONSIVE — MOBILE (≤ 768px)
+    ===================== */
     @media (max-width: 768px) {
+        /* Sidebar tersembunyi secara default di mobile */
         .sidebar {
             transform: translateX(-250px);
         }
 
-        .sidebar:not(.closed) {
+        /* Muncul saat class .open ditambahkan */
+        .sidebar.open {
             transform: translateX(0);
         }
 
+        /* Main content full-width di mobile — !important
+           agar tidak tertimpa oleh JS saat resize */
         .main-content {
-            margin-left: 0;
+            margin-left: 0 !important;
         }
 
+        /* Header */
+        .header {
+            padding: 12px 16px;
+        }
+
+        .header-title {
+            font-size: 16px;
+        }
+
+        .header-actions {
+            gap: 12px;
+        }
+
+        /* Dropdown lebih sempit di mobile */
+        .dropdown-menu {
+            min-width: 200px;
+            right: -10px;
+        }
+
+        .user-info strong { font-size: 14px; }
+        .user-info small  { font-size: 12px; }
+
+        /* Hero */
         .hero-section {
             height: auto;
-            min-height: 400px;
-            padding: 40px 20px;
+            min-height: 300px;
+            padding: 30px 20px;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .hero-overlay {
+            background: linear-gradient(to bottom, rgba(135, 206, 235, 0.9) 0%, rgba(135, 206, 235, 0.7) 100%);
+        }
+
+        .hero-content {
+            max-width: 100%;
         }
 
         .hero-title {
-            font-size: 24px;
+            font-size: 20px;
+            margin-bottom: 12px;
         }
 
+        .hero-subtitle {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .hero-buttons {
+            gap: 10px;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            padding: 10px 20px;
+            font-size: 13px;
+        }
+
+        /* Badge kampus turun ke bawah konten di mobile */
         .badge-kampus {
-            position: static;
-            display: inline-block;
+            position: relative;
+            top: auto;
+            right: auto;
             transform: none;
+            display: inline-block;
             margin-top: 20px;
+            font-size: 14px;
+            padding: 12px 18px;
+        }
+
+        /* Section */
+        .section-content {
+            padding: 20px 15px;
+        }
+
+        .step-item {
+            padding: 14px 15px;
+        }
+
+        .step-text {
+            font-size: 14px;
+        }
+    }
+
+    /* =====================
+       RESPONSIVE — SMALL MOBILE (≤ 480px)
+    ===================== */
+    @media (max-width: 480px) {
+        .header-title {
+            font-size: 14px;
+        }
+
+        .hero-title {
+            font-size: 18px;
+        }
+
+        .hero-subtitle {
+            font-size: 13px;
+        }
+
+        .hero-buttons {
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            width: 100%;
+            text-align: center;
+        }
+
+        .profile-icon {
+            width: 64px;
+            height: 64px;
+        }
+
+        .profile-icon svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .section-content {
+            padding: 16px 12px;
         }
     }
 </style>

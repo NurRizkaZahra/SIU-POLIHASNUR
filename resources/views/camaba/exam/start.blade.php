@@ -43,6 +43,13 @@
 
     .back-link:hover { color: #1e3a8a; }
 
+    .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
     /* Badge nama tes */
     .test-badge {
         display: inline-flex;
@@ -302,9 +309,19 @@
 
 <div class="exam-wrapper">
     <div class="exam-card">
+        <div class="top-row">
+        <a href="{{ route('camaba.exam.index') }}" class="back-link">
+            ← Kembali ke Daftar Ujian
+        </a>
 
-        {{-- Tombol kembali ke daftar ujian --}}
-        <a href="{{ route('camaba.exam.index') }}" class="back-link">← Kembali ke Daftar Ujian</a>
+        <div class="test-badge">
+            @if($isPsikotes)
+                🧠 {{ $examLabel }}
+            @else
+                📚 {{ $examLabel }}
+            @endif
+        </div>
+    </div>
 
         {{-- Alerts — sama persis dengan blade lama --}}
         @if(session('error'))
@@ -324,15 +341,6 @@
                 <strong>ℹ️ Info:</strong> {{ session('info') }}
             </div>
         @endif
-
-        {{-- Badge nama tes (dari showExam()) --}}
-        <div class="test-badge">
-            @if($isPsikotes)
-                🧠 {{ $examLabel }}
-            @else
-                📚 {{ $examLabel }}
-            @endif
-        </div>
 
         {{-- Profile Icon --}}
         <div class="profile-icon">

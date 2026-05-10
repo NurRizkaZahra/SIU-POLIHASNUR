@@ -1,4 +1,7 @@
-<div class="sidebar">
+{{-- Overlay backdrop untuk mobile (klik di luar = tutup sidebar) --}}
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<div class="sidebar" id="mainSidebar">
     <div class="logo">
         <span>SIU-POLIHASNUR</span>
     </div>
@@ -45,3 +48,9 @@
         @endrole
     </ul>
 </div>
+
+{{--
+    CATATAN: Semua JavaScript untuk sidebar (toggleSidebar, closeSidebar, dll.)
+    sudah dipindah ke partials/scripts.blade.php agar tidak duplikasi.
+    Pastikan @include('partials.scripts') ada di layout utama (biasanya sebelum </body>).
+--}}

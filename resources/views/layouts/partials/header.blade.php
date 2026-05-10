@@ -9,35 +9,35 @@
     </div>
 
     <div class="header-actions">
-       @php
-$unreadNotif = auth()->check()
-    ? \App\Models\Notification::where('user_id', auth()->id())
-        ->where('is_read', false)
-        ->count()
-    : 0;
-@endphp
+        @php
+            $unreadNotif = auth()->check()
+                ? \App\Models\Notification::where('user_id', auth()->id())
+                    ->where('is_read', false)
+                    ->count()
+                : 0;
+        @endphp
 
-<a href="{{ route('camaba.notifications') }}" class="icon-btn" title="Notifikasi" style="position: relative;">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-        <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5S10.5 3.17 10.5 4v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
-    </svg>
+        <a href="{{ route('camaba.notifications') }}" class="icon-btn" title="Notifikasi" style="position: relative;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5S10.5 3.17 10.5 4v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
+            </svg>
 
-    @if($unreadNotif > 0)
-    <span style="
-        position:absolute;
-        top:-5px;
-        right:-5px;
-        background:#ef4444;
-        color:white;
-        font-size:11px;
-        font-weight:bold;
-        padding:2px 6px;
-        border-radius:50%;
-    ">
-    {{ $unreadNotif }}
-    </span>
-    @endif
-</a>
+            @if($unreadNotif > 0)
+                <span style="
+                    position: absolute;
+                    top: -5px;
+                    right: -5px;
+                    background: #ef4444;
+                    color: white;
+                    font-size: 11px;
+                    font-weight: bold;
+                    padding: 2px 6px;
+                    border-radius: 50%;
+                ">
+                    {{ $unreadNotif }}
+                </span>
+            @endif
+        </a>
 
         <!-- Profile Dropdown -->
         <div class="profile-dropdown">
@@ -47,7 +47,6 @@ $unreadNotif = auth()->check()
                 </svg>
             </button>
 
-            <!-- Dropdown -->
             <div class="dropdown-menu" id="profileDropdown">
                 <div class="dropdown-header">
                     <div class="user-info">
@@ -80,108 +79,3 @@ $unreadNotif = auth()->check()
         </div>
     </div>
 </div>
-
-<style>
-/* HANYA CSS untuk dropdown saja - Header styling sudah ada di styles.blade.php */
-
-/* DROPDOWN */
-.profile-dropdown {
-    position: relative;
-}
-
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 110%;
-    background: white;
-    color: #111827;
-    min-width: 240px;
-    border-radius: 8px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    z-index: 999;
-    overflow: hidden;
-}
-
-.dropdown-menu.show {
-    display: block;
-    animation: fadeIn 0.25s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Header inside dropdown */
-.dropdown-header {
-    background: #1e40af;
-    color: white;
-    padding: 12px;
-}
-
-.user-info strong {
-    display: block;
-    font-size: 16px;
-    margin-bottom: 4px;
-}
-
-.user-info small {
-    display: block;
-    font-size: 13px;
-    opacity: 0.8;
-}
-
-/* Divider */
-.dropdown-divider {
-    height: 1px;
-    background: #e5e7eb;
-    margin: 0;
-}
-
-/* Dropdown item */
-.dropdown-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 15px;
-    text-decoration: none;
-    color: #111827;
-    transition: background 0.2s;
-    width: 100%;
-    border: none;
-    background: none;
-    cursor: pointer;
-    text-align: left;
-    font-size: 14px;
-}
-
-.dropdown-item:hover {
-    background: #f3f4f6;
-}
-
-/* Logout */
-.logout-btn {
-    color: #dc2626;
-}
-
-.logout-btn:hover {
-    background: #fee2e2;
-}
-</style>
-
-<script>
-function toggleProfileDropdown() {
-    const dropdown = document.getElementById('profileDropdown');
-    dropdown.classList.toggle('show');
-}
-
-window.addEventListener('click', function (e) {
-    const dropdown = document.getElementById('profileDropdown');
-    const profileBtn = document.querySelector('.profile-dropdown .icon-btn');
-
-    if (!dropdown.contains(e.target) && !profileBtn.contains(e.target)) {
-        dropdown.classList.remove('show');
-    }
-});
-</script>
