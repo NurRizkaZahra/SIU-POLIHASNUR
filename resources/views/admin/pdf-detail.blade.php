@@ -100,13 +100,6 @@ td.label {
                 <td class="label">Tanggal Lahir</td>
                 <td>{{ $camaba->personalData->date_of_birth ?? '-' }}</td>
             </tr>
-
-
-
-            <tr>
-                <td class="label">Alamat</td>
-                <td>{{ $camaba->personalData->address ?? '-' }}</td>
-            </tr>
         </table>
     </div>
     {{-- PENDIDIKAN --}}
@@ -120,17 +113,33 @@ td.label {
             </tr>
 
             <tr>
-                <td class="label">NPSN</td>
+                <td class="label">Nomor Pokok Sekolah Nasional (NPSN)</td>
                 <td>{{ $camaba->educationData->school_code ?? '-' }}</td>
-            </tr>
-            <tr>
-                <td class="label">NISN</td>
-                <td>{{ $camaba->educationData->nisn ?? '-' }}</td>
             </tr>
 
             <tr>
-                <td class="label">Jurusan</td>
+                <td class="label">Alamat Sekolah</td>
+                <td>{{ $camaba->educationData->school_address ?? '-' }}</td>
+            </tr>
+
+            <tr>
+                <td class="label">Jurusan/Program Keahlian</td>
                 <td>{{ $camaba->educationData->major ?? '-' }}</td>
+            </tr>
+
+            <tr>
+                <td class="label">Tahun Masuk</td>
+                <td>{{ $camaba->educationData->year_of_entry?? '-' }}</td>
+            </tr>
+
+            <tr>
+                <td class="label">Prestasi Akademik dan Nilai Akademik</td>
+                <td>{{ $camaba->educationData->achievement?? '-' }}</td>
+            </tr>
+
+            <tr>
+                <td class="label">Nomor Induk Siswa Nasional (NISN)</td>
+                <td>{{ $camaba->educationData->nisn ?? '-' }}</td>
             </tr>
         </table>
     </div>
@@ -140,18 +149,59 @@ td.label {
         <div class="section-title">Data Keluarga</div>
         <table>
             <tr>
-                <td class="label">Nama Ayah</td>
+                <td class="label">Nama Ayah/Wali</td>
                 <td>{{ $camaba->familyData->father_name ?? '-' }}</td>
             </tr>
 
             <tr>
-                <td class="label">Nama Ibu</td>
+                <td class="label">Jumlah Anak</td>
+                <td>{{ $camaba->familyData->number_of_children ?? '-' }}</td>
+            </tr>
+
+             <tr>
+                <td class="label">Pekerjaan Ayah</td>
+                <td>{{ $camaba->familyData->father_job ?? '-' }}</td>
+            </tr>
+
+            <tr>
+                <td class="label">Anak Ke</td>
+                <td>{{ $camaba->familyData->child_order ?? '-' }}</td>
+            </tr>
+
+            <tr>
+                <td class="label">Nama Ibu/Wali</td>
                 <td>{{ $camaba->familyData->mother_name ?? '-' }}</td>
             </tr>
 
             <tr>
-                <td class="label">Penghasilan Orang Tua</td>
+                <td class="label">Penghasilan Ayah dan Ibu</td>
                 <td>{{ $camaba->familyData->parent_income ?? '-' }}</td>
+            </tr>
+
+            <tr>
+                <td class="label">Pekerjaan Ibu</td>
+                <td>{{ $camaba->familyData->mother_job ?? '-' }}</td>
+            </tr>
+
+            <tr>
+                <td class="label">Alamat</td>
+                <td>{{ $camaba->familyData->parent_address ?? '-' }}</td>
+            </tr>
+
+            <tr>
+                <td class="label">Nomor HP</td>
+                <td>{{ $camaba->familyData->parent_phone ?? '-' }}</td>
+            </tr>
+        </table>
+    </div>
+    {{-- JALUR MASUK --}}
+    <div class="section">
+        <div class="section-title">Jalur Masuk</div>
+
+        <table>
+            <tr>
+                <td class="label">Jalur Masuk</td>
+                <td>{{$camaba->admissionPath->path_name ?? '-' }}</td>
             </tr>
         </table>
     </div>

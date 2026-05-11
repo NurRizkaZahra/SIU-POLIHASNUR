@@ -300,11 +300,224 @@
 
     .continue-link:hover { color: #152d6b; }
 
-    @media (max-width: 640px) {
-        .exam-card    { padding: 30px 25px; }
-        .start-button { padding: 13px 25px; }
-        .form-input   { font-size: 13px; padding: 12px 16px; }
+    /* =========================
+   GLOBAL
+========================= */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    overflow-x: hidden;
+}
+
+/* =========================
+   TABLET
+========================= */
+@media (max-width: 1024px) {
+
+    .exam-wrapper {
+        padding: 30px 18px;
     }
+
+    .exam-card {
+        max-width: 100%;
+        padding: 40px 40px;
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 768px) {
+
+    .exam-wrapper {
+        padding: 20px 14px;
+    }
+
+    .exam-card {
+        padding: 30px 22px;
+        border-radius: 20px;
+    }
+
+    /* Top row */
+    .top-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        margin-bottom: 20px;
+    }
+
+    .back-link {
+        font-size: 12px;
+        margin-bottom: 0;
+    }
+
+    .test-badge {
+        font-size: 11px;
+        padding: 5px 12px;
+        margin-bottom: 0;
+    }
+
+    /* Profile */
+    .profile-icon {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 18px;
+    }
+
+    .profile-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    /* Video */
+    .video-section {
+        border-radius: 14px;
+        margin-bottom: 24px;
+    }
+
+    .video-header {
+        padding: 12px 14px;
+        gap: 8px;
+    }
+
+    .video-header-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+
+    .vt-title {
+        font-size: 12.5px;
+    }
+
+    .vt-sub {
+        font-size: 10.5px;
+    }
+
+    .video-warning {
+        font-size: 11px;
+        padding: 8px 14px;
+        line-height: 1.5;
+    }
+
+    .watched-row {
+        padding: 10px 14px;
+    }
+
+    .watched-row label {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    /* Button */
+    .start-button {
+        padding: 13px 20px;
+        font-size: 14px;
+        margin-bottom: 28px;
+    }
+
+    .btn-hint {
+        font-size: 11px;
+        line-height: 1.5;
+        margin-top: -20px;
+        margin-bottom: 22px;
+    }
+
+    /* Form */
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-label {
+        font-size: 12px;
+    }
+
+    .form-input {
+        padding: 12px 16px;
+        font-size: 13px;
+    }
+
+    /* Alert */
+    .alert {
+        font-size: 12px;
+        padding: 10px 14px;
+    }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+@media (max-width: 480px) {
+
+    .exam-wrapper {
+        padding: 14px 10px;
+    }
+
+    .exam-card {
+        padding: 24px 16px;
+        border-radius: 16px;
+    }
+
+    .back-link {
+        font-size: 11px;
+    }
+
+    .test-badge {
+        font-size: 10px;
+        padding: 4px 10px;
+    }
+
+    .profile-icon {
+        width: 46px;
+        height: 46px;
+    }
+
+    .profile-icon svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .vt-title {
+        font-size: 11.5px;
+    }
+
+    .vt-sub {
+        font-size: 10px;
+    }
+
+    .video-warning {
+        font-size: 10px;
+    }
+
+    .watched-row label {
+        font-size: 11px;
+    }
+
+    .start-button {
+        font-size: 13px;
+        padding: 12px 16px;
+    }
+
+    .form-label {
+        font-size: 11px;
+    }
+
+    .form-input {
+        font-size: 12px;
+        padding: 11px 14px;
+    }
+
+    .btn-hint {
+        font-size: 10px;
+    }
+
+    .alert {
+        font-size: 11px;
+    }
+}
 </style>
 
 <div class="exam-wrapper">

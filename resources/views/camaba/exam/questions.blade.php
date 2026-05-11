@@ -496,6 +496,331 @@
         .video-container video,
         .video-container iframe { height: 220px; }
     }
+    
+    /* =========================
+   TABLET RESPONSIVE
+========================= */
+@media (max-width: 1024px) {
+
+    .exam-wrapper {
+        padding: 1rem;
+    }
+
+    .exam-container {
+        flex-direction: column;
+    }
+
+    .question-sidebar {
+        width: 100%;
+        position: relative;
+        top: 0;
+        padding: 1rem;
+    }
+
+    .question-grid {
+        grid-template-columns: repeat(8, 1fr);
+    }
+
+    .question-card {
+        padding: 1.5rem;
+    }
+
+    .navigation-controls {
+        padding: 1rem 1.25rem;
+    }
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+
+    .exam-wrapper {
+        padding: 0.8rem;
+    }
+
+    /* INFO BAR */
+    .exam-info-bar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1rem;
+        gap: 0.9rem;
+    }
+
+    .session-badge {
+        width: 100%;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    .progress-section {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .progress-text {
+        min-width: 40px;
+        font-size: 0.85rem;
+    }
+
+    .timer-section {
+        justify-content: center;
+        width: 100%;
+        font-size: 0.95rem;
+        padding: 0.7rem 1rem;
+    }
+
+    /* SIDEBAR */
+    .question-sidebar {
+        padding: 1rem;
+        border-radius: 12px;
+    }
+
+    .sidebar-title {
+        font-size: 0.95rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .question-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 6px;
+    }
+
+    .question-number-box {
+        font-size: 0.8rem;
+        border-radius: 6px;
+    }
+
+    /* QUESTION CARD */
+    .question-card {
+        padding: 1.1rem;
+        border-radius: 12px;
+    }
+
+    .question-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+
+    .question-number-label {
+        font-size: 0.85rem;
+    }
+
+    .question-type-badge {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.75rem;
+    }
+
+    .question-text {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1.2rem;
+    }
+
+    /* VIDEO */
+    .video-container video,
+    .video-container iframe {
+        height: 220px;
+    }
+
+    /* QUESTION IMAGE */
+    .question-image-wrap img {
+        max-width: 100%;
+        max-height: 220px;
+    }
+
+    /* OPTIONS */
+    .options-wrapper {
+        gap: 0.7rem;
+    }
+
+    .option-item {
+        padding: 0.8rem;
+    }
+
+    .option-item:hover {
+        transform: none;
+    }
+
+    .option-label {
+        gap: 0.75rem;
+    }
+
+    .option-letter {
+        width: 30px;
+        height: 30px;
+        font-size: 0.85rem;
+    }
+
+    .option-text {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .option-image-wrap img {
+        max-width: 100px;
+        max-height: 70px;
+    }
+
+    /* NAVIGATION BUTTONS */
+    .navigation-controls {
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 1rem;
+    }
+
+    .btn-exam {
+        width: 100%;
+        justify-content: center;
+        padding: 0.85rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    /* MODAL */
+    .modal-box {
+        width: 95%;
+        padding: 1.5rem;
+        border-radius: 12px;
+    }
+
+    .modal-box h3 {
+        font-size: 1.15rem;
+    }
+
+    .modal-box p {
+        font-size: 0.9rem;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+    }
+
+    .btn-modal {
+        width: 100%;
+    }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+@media (max-width: 480px) {
+
+    .exam-wrapper {
+        padding: 0.6rem;
+    }
+
+    .exam-info-bar {
+        padding: 0.9rem;
+        border-radius: 12px;
+    }
+
+    .session-badge {
+        font-size: 0.8rem;
+        padding: 0.55rem 1rem;
+    }
+
+    .timer-section {
+        font-size: 0.9rem;
+    }
+
+    .question-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .question-number-box {
+        font-size: 0.75rem;
+    }
+
+    .question-card {
+        padding: 1rem;
+    }
+
+    .question-text {
+        font-size: 0.9rem;
+    }
+
+    .option-item {
+        padding: 0.75rem;
+    }
+
+    .option-letter {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+
+    .option-text {
+        font-size: 0.85rem;
+    }
+
+    .video-container video,
+    .video-container iframe {
+        height: 190px;
+    }
+
+    .btn-exam {
+        font-size: 0.85rem;
+        padding: 0.8rem;
+    }
+
+    .modal-box {
+        padding: 1.2rem;
+    }
+}
+/* FIX OVERFLOW MOBILE */
+body {
+    overflow-x: hidden;
+}
+
+.exam-container,
+.question-content-area,
+.question-card,
+.options-wrapper {
+    min-width: 0;
+}
+
+/* OPTION TEXT BIAR GAK MELEBAR */
+.option-text {
+    word-break: break-word;
+}
+
+/* TIMER BIAR GAK KEPOTONG */
+.timer-section {
+    flex-wrap: wrap;
+}
+
+/* VIDEO FULL RESPONSIVE */
+.video-container iframe,
+.video-container video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto !important;
+}
+
+/* IMAGE RESPONSIVE */
+.question-image-wrap img,
+.option-image-wrap img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* BUTTON BIAR GAK TERLALU BESAR DI HP */
+@media (max-width: 480px) {
+    .btn-exam {
+        min-height: 44px;
+    }
+
+    .question-grid {
+        gap: 5px;
+    }
+
+    .question-number-box {
+        min-height: 42px;
+    }
+}
+
 </style>
 
 <div class="exam-wrapper">

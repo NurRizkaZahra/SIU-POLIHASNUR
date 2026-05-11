@@ -1,7 +1,7 @@
 @extends('layouts.app-admin')
 
 @section('title', 'SIU-POLIHASNUR - Exam Schedule')
-@section('page-title', 'EXAM SCHEDULE')
+@section('page-title', 'JADWAL UJIAN')
 
 @push('styles')
 <style>

@@ -273,6 +273,228 @@
             grid-template-columns: 1fr;
         }
     }
+    /* =========================
+   TABLET RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+
+    .notif-container {
+        padding: 15px;
+    }
+
+    .notif-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 18px;
+    }
+
+    .notif-header h2 {
+        font-size: 18px;
+        line-height: 1.4;
+    }
+
+    .notif-header p {
+        font-size: 12px;
+    }
+
+    .badge-unread {
+        align-self: flex-start;
+        font-size: 13px;
+        padding: 7px 14px;
+    }
+
+    .notif-card {
+        padding: 18px;
+    }
+
+    .notif-top {
+        gap: 10px;
+    }
+
+    .notif-title {
+        font-size: 16px;
+        line-height: 1.4;
+    }
+
+    .notif-message {
+        font-size: 13px;
+        line-height: 1.7;
+    }
+
+    .notif-details {
+        padding: 14px;
+    }
+
+    .detail-row {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .detail-label {
+        font-size: 11px;
+    }
+
+    .detail-value {
+        font-size: 13px;
+    }
+
+    .notif-actions {
+        flex-direction: column;
+    }
+
+    .notif-actions form {
+        width: 100%;
+    }
+
+    .btn-action {
+        width: 100%;
+        padding: 11px 16px;
+        font-size: 13px;
+    }
+
+    .notif-time {
+        font-size: 11px;
+    }
+
+    .empty-state {
+        padding: 60px 20px;
+    }
+
+    .empty-icon {
+        font-size: 60px;
+    }
+
+    .empty-title {
+        font-size: 18px;
+    }
+
+    .empty-text {
+        font-size: 13px;
+    }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+@media (max-width: 480px) {
+
+    .notif-container {
+        padding: 10px;
+    }
+
+    .notif-header {
+        padding: 16px;
+        border-radius: 10px;
+    }
+
+    .notif-header h2 {
+        font-size: 16px;
+    }
+
+    .notif-header p {
+        font-size: 11px;
+    }
+
+    .badge-unread {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    .notif-card {
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    .notif-title {
+        font-size: 15px;
+    }
+
+    .badge-new {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+
+    .notif-message {
+        font-size: 12px;
+    }
+
+    .notif-details {
+        padding: 12px;
+    }
+
+    .detail-item {
+        gap: 3px;
+    }
+
+    .detail-label {
+        font-size: 10px;
+    }
+
+    .detail-value {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .badge-status {
+        width: fit-content;
+        font-size: 11px;
+        padding: 5px 10px;
+    }
+
+    .btn-action {
+        min-height: 44px;
+        font-size: 12px;
+        border-radius: 7px;
+    }
+
+    .notif-time {
+        font-size: 10px;
+    }
+
+    .empty-state {
+        padding: 50px 15px;
+    }
+
+    .empty-icon {
+        font-size: 50px;
+    }
+
+    .empty-title {
+        font-size: 16px;
+    }
+
+    .empty-text {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+}
+
+/* =========================
+   EXTRA FIX
+========================= */
+
+/* Hindari overflow */
+body {
+    overflow-x: hidden;
+}
+
+/* Biar text panjang aman */
+.notif-title,
+.notif-message,
+.detail-value {
+    word-break: break-word;
+}
+
+/* Form button full width */
+.notif-actions form {
+    flex: 1;
+}
+
+/* Tombol tidak mengecil */
+.btn-action {
+    white-space: nowrap;
+}
 </style>
 
 <div class="notif-container">

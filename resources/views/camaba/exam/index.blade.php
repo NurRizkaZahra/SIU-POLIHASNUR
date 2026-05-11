@@ -211,11 +211,209 @@
     .alert-success { background: #d1fae5; border: 1px solid #a7f3d0; color: #065f46; }
     .alert-info    { background: #dbeafe; border: 1px solid #bfdbfe; color: #1e40af; }
 
-    @media (max-width: 640px) {
-        .test-item    { padding: 12px 16px; gap: 10px; }
-        .group-header { padding: 14px 16px; }
-        .btn-kerjakan { padding: 8px 16px; font-size: 12px; }
+    /* =========================
+   GLOBAL
+========================= */
+* {
+    box-sizing: border-box;
+}
+
+/* =========================
+   TABLET
+========================= */
+@media (max-width: 1024px) {
+
+    .exam-list-wrapper {
+        padding: 30px 20px 50px;
     }
+
+    .exam-container,
+    .student-bar,
+    .alert {
+        max-width: 100%;
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 768px) {
+
+    .exam-list-wrapper {
+        padding: 24px 14px 40px;
+    }
+
+    .page-header {
+        margin-bottom: 22px;
+    }
+
+    .page-header h2 {
+        font-size: 20px;
+    }
+
+    .page-header p {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .student-bar {
+        padding: 14px;
+        border-radius: 14px;
+        gap: 10px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .student-avatar {
+        width: 36px;
+        height: 36px;
+    }
+
+    .student-name {
+        font-size: 13px;
+    }
+
+    .student-wave {
+        font-size: 11px;
+    }
+
+    .student-date {
+        margin-left: auto;
+        font-size: 11px;
+        padding: 4px 10px;
+    }
+
+    .group-card {
+        border-radius: 16px;
+    }
+
+    .group-header {
+        padding: 14px 16px;
+        gap: 12px;
+    }
+
+    .group-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        font-size: 18px;
+    }
+
+    .group-title {
+        font-size: 14px;
+    }
+
+    .group-sub {
+        font-size: 11px;
+        line-height: 1.4;
+    }
+
+    .test-item {
+        padding: 14px 16px;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .test-num {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+
+    .test-name {
+        font-size: 13px;
+        line-height: 1.4;
+    }
+
+    .btn-kerjakan {
+        padding: 8px 14px;
+        font-size: 11px;
+        border-radius: 999px;
+    }
+
+    .info-note {
+        padding: 12px 14px;
+        border-radius: 12px;
+    }
+
+    .info-note p {
+        font-size: 11.5px;
+        line-height: 1.6;
+    }
+
+    .alert {
+        font-size: 12px;
+        padding: 10px 14px;
+    }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+@media (max-width: 480px) {
+
+    .exam-list-wrapper {
+        padding: 18px 10px 30px;
+    }
+
+    .page-header h2 {
+        font-size: 18px;
+    }
+
+    .page-header p {
+        font-size: 11px;
+    }
+
+    .student-bar {
+        padding: 12px;
+    }
+
+    .student-avatar {
+        width: 34px;
+        height: 34px;
+    }
+
+    .student-name {
+        font-size: 12px;
+    }
+
+    .student-wave {
+        font-size: 10px;
+    }
+
+    .student-date {
+        font-size: 10px;
+    }
+
+    .group-header {
+        padding: 12px 14px;
+    }
+
+    .group-title {
+        font-size: 13px;
+    }
+
+    .group-sub {
+        font-size: 10px;
+    }
+
+    .test-item {
+        padding: 12px 14px;
+    }
+
+    .test-name {
+        font-size: 12px;
+    }
+
+    .btn-kerjakan {
+        font-size: 10px;
+        padding: 7px 12px;
+    }
+
+    .info-note p {
+        font-size: 10.5px;
+    }
+}
 </style>
 
 <div class="exam-list-wrapper">

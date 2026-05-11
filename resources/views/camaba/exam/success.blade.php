@@ -161,6 +161,145 @@
             font-size: 1.5rem;
         }
     }
+    /* =========================
+   RESPONSIVE TABLET
+========================= */
+@media (max-width: 768px) {
+
+    .success-wrapper {
+        padding: 1rem;
+        align-items: center;
+    }
+
+    .success-card {
+        max-width: 100%;
+        padding: 2rem 1.5rem;
+        border-radius: 14px;
+    }
+
+    .success-icon {
+        width: 65px;
+        height: 65px;
+    }
+
+    .success-icon svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    .success-title {
+        font-size: 1.15rem;
+        line-height: 1.5;
+        margin-bottom: 0.9rem;
+    }
+
+    .success-message {
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .exam-info-box {
+        padding: 0.9rem;
+    }
+
+    .info-row {
+        font-size: 0.82rem;
+        gap: 0.5rem;
+    }
+
+    .submit-time {
+        font-size: 0.85rem;
+        padding: 0.75rem;
+    }
+
+    .note-text {
+        font-size: 0.85rem;
+        padding: 0.9rem;
+    }
+
+    .btn-back {
+        width: 100%;
+        text-align: center;
+        padding: 0.85rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+@media (max-width: 480px) {
+
+    .success-wrapper {
+        padding: 0.75rem;
+    }
+
+    .success-card {
+        padding: 1.5rem 1rem;
+        border-radius: 12px;
+    }
+
+    .success-icon {
+        width: 58px;
+        height: 58px;
+        margin-bottom: 0.9rem;
+    }
+
+    .success-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .success-title {
+        font-size: 1rem;
+    }
+
+    .success-message {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    .exam-info-box {
+        padding: 0.8rem;
+    }
+
+    .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.2rem;
+        padding: 0.45rem 0;
+        font-size: 0.8rem;
+    }
+
+    .submit-time {
+        font-size: 0.8rem;
+        line-height: 1.6;
+    }
+
+    .note-text {
+        font-size: 0.8rem;
+        line-height: 1.5;
+    }
+
+    .btn-back {
+        font-size: 0.85rem;
+        padding: 0.8rem;
+        border-radius: 7px;
+    }
+}
+
+/* =========================
+   EXTRA FIX
+========================= */
+body {
+    overflow-x: hidden;
+}
+
+.success-card,
+.exam-info-box,
+.submit-time {
+    word-break: break-word;
+}
 </style>
 
 <div class="success-wrapper">
