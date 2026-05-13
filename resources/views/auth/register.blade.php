@@ -19,7 +19,7 @@
       overflow: hidden;
     }
 
-    /* ================= LEFT SIDE (REGISTER FORM) ================= */
+    /* ================= LEFT SIDE (FORM) ================= */
     .left {
       flex: 1;
       background: #fff;
@@ -27,6 +27,7 @@
       justify-content: center;
       align-items: center;
       padding: 20px;
+      overflow-y: auto;
     }
 
     .register-box {
@@ -37,24 +38,35 @@
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    .register-box h3 {
-      font-size: 26px;
+    /* LOGO */
+    .logo-box {
+      text-align: center;
       margin-bottom: 10px;
-      color: #1e3c72;
+    }
+
+    .logo-login {
+      width: 210px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      object-fit: contain;
     }
 
     .register-box p {
       color: #777;
       font-size: 14px;
-      margin-bottom: 30px;
+      margin-top: 8px;
+      margin-bottom: 24px;
+      line-height: 1.4;
     }
 
+    /* INPUT */
     .input-group {
       position: relative;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .input-group input {
@@ -68,7 +80,7 @@
 
     .input-group input:focus {
       border-color: #2a5298;
-      box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+      box-shadow: 0 0 0 3px rgba(42,82,152,0.1);
       outline: none;
     }
 
@@ -80,6 +92,7 @@
       color: #999;
     }
 
+    /* BUTTON */
     button {
       width: 100%;
       padding: 12px;
@@ -95,11 +108,11 @@
     button:hover {
       background: #2a5298;
       transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(42, 82, 152, 0.3);
+      box-shadow: 0 4px 10px rgba(42,82,152,0.3);
     }
 
     .footer-text {
-      margin-top: 25px;
+      margin-top: 22px;
       font-size: 14px;
       color: #666;
     }
@@ -110,31 +123,27 @@
       font-weight: 500;
     }
 
-    .footer-text a:hover {
-      text-decoration: underline;
+    .footer-text a:hover { text-decoration: underline; }
+
+    /* ERROR */
+    .error-list {
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      text-align: left;
     }
 
-    /* ====== LOGO ====== */
-    .logo-box {
-      text-align: center;
-      margin-bottom: 10px;
+    .error-list ul {
+      list-style: disc;
+      padding-left: 16px;
     }
 
-    .logo-login {
-      width: 210px;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-      object-fit: contain;
-    }
-
-    /* ====== TEKS LOGIN ====== */
-    .login-box p {
-      color: #777;
-      font-size: 14px;
-      margin-top: 15px;
-      margin-bottom: 15px;
-      line-height: 1.2;
+    .error-list li {
+      color: #b91c1c;
+      font-size: 13px;
+      line-height: 1.5;
     }
 
     /* ================= RIGHT SIDE (SLIDESHOW) ================= */
@@ -154,11 +163,12 @@
     }
 
     @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
 
+    /* TOGA */
     .toga {
       position: absolute;
       width: 100px;
@@ -169,40 +179,34 @@
 
     @keyframes floatToga {
       0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(10deg); }
+      50%       { transform: translateY(-20px) rotate(10deg); }
     }
 
     @keyframes glowToga {
-      0% { filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)); }
-      100% { filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.8)); }
+      0%   { filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
+      100% { filter: drop-shadow(0 0 25px rgba(255,255,255,0.8)); }
     }
 
     .toga:nth-child(1) { top: 10%; left: 15%; animation-delay: 0s; }
     .toga:nth-child(2) { top: 60%; left: 70%; animation-delay: 2s; }
     .toga:nth-child(3) { top: 30%; left: 40%; animation-delay: 4s; }
 
-    /* ==== FOTO KAMPUS BERSINAR ==== */
+    /* SLIDESHOW */
     .slideshow {
       width: 320px;
       height: 320px;
       position: relative;
       overflow: hidden;
       border-radius: 20px;
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.4),
-                  0 0 45px rgba(221, 199, 67, 0.5);
+      box-shadow: 0 0 25px rgba(255,255,255,0.4), 0 0 45px rgba(221,199,67,0.5);
       margin-bottom: 30px;
       animation: glowFrame 3s ease-in-out infinite alternate;
+      flex-shrink: 0;
     }
 
     @keyframes glowFrame {
-      0% {
-        box-shadow: 0 0 20px rgba(255,255,255,0.3),
-                    0 0 40px rgba(221,199,67,0.4);
-      }
-      100% {
-        box-shadow: 0 0 30px rgba(255,255,255,0.7),
-                    0 0 60px rgba(221,199,67,0.8);
-      }
+      0%   { box-shadow: 0 0 20px rgba(255,255,255,0.3), 0 0 40px rgba(221,199,67,0.4); }
+      100% { box-shadow: 0 0 30px rgba(255,255,255,0.7), 0 0 60px rgba(221,199,67,0.8); }
     }
 
     .slide {
@@ -221,55 +225,133 @@
     .right h2 {
       font-size: 26px;
       font-weight: 600;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
       text-align: center;
     }
 
-    /* ========== RESPONSIVE ========== */
+    /* ════════════════════════════
+       RESPONSIVE
+    ════════════════════════════ */
+
+    /* Tablet & bawah: form dulu, slideshow di bawah */
     @media (max-width: 900px) {
-      body { flex-direction: column-reverse; height: auto; overflow-y: auto; }
-      .left, .right { width: 100%; height: auto; flex: none; }
-      .right { padding: 40px 20px; }
-      .slideshow { width: 250px; height: 250px; }
-      .register-box { width: 90%; max-width: 360px; margin-top: 20px; }
+      body {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
+      }
+
+      /* form di atas */
+      .left {
+        width: 100%;
+        flex: none;
+        padding: 36px 20px 28px;
+        order: 1;
+        align-items: flex-start;
+        justify-content: center;
+      }
+
+      /* slideshow di bawah */
+      .right {
+        width: 100%;
+        flex: none;
+        padding: 40px 20px 44px;
+        order: 2;
+      }
+
+      .register-box {
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .slideshow {
+        width: 240px;
+        height: 240px;
+        margin-bottom: 20px;
+      }
+
       .right h2 { font-size: 22px; }
     }
 
-    @media (max-width: 480px) {
-      .slideshow { width: 200px; height: 200px; }
-      .register-box h3 { font-size: 22px; }
-      .right h2 { font-size: 20px; }
+    /* Mobile */
+    @media (max-width: 600px) {
+      .left { padding: 28px 16px 24px; }
+      .right { padding: 32px 16px 40px; }
+
+      .register-box { max-width: 100%; }
+
+      .logo-login { width: 170px; }
+
+      .slideshow {
+        width: 190px;
+        height: 190px;
+      }
+
+      .right h2 { font-size: 18px; }
+
+      .toga { width: 70px; }
+
+      .input-group input {
+        font-size: 13px;
+        padding: 11px 40px 11px 13px;
+      }
+
+      .input-group { margin-bottom: 14px; }
+
+      button { font-size: 14px; padding: 11px; }
+
+      .footer-text { font-size: 13px; margin-top: 18px; }
+
+      .register-box p { font-size: 13px; margin-bottom: 18px; }
+    }
+
+    /* Very small phones */
+    @media (max-width: 380px) {
+      .slideshow {
+        width: 155px;
+        height: 155px;
+      }
+
+      .right h2 { font-size: 15px; }
+
+      .logo-login { width: 150px; }
+
+      .input-group input { font-size: 12px; }
     }
   </style>
 </head>
 
 <body>
+
   <!-- LEFT SIDE (REGISTER FORM) -->
   <div class="left">
     <div class="register-box">
       <div class="logo-box">
         <img src="{{ asset('images/technopreneur.png') }}" alt="Politeknik Hasnur" class="logo-login" />
       </div>
+
       <p>Join SIU Polihasnur by filling in your details</p>
 
       @if ($errors->any())
-  <div style="color:red; margin-bottom:15px;">
-    <ul>
-      @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-      @endforeach
-    </ul>
-  </div>
-@endif
+        <div class="error-list">
+          <ul>
+            @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        </div>
+      @endif
+
       <form method="POST" action="{{ route('register') }}">
         @csrf
         <div class="input-group">
-          <input type="text" name="name" placeholder="Full Name" required />
+          <input type="text" name="name" placeholder="Full Name" value="{{ old('name') }}" required />
           <i class="fa fa-user"></i>
         </div>
 
         <div class="input-group">
-          <input type="email" name="email" placeholder="Email" required />
+          <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" required />
           <i class="fa fa-envelope"></i>
         </div>
 
@@ -286,23 +368,23 @@
         <button type="submit">Register</button>
 
         <div class="footer-text">
-          Already have an account? 
+          Already have an account?
           <a href="{{ route('login') }}">Login</a>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- RIGHT SIDE (SLIDESHOW BERSINAR) -->
+  <!-- RIGHT SIDE (SLIDESHOW) -->
   <div class="right">
-    <img src="images/toga.png" class="toga">
-    <img src="images/toga.png" class="toga">
-    <img src="images/toga.png" class="toga">
+    <img src="{{ asset('images/toga.png') }}" class="toga" alt="">
+    <img src="{{ asset('images/toga.png') }}" class="toga" alt="">
+    <img src="{{ asset('images/toga.png') }}" class="toga" alt="">
 
     <div class="slideshow">
-      <img src="images/Polihasnur_1.png" class="slide active" alt="Gedung Polihasnur 1">
-      <img src="images/Polihasnur_3.png" class="slide" alt="Gedung Polihasnur 2">
-      <img src="images/Polihasnur_2.png" class="slide" alt="Gedung Polihasnur 3">
+      <img src="{{ asset('images/Polihasnur_1.png') }}" class="slide active" alt="Gedung Polihasnur 1">
+      <img src="{{ asset('images/Polihasnur_3.png') }}" class="slide" alt="Gedung Polihasnur 2">
+      <img src="{{ asset('images/Polihasnur_2.png') }}" class="slide" alt="Gedung Polihasnur 3">
     </div>
 
     <h2>Welcome to SIU Polihasnur</h2>

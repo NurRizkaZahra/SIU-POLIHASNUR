@@ -8,34 +8,32 @@
         <h1 class="header-title">@yield('page-title', 'DASHBOARD ADMIN')</h1>
     </div>
     <div class="header-actions">
-        <!-- notifikasi -->
+        {{-- Notifikasi --}}
         @php
             $pendingCount = \App\Http\Controllers\Admin\AdminExamController::getPendingCount();
         @endphp
-        
+
         <a href="{{ route('exam.notifications') }}" class="icon-btn-link">
             <button class="icon-btn" style="position: relative;">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
                     <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
                 </svg>
-                
                 @if($pendingCount > 0)
-                    <span style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; font-size: 10px; font-weight: bold; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite;">
+                    <span style="position:absolute;top:-5px;right:-5px;background:#ef4444;color:white;font-size:10px;font-weight:bold;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;animation:pulse 2s infinite;">
                         {{ $pendingCount > 9 ? '9+' : $pendingCount }}
                     </span>
                 @endif
             </button>
         </a>
-        
-        <!-- profil dropdown -->
+
+        {{-- Profil dropdown --}}
         <div class="profile-dropdown">
             <button class="icon-btn" onclick="toggleProfileDropdown()">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
                 </svg>
             </button>
-            
-            <!-- Dropdown Menu -->
+
             <div class="dropdown-menu" id="profileDropdown">
                 <div class="dropdown-header">
                     <div class="user-info">
@@ -51,7 +49,7 @@
                     Profile
                 </a>
                 <div class="dropdown-divider"></div>
-                <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
+                <form method="POST" action="{{ route('logout') }}" style="margin:0;">
                     @csrf
                     <button type="submit" class="dropdown-item logout-btn">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -70,19 +68,13 @@
         text-decoration: none;
         display: inline-block;
     }
-    
+
     @keyframes pulse {
-        0%, 100% {
-            transform: scale(1);
-            opacity: 1;
-        }
-        50% {
-            transform: scale(1.1);
-            opacity: 0.8;
-        }
+        0%, 100% { transform: scale(1);   opacity: 1; }
+        50%       { transform: scale(1.1); opacity: 0.8; }
     }
 
-    /* Profile Dropdown Styles */
+    /* Profile Dropdown */
     .profile-dropdown {
         position: relative;
         display: inline-block;
@@ -108,14 +100,8 @@
     }
 
     @keyframes dropdownFadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(-10px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
 
     .dropdown-header {
@@ -128,12 +114,21 @@
         display: block;
         font-size: 16px;
         margin-bottom: 4px;
+        /* potong nama panjang */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
     }
 
     .user-info small {
         display: block;
         opacity: 0.9;
         font-size: 13px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
     }
 
     .dropdown-divider {
@@ -158,20 +153,37 @@
         font-size: 14px;
     }
 
-    .dropdown-item:hover {
-        background: #f3f4f6;
+    .dropdown-item:hover { background: #f3f4f6; }
+    .dropdown-item svg   { flex-shrink: 0; }
+
+    .logout-btn       { color: #dc2626; }
+    .logout-btn:hover { background: #fee2e2; }
+
+    /* ========================
+       RESPONSIVE — header
+    ======================== */
+    @media (max-width: 640px) {
+        /* Kecilkan judul agar tidak meluber */
+        .header-title {
+            font-size: 15px !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 160px;
+        }
+
+        .header-actions { gap: 12px; }
+
+        /* Dropdown tidak keluar layar di kanan */
+        .dropdown-menu {
+            right: -8px;
+            min-width: 220px;
+        }
     }
 
-    .dropdown-item svg {
-        flex-shrink: 0;
-    }
-
-    .logout-btn {
-        color: #dc2626;
-    }
-
-    .logout-btn:hover {
-        background: #fee2e2;
+    @media (max-width: 400px) {
+        .header-title { max-width: 120px; font-size: 13px !important; }
+        .dropdown-menu { min-width: 200px; }
     }
 </style>
 
@@ -181,11 +193,9 @@
         dropdown.classList.toggle('show');
     }
 
-    // Close dropdown when clicking outside
     window.addEventListener('click', function(e) {
-        const dropdown = document.getElementById('profileDropdown');
+        const dropdown   = document.getElementById('profileDropdown');
         const profileBtn = document.querySelector('.profile-dropdown .icon-btn');
-        
         if (!dropdown.contains(e.target) && !profileBtn.contains(e.target)) {
             dropdown.classList.remove('show');
         }
