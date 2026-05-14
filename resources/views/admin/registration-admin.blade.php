@@ -11,7 +11,7 @@
         min-height: calc(100vh - 160px);
     }
 
-    /* Header */
+    /* ── Page Header ── */
     .page-header {
         display: flex;
         justify-content: space-between;
@@ -20,13 +20,17 @@
         background: white;
         padding: 20px 30px;
         border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        flex-wrap: wrap;
+        gap: 14px;
     }
 
     .header-title {
         display: flex;
         align-items: center;
         gap: 12px;
+        min-width: 0;
+        flex: 1;
     }
 
     .header-title h2 {
@@ -45,12 +49,14 @@
         align-items: center;
         justify-content: center;
         color: white;
+        flex-shrink: 0;
     }
 
-    /* Export Dropdown */
+    /* ── Export Dropdown ── */
     .export-dropdown {
         position: relative;
         display: inline-block;
+        flex-shrink: 0;
     }
 
     .btn-export {
@@ -65,13 +71,15 @@
         transition: all 0.3s ease;
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 10px;
-        box-shadow: 0 4px 12px rgba(30, 90, 158, 0.3);
+        box-shadow: 0 4px 12px rgba(30,90,158,0.3);
+        white-space: nowrap;
     }
 
     .btn-export:hover {
         transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(30, 90, 158, 0.4);
+        box-shadow: 0 6px 20px rgba(30,90,158,0.4);
     }
 
     .dropdown-menu-custom {
@@ -81,7 +89,7 @@
         top: calc(100% + 8px);
         background: white;
         border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         min-width: 210px;
         z-index: 1000;
         overflow: hidden;
@@ -92,16 +100,16 @@
         display: block;
         animation: fadeDown 0.2s ease;
     }
-    .info-ttl, .info-sekolah {
-    font-size: 13px;
-    color: #555;
-    display: block;
-    line-height: 1.4;
-}
 
     @keyframes fadeDown {
-        from { opacity: 0; transform: translateY(-8px); }
-        to   { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .dropdown-item-custom {
@@ -142,10 +150,15 @@
         flex-shrink: 0;
     }
 
-    .icon-excel { background: #e8f5e9; }
-    .icon-print { background: #e3f2fd; }
+    .icon-excel {
+        background: #e8f5e9;
+    }
 
-    /* Stats Cards */
+    .icon-print {
+        background: #e3f2fd;
+    }
+
+    /* ── Stats Cards ── */
     .stats-container {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -157,7 +170,7 @@
         background: white;
         padding: 20px;
         border-radius: 12px;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
         border-left: 4px solid #1e5a96;
         transition: transform 0.3s ease;
     }
@@ -179,22 +192,26 @@
         font-weight: 700;
         color: #1e5a96;
         margin-top: 8px;
+        word-break: break-word;
     }
 
-    /* Table */
+    /* ── Table ── */
     .table-container {
         background: white;
         border-radius: 15px;
         overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
 
     .table-wrapper {
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
     }
 
     .data-table {
         width: 100%;
+        min-width: 620px;
         border-collapse: collapse;
         font-size: 15px;
     }
@@ -212,16 +229,22 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
         border-bottom: 3px solid #0d3d6b;
+        white-space: nowrap;
+    }
+
+    .data-table th:first-child,
+    .data-table td:first-child {
+        width: 60px;
+        text-align: center;
     }
 
     .data-table th:first-child {
-        text-align: center;
         border-radius: 15px 0 0 0;
     }
 
     .data-table th:last-child {
-        text-align: center;
         border-radius: 0 15px 0 0;
+        text-align: center;
     }
 
     .data-table tbody tr {
@@ -231,8 +254,8 @@
 
     .data-table tbody tr:hover {
         background: #f8f9fa;
-        transform: scale(1.01);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        transform: scale(1.005);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
     .data-table tbody tr:last-child {
@@ -246,7 +269,6 @@
     }
 
     .data-table td:first-child {
-        text-align: center;
         font-weight: 700;
         color: #1e5a96;
         font-size: 16px;
@@ -260,12 +282,21 @@
         font-weight: 600;
         color: #2c3e50;
         font-size: 15px;
+        word-break: break-word;
     }
 
-    .badge-jalur {
+    .info-ttl,
+    .info-sekolah {
+        font-size: 13px;
+        color: #555;
+        display: block;
+        line-height: 1.4;
+    }
+
+    .badge-jalur,
+    .badge-program {
         display: inline-block;
         padding: 6px 14px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         border-radius: 20px;
         font-size: 13px;
@@ -273,18 +304,16 @@
         white-space: nowrap;
     }
 
+    .badge-jalur {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
     .badge-program {
-        display: inline-block;
-        padding: 6px 14px;
         background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        color: white;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 600;
     }
 
     .btn-view {
-        padding: 10px 22px;
+        padding: 10px 18px;
         background: linear-gradient(135deg, #1e5a9e, #2874ba);
         color: white;
         border: none;
@@ -295,18 +324,20 @@
         transition: all 0.3s ease;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 8px;
-        box-shadow: 0 3px 8px rgba(30, 90, 158, 0.2);
+        box-shadow: 0 3px 8px rgba(30,90,158,0.2);
         text-decoration: none;
+        white-space: nowrap;
     }
 
     .btn-view:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(30, 90, 158, 0.3);
+        box-shadow: 0 5px 15px rgba(30,90,158,0.3);
         color: white;
     }
 
-    /* Toast Notification */
+    /* ── Toast ── */
     .toast-export {
         display: none;
         position: fixed;
@@ -322,6 +353,7 @@
         z-index: 9999;
         align-items: center;
         gap: 10px;
+        max-width: calc(100vw - 40px);
     }
 
     .toast-export.show {
@@ -330,32 +362,249 @@
     }
 
     @keyframes slideUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to   { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
-    /* Empty State */
+    /* ── Empty State ── */
     .empty-state {
         padding: 80px 20px;
         text-align: center;
     }
 
-    .empty-icon { font-size: 64px; margin-bottom: 16px; opacity: 0.3; }
-    .empty-text { font-size: 18px; color: #6c757d; margin: 0; font-weight: 500; }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .pendaftaran-wrapper { padding: 15px; }
-        .page-header { flex-direction: column; gap: 15px; }
-        .data-table { font-size: 13px; }
-        .data-table th, .data-table td { padding: 12px 8px; }
-        .stat-value { font-size: 24px; }
+    .empty-icon {
+        font-size: 64px;
+        margin-bottom: 16px;
+        opacity: 0.3;
     }
 
+    .empty-text {
+        font-size: 18px;
+        color: #6c757d;
+        margin: 0;
+        font-weight: 500;
+    }
+
+    /* ════════════════════════════
+       RESPONSIVE
+    ════════════════════════════ */
+
+    /* Tablet */
+    @media (max-width: 900px) {
+
+        .pendaftaran-wrapper {
+            padding: 18px;
+        }
+
+        .page-header {
+            padding: 16px 20px;
+        }
+
+        .header-title h2 {
+            font-size: 20px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 14px 12px;
+            font-size: 13px;
+        }
+
+        .student-name {
+            font-size: 13px;
+        }
+
+        .stat-value {
+            font-size: 26px;
+        }
+
+        .data-table th:nth-child(3),
+        .data-table td:nth-child(3),
+        .data-table th:nth-child(4),
+        .data-table td:nth-child(4) {
+            display: none;
+        }
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+
+        .pendaftaran-wrapper {
+            padding: 14px;
+        }
+
+        .page-header {
+            padding: 14px 16px;
+            gap: 12px;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .header-title {
+            width: 100%;
+        }
+
+        .header-title h2 {
+            font-size: 16px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .header-icon {
+            width: 34px;
+            height: 34px;
+        }
+
+        .export-dropdown {
+            width: 100%;
+        }
+
+        .btn-export {
+            width: 100%;
+            padding: 11px 16px;
+            font-size: 13px;
+        }
+
+        .dropdown-menu-custom {
+            width: 100%;
+            min-width: unset;
+            left: 0;
+            right: auto;
+        }
+
+        .stats-container {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .stat-card {
+            padding: 16px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            margin-top: 6px;
+        }
+
+        .data-table th:nth-child(3),
+        .data-table td:nth-child(3),
+        .data-table th:nth-child(4),
+        .data-table td:nth-child(4),
+        .data-table th:nth-child(5),
+        .data-table td:nth-child(5),
+        .data-table th:nth-child(6),
+        .data-table td:nth-child(6) {
+            display: none;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 10px;
+            font-size: 13px;
+        }
+
+        .data-table tbody tr:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-view {
+            padding: 10px 16px;
+            font-size: 12px;
+            gap: 5px;
+            width: 100%;
+        }
+
+        .toast-export {
+            bottom: 16px;
+            right: 16px;
+            left: 16px;
+            max-width: unset;
+            padding: 12px 16px;
+            font-size: 13px;
+        }
+
+        .empty-state {
+            padding: 50px 16px;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+        }
+
+        .empty-text {
+            font-size: 15px;
+        }
+    }
+
+    /* HP kecil */
+    @media (max-width: 400px) {
+
+        .header-title h2 {
+            font-size: 15px;
+        }
+
+        .btn-export span.export-text {
+            display: none;
+        }
+
+        .btn-export {
+            padding: 10px 12px;
+        }
+
+        .data-table {
+            min-width: 100%;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 10px 8px;
+            font-size: 12px;
+        }
+
+        .btn-view {
+            padding: 8px 12px;
+            font-size: 11px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+        }
+    }
+
+    /* Print */
     @media print {
-        .export-dropdown, .btn-view, .stats-container { display: none !important; }
-        .pendaftaran-wrapper { padding: 0; background: white; }
-        .table-container { box-shadow: none; }
+
+        .export-dropdown,
+        .btn-view,
+        .stats-container {
+            display: none !important;
+        }
+
+        .pendaftaran-wrapper {
+            padding: 0;
+            background: white;
+        }
+
+        .table-container {
+            box-shadow: none;
+        }
+
+        .data-table th,
+        .data-table td {
+            display: table-cell !important;
+        }
     }
 </style>
 @endpush
@@ -380,7 +629,7 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
                 </svg>
-                Export Data
+                <span class="export-text">Export Data</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M7 10l5 5 5-5z"/>
                 </svg>
@@ -433,7 +682,7 @@
                                 <span class="student-name">{{ $item->personalData->full_name ?? '-' }}</span>
                             </td>
                             <td>
-                                <span class="info ttl">
+                                <span class="info-ttl">
                                     {{ $item->personalData->place_of_birth ?? '-' }},
                                     {{ $item->personalData && $item->personalData->date_of_birth
                                         ? \Carbon\Carbon::parse($item->personalData->date_of_birth)->translatedFormat('d F Y')
@@ -441,7 +690,7 @@
                                 </span>
                             </td>
                             <td>
-                                <span class="info-sekolah">{{ $item->educationData->school_name ?? '-'}}</span>
+                                <span class="info-sekolah">{{ $item->educationData->school_name ?? '-' }}</span>
                             </td>
                             <td>
                                 <span class="badge-jalur">{{ $item->admissionPath->path_name ?? '-' }}</span>
@@ -461,7 +710,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5">
+                            <td colspan="7">
                                 <div class="empty-state">
                                     <div class="empty-icon">📋</div>
                                     <p class="empty-text">Belum ada data pendaftar</p>
@@ -483,13 +732,9 @@
 @endsection
 
 @push('scripts')
-<!-- SheetJS CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <script>
-    // ============================
-    // Dropdown Toggle
-    // ============================
     function toggleExportDropdown(e) {
         e.stopPropagation();
         document.getElementById('exportDropdown').classList.toggle('show');
@@ -499,9 +744,6 @@
         document.getElementById('exportDropdown').classList.remove('show');
     });
 
-    // ============================
-    // Toast Notification
-    // ============================
     function showToast(msg) {
         const toast = document.getElementById('toastExport');
         document.getElementById('toastMsg').textContent = msg;
@@ -509,51 +751,39 @@
         setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    // ============================
-    // Export Excel (.xlsx)
-    // ============================
     function exportExcel() {
         document.getElementById('exportDropdown').classList.remove('show');
 
-        const wb = XLSX.utils.book_new();
-
-        // ── Ambil data dari tabel, skip kolom "no-export" ──
+        const wb      = XLSX.utils.book_new();
         const table   = document.getElementById('tablePendaftar');
         const headers = [];
         const rows    = [];
 
-        // Header: skip th yang punya class no-export
         table.querySelectorAll('thead tr th').forEach(th => {
             if (!th.classList.contains('no-export')) headers.push(th.innerText.trim());
         });
 
-        // Body rows
         table.querySelectorAll('tbody tr').forEach(tr => {
-            const emptyCheck = tr.querySelector('.empty-state');
-            if (emptyCheck) return; // skip empty state row
-
+            if (tr.querySelector('.empty-state')) return;
             const row = [];
             tr.querySelectorAll('td').forEach(td => {
-                if (!td.classList.contains('no-export')) {
-                    row.push(td.innerText.trim());
-                }
+                if (!td.classList.contains('no-export')) row.push(td.innerText.trim());
             });
             if (row.length > 0) rows.push(row);
         });
 
-        // ── Buat worksheet ──
         const wsData = [headers, ...rows];
         const ws     = XLSX.utils.aoa_to_sheet(wsData);
 
-        // ── Lebar kolom ──
         ws['!cols'] = [
-            { wch: 6  },  // No
-            { wch: 35 },  // Nama Peserta
-            { wch: 20 },  // Jalur Masuk
-            { wch: 40 },  // Program Studi
+            { wch: 6  },
+            { wch: 35 },
+            { wch: 25 },
+            { wch: 30 },
+            { wch: 20 },
+            { wch: 40 },
         ];
 
-        // ── Style header (warna biru, bold, teks putih) ──
         const headerRange = XLSX.utils.decode_range(ws['!ref']);
         for (let C = headerRange.s.c; C <= headerRange.e.c; C++) {
             const cellAddr = XLSX.utils.encode_cell({ r: 0, c: C });
@@ -562,13 +792,10 @@
                 font:      { bold: true, color: { rgb: 'FFFFFF' }, name: 'Arial', sz: 12 },
                 fill:      { fgColor: { rgb: '1E5A9E' } },
                 alignment: { horizontal: 'center', vertical: 'center' },
-                border: {
-                    bottom: { style: 'medium', color: { rgb: '0D3D6B' } }
-                }
+                border:    { bottom: { style: 'medium', color: { rgb: '0D3D6B' } } }
             };
         }
 
-        // ── Style baris data ──
         for (let R = 1; R <= rows.length; R++) {
             for (let C = headerRange.s.c; C <= headerRange.e.c; C++) {
                 const cellAddr = XLSX.utils.encode_cell({ r: R, c: C });
@@ -587,14 +814,9 @@
             }
         }
 
-        // ── Row height header ──
         ws['!rows'] = [{ hpt: 28 }];
-
-        // ── Tambahkan baris info di atas (opsional) ──
-        // Sheet info
         XLSX.utils.book_append_sheet(wb, ws, 'Data Pendaftar');
 
-        // ── Sheet info ringkasan ──
         const infoData = [
             ['Laporan Data Pendaftar'],
             ['SIU-POLIHASNUR'],
@@ -608,7 +830,6 @@
         wsInfo['A2'].s = { font: { bold: true, sz: 11, color: { rgb: '555555' }, name: 'Arial' } };
         XLSX.utils.book_append_sheet(wb, wsInfo, 'Info');
 
-        // ── Download file ──
         const tanggal = new Date().toISOString().slice(0, 10);
         XLSX.writeFile(wb, `Data_Pendaftar_${tanggal}.xlsx`, { bookSST: false });
 

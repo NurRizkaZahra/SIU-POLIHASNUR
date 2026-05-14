@@ -24,7 +24,7 @@
         background: white;
         border-radius: 12px;
         padding: 30px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         border: 2px solid #1e5a96;
     }
 
@@ -42,7 +42,7 @@
         border: 0;
         height: 2px;
         background: #1e5a96;
-        margin: 30px 0 20px 0;
+        margin: 30px 0 20px;
     }
 
     .data-row {
@@ -72,6 +72,16 @@
         font-size: 15px;
     }
 
+    /* ── Button group ── */
+    .button-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 40px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
     .btn-back {
         background: #1e5a96;
         color: white;
@@ -83,7 +93,6 @@
         text-decoration: none;
         display: inline-block;
         transition: all 0.3s;
-        margin-top: 40px;
     }
 
     .btn-back:hover {
@@ -91,30 +100,119 @@
         transform: translateY(-2px);
         color: white;
     }
-    .button-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 40px;
-}
 
-.btn-download {
-    background: #198754;
-    color: white;
-    padding: 10px 25px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s;
-}
+    .btn-download {
+        background: #198754;
+        color: white;
+        padding: 10px 25px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s;
+        display: inline-block;
+    }
 
-.btn-download:hover {
-    background: #146c43;
-    transform: translateY(-2px);
-    color: white;
-}
+    .btn-download:hover {
+        background: #146c43;
+        transform: translateY(-2px);
+        color: white;
+    }
+
+    /* ════════════════════════════
+       RESPONSIVE
+    ════════════════════════════ */
+
+    /* Tablet */
+    @media (max-width: 768px) {
+        .pendaftaran-container {
+            padding: 14px;
+            margin: 10px auto;
+        }
+
+        .form-section {
+            padding: 24px 20px;
+        }
+
+        .section-title {
+            margin: -24px -20px 20px -20px;
+            font-size: 16px;
+            padding: 11px 18px;
+        }
+
+        .data-row {
+            gap: 14px;
+            margin-bottom: 10px;
+        }
+
+        .data-item strong { font-size: 13px; }
+        .data-item span   { font-size: 14px; }
+    }
+
+    /* Mobile */
+    @media (max-width: 576px) {
+        .pendaftaran-container { padding: 10px; }
+
+        .form-section {
+            padding: 20px 14px;
+            border-radius: 10px;
+        }
+
+        .section-title {
+            margin: -20px -14px 18px -14px;
+            font-size: 14px;
+            padding: 10px 14px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        /* Grid jadi 1 kolom */
+        .data-row {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        /* Override inline span */
+        .data-item[style*="grid-column"] {
+            grid-column: 1 !important;
+        }
+
+        .data-item {
+            padding: 10px 12px;
+        }
+
+        .data-item strong { font-size: 12.5px; margin-bottom: 4px; }
+        .data-item span   { font-size: 13.5px; }
+
+        /* Section subheadings */
+        h5[style] {
+            font-size: 15px !important;
+            margin-bottom: 12px !important;
+        }
+
+        .section-divider { margin: 22px 0 16px; }
+
+        /* Buttons */
+        .button-group {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+            margin-top: 28px;
+        }
+
+        .btn-back,
+        .btn-download {
+            text-align: center;
+            padding: 12px 20px;
+            font-size: 14px;
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 380px) {
+        .section-title { font-size: 13px; }
+        .data-item span { font-size: 13px; }
+    }
 </style>
 
 <div class="pendaftaran-container">
@@ -122,7 +220,7 @@
         <div class="section-title">INFORMASI LENGKAP PENDAFTAR</div>
 
         {{-- DATA DIRI --}}
-        <h5 style="color: #1e5a96; font-weight: 600; margin-bottom: 15px; font-size: 17px;">Data Diri</h5>
+        <h5 style="color:#1e5a96;font-weight:600;margin-bottom:15px;font-size:17px;">Data Diri</h5>
         <div class="data-row">
             <div class="data-item">
                 <strong>Nama Lengkap:</strong>
@@ -177,7 +275,7 @@
         <hr class="section-divider">
 
         {{-- PENDIDIKAN --}}
-        <h5 style="color: #1e5a96; font-weight: 600; margin-bottom: 15px; font-size: 17px;">Pendidikan</h5>
+        <h5 style="color:#1e5a96;font-weight:600;margin-bottom:15px;font-size:17px;">Pendidikan</h5>
         <div class="data-row">
             <div class="data-item">
                 <strong>Sekolah Asal:</strong>
@@ -221,7 +319,7 @@
         <hr class="section-divider">
 
         {{-- KELUARGA --}}
-        <h5 style="color: #1e5a96; font-weight: 600; margin-bottom: 15px; font-size: 17px;">Data Keluarga</h5>
+        <h5 style="color:#1e5a96;font-weight:600;margin-bottom:15px;font-size:17px;">Data Keluarga</h5>
         <div class="data-row">
             <div class="data-item">
                 <strong>Nama Ayah:</strong>
@@ -267,9 +365,9 @@
         </div>
 
         <hr class="section-divider">
-        
+
         {{-- JALUR MASUK --}}
-        <h5 style="color: #1e5a96; font-weight: 600; margin-bottom: 15px; font-size: 17px;">Jalur Masuk</h5>
+        <h5 style="color:#1e5a96;font-weight:600;margin-bottom:15px;font-size:17px;">Jalur Masuk</h5>
         <div class="data-row">
             <div class="data-item">
                 <strong>Jalur Masuk:</strong>
@@ -280,7 +378,7 @@
         <hr class="section-divider">
 
         {{-- PROGRAM STUDI --}}
-        <h5 style="color: #1e5a96; font-weight: 600; margin-bottom: 15px; font-size: 17px;">Program Studi</h5>
+        <h5 style="color:#1e5a96;font-weight:600;margin-bottom:15px;font-size:17px;">Program Studi</h5>
         <div class="data-row">
             <div class="data-item">
                 <strong>Program Studi Pilihan 1:</strong>
@@ -293,14 +391,14 @@
         </div>
     </div>
 
-    {{-- Tombol kembali --}}
-    <div class="mt-4 text-center">
+    {{-- Tombol --}}
+    <div class="button-group">
         <a href="{{ route('admin.registration') }}" class="btn-back">← Kembali</a>
         <a href="{{ route('admin.registration.pdf', $camaba->id) }}"
-       class="btn-download"
-       target="_blank">
-        Download PDF
-    </a>
+           class="btn-download"
+           target="_blank">
+            ⬇ Download PDF
+        </a>
     </div>
 
 </div>

@@ -10,6 +10,7 @@
     padding: 2rem;
     background: #f8f9fa;
     min-height: calc(100vh - 100px);
+    overflow-x: hidden;
 }
 
 .result-card {
@@ -19,8 +20,9 @@
     overflow: hidden;
 }
 
+/* ===== HEADER ===== */
 .result-header {
-    padding: 2rem 2.5rem 1.5rem 2.5rem;
+    padding: 2rem 2.5rem 1.5rem;
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     border-bottom: 2px solid #e9ecef;
 }
@@ -28,19 +30,23 @@
 .result-title {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
     color: #1e5a96;
     font-size: 1.75rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
+    line-height: 1.3;
+    flex-wrap: wrap;
 }
 
 .result-subtitle {
     color: #6c757d;
     font-size: 0.95rem;
     margin-bottom: 0;
+    line-height: 1.5;
+    
 }
 
+/* ===== ACTION BAR ===== */
 .action-bar {
     padding: 1.25rem 2.5rem;
     background: #f8f9fa;
@@ -53,7 +59,7 @@
 
 .search-wrapper {
     flex: 1;
-    min-width: 280px;
+    min-width: 260px;
     position: relative;
 }
 
@@ -88,9 +94,11 @@
     flex-wrap: wrap;
 }
 
+/* ===== BUTTON ===== */
 .btn-action {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     padding: 0.7rem 1.4rem;
     border-radius: 12px;
@@ -109,45 +117,67 @@
     box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
 }
 
-.btn-excel:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(39, 174, 96, 0.4);
-    color: white;
-}
-
 .btn-print {
     background: linear-gradient(135deg, #1e5a96 0%, #2471b9 100%);
     color: white;
     box-shadow: 0 4px 12px rgba(30, 90, 150, 0.3);
 }
 
-.btn-print:hover {
+.btn-action:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(30, 90, 150, 0.4);
     color: white;
 }
 
 /* ===== TABLE ===== */
 .table-container {
-    padding: 1.5rem 2.5rem 2rem 2.5rem;
+    padding: 1.5rem 2.5rem 2rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Scrollbar */
+.table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #c7d2e0;
+    border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #edf2f7;
 }
 
 .result-table {
     width: 100%;
+    min-width: 850px;
     border-collapse: separate;
     border-spacing: 0;
-    table-layout: fixed;
 }
 
-/* Lebar kolom — 6 kolom */
-.result-table colgroup col:nth-child(1) { width: 75px; }
-.result-table colgroup col:nth-child(2) { width: 25%; }
-.result-table colgroup col:nth-child(3) { width: 25%; }
+/* Jangan pecah text */
+.result-table th,
+.result-table td {
+    white-space: nowrap;
+}
+
+/* Nama & sekolah boleh multiline */
+.col-name,
+.col-school {
+    white-space: normal !important;
+}
+
+/* Lebar kolom */
+.result-table colgroup col:nth-child(1) { width: 80px; }
+.result-table colgroup col:nth-child(2) { width: 260px; }
+.result-table colgroup col:nth-child(3) { width: 260px; }
 .result-table colgroup col:nth-child(4) { width: 130px; }
 .result-table colgroup col:nth-child(5) { width: 150px; }
 .result-table colgroup col:nth-child(6) { width: 120px; }
 
-/* HEAD */
+/* ===== TABLE HEAD ===== */
 .result-table thead {
     background: linear-gradient(135deg, #1e5a96 0%, #2471b9 100%);
 }
@@ -161,7 +191,6 @@
     letter-spacing: 0.6px;
     border: none;
     vertical-align: middle;
-    white-space: nowrap;
 }
 
 .result-table thead th:first-child {
@@ -172,22 +201,7 @@
     border-radius: 0 12px 0 0;
 }
 
-/* Center: No, Nilai PU, Skor Psikotes, IQ */
-.result-table thead th.col-no,
-.result-table thead th.col-pu,
-.result-table thead th.col-psi,
-.result-table thead th.col-iq {
-    text-align: center;
-}
-
-/* Left: Nama, Sekolah */
-.result-table thead th.col-name,
-.result-table thead th.col-school {
-    text-align: left;
-    padding-left: 1.5rem;
-}
-
-/* BODY */
+/* ===== TABLE BODY ===== */
 .result-table tbody tr {
     transition: background 0.2s ease;
 }
@@ -206,22 +220,43 @@
     vertical-align: middle;
 }
 
-/* Center: No, Nilai PU, Skor Psikotes, IQ */
-.result-table tbody td.col-no,
-.result-table tbody td.col-pu,
-.result-table tbody td.col-psi,
-.result-table tbody td.col-iq {
+/* ===== ALIGN ===== */
+.result-table th.col-no,
+.result-table th.col-pu,
+.result-table th.col-psi,
+.result-table th.col-iq,
+.result-table td.col-no,
+.result-table td.col-pu,
+.result-table td.col-psi,
+.result-table td.col-iq {
     text-align: center;
 }
 
-/* Left: Nama, Sekolah */
-.result-table tbody td.col-name,
-.result-table tbody td.col-school {
+.result-table th.col-name,
+.result-table th.col-school,
+.result-table td.col-name,
+.result-table td.col-school {
     text-align: left;
-    padding-left: 1.5rem;
 }
 
-/* Number Badge */
+/* ===== TEXT ===== */
+.name-text {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #2c3e50;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.school-text {
+    font-weight: 500;
+    font-size: 0.93rem;
+    color: #555;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+/* ===== BADGE ===== */
 .number-badge {
     display: inline-flex;
     align-items: center;
@@ -236,19 +271,6 @@
     box-shadow: 0 3px 8px rgba(251, 191, 36, 0.3);
 }
 
-.name-text {
-    font-weight: 600;
-    font-size: 1rem;
-    color: #2c3e50;
-}
-
-.school-text {
-    font-weight: 500;
-    font-size: 0.93rem;
-    color: #555;
-}
-
-/* Score Badge */
 .score-badge {
     display: inline-flex;
     align-items: center;
@@ -258,35 +280,17 @@
     font-weight: 700;
     font-size: 1rem;
     min-width: 75px;
-    transition: transform 0.15s ease;
 }
 
-.score-badge:hover {
-    transform: scale(1.05);
-}
-
-/* Biru — Nilai PU */
-.score-pu {
-    background: linear-gradient(135deg, #1e5a96 0%, #2471b9 100%);
-    color: white;
-    box-shadow: 0 3px 10px rgba(30, 90, 150, 0.25);
-}
-
-/* Kuning — Skor Psikotes */
-.score-psi {
-    background: linear-gradient(135deg, #1e5a96 0%, #2471b9 100%);
-    color: white;
-    box-shadow: 0 3px 10px rgba(251, 191, 36, 0.25);
-}
-
-/* Biru — IQ (sama dengan Nilai PU) */
+.score-pu,
+.score-psi,
 .score-iq {
     background: linear-gradient(135deg, #1e5a96 0%, #2471b9 100%);
     color: white;
     box-shadow: 0 3px 10px rgba(30, 90, 150, 0.25);
 }
 
-/* Footer */
+/* ===== FOOTER ===== */
 .result-footer {
     padding: 1.25rem 2.5rem;
     background: #f8f9fa;
@@ -300,7 +304,7 @@
     font-weight: 500;
 }
 
-/* Empty State */
+/* ===== EMPTY ===== */
 .empty-state {
     padding: 4rem 2rem;
     text-align: center;
@@ -325,7 +329,9 @@
 }
 
 /* ===== RESPONSIVE ===== */
+
 @media (max-width: 768px) {
+
     .result-container {
         padding: 1rem;
     }
@@ -334,69 +340,111 @@
     .action-bar,
     .table-container,
     .result-footer {
-        padding-left: 1.25rem;
-        padding-right: 1.25rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 
     .result-title {
         font-size: 1.4rem;
     }
 
+    .result-subtitle {
+        font-size: 0.85rem;
+    }
+
     .action-bar {
         flex-direction: column;
+        align-items: stretch;
     }
 
     .search-wrapper {
         width: 100%;
+        min-width: 100%;
     }
 
     .action-buttons {
         width: 100%;
+        flex-direction: column;
     }
 
     .btn-action {
-        flex: 1;
+        width: 100%;
         justify-content: center;
     }
 
     .result-table {
+        min-width: 850px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .result-container {
+        padding: 0.75rem;
+    }
+
+    .result-card {
+        border-radius: 12px;
+    }
+
+    .result-header {
+        padding-top: 1.25rem;
+        padding-bottom: 1rem;
+    }
+
+    .result-title {
+        font-size: 1.15rem;
+    }
+
+    .result-subtitle {
+        font-size: 0.8rem;
+    }
+
+    .search-input {
         font-size: 0.85rem;
-        table-layout: auto;
     }
 
-    .result-table thead th,
-    .result-table tbody td {
-        padding: 0.85rem 0.75rem;
-    }
-
-    .result-table thead th.col-name,
-    .result-table tbody td.col-name,
-    .result-table thead th.col-school,
-    .result-table tbody td.col-school {
-        padding-left: 0.75rem;
+    .btn-action {
+        font-size: 0.82rem;
+        padding: 0.75rem 1rem;
     }
 
     .number-badge {
         width: 34px;
         height: 34px;
-        font-size: 0.88rem;
+        font-size: 0.85rem;
     }
 
     .score-badge {
-        padding: 0.45rem 0.75rem;
-        font-size: 0.88rem;
-        min-width: 58px;
+        min-width: 60px;
+        font-size: 0.85rem;
+        padding: 0.45rem 0.7rem;
     }
 
-    /* Sembunyikan Asal Sekolah & IQ di layar kecil */
-    .col-school,
-    .col-iq {
-        display: none;
+    .footer-text {
+        font-size: 0.8rem;
+    }
+
+    .empty-state {
+        padding: 3rem 1rem;
+    }
+
+    .empty-icon {
+        font-size: 3.5rem;
+    }
+
+    .empty-title {
+        font-size: 1rem;
+    }
+
+    .empty-subtitle {
+        font-size: 0.82rem;
     }
 }
 
 /* ===== PRINT ===== */
 @media print {
+
     .result-container {
         padding: 0;
         background: white;
@@ -414,11 +462,15 @@
     .result-header {
         background: white;
         border-bottom: 2px solid #000;
-        padding: 1rem 1.5rem;
     }
 
     .table-container {
+        overflow: visible;
         padding: 0 1.5rem 1.5rem;
+    }
+
+    .result-table {
+        min-width: 100%;
     }
 
     .result-table thead {

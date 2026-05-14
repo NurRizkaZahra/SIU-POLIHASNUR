@@ -221,6 +221,184 @@
             width: 100%;
         }
     }
+    /* =========================
+   TABLET RESPONSIVE
+========================= */
+@media (max-width: 1024px) {
+
+    .form-container {
+        padding: 1.5rem;
+    }
+
+    .form-body {
+        padding: 1.75rem;
+    }
+
+    .form-footer {
+        padding: 1.25rem 1.75rem;
+    }
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+
+    .form-container {
+        padding: 1rem;
+    }
+
+    .form-card {
+        border-radius: 10px;
+    }
+
+    .form-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.25rem;
+    }
+
+    .form-header h2 {
+        font-size: 1.1rem;
+        line-height: 1.4;
+    }
+
+    .btn-back {
+        padding: 0;
+        font-size: 0.95rem;
+    }
+
+    .form-body {
+        padding: 1.25rem;
+    }
+
+    .alert-warning {
+        flex-direction: row;
+        align-items: flex-start;
+        padding: 0.9rem;
+    }
+
+    .alert-warning p {
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .date-range-wrapper {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+
+    .date-separator {
+        padding: 0;
+        text-align: left;
+        font-size: 0.9rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.3rem;
+    }
+
+    .form-group label {
+        font-size: 0.9rem;
+    }
+
+    .form-input {
+        font-size: 0.9rem;
+        padding: 0.75rem 0.9rem;
+    }
+
+    .form-hint {
+        font-size: 0.8rem;
+        line-height: 1.5;
+    }
+
+    .form-footer {
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 1.25rem;
+    }
+
+    .btn-form {
+        width: 100%;
+        text-align: center;
+        padding: 0.85rem 1rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+@media (max-width: 480px) {
+
+    .form-container {
+        padding: 0.7rem;
+    }
+
+    .form-header {
+        padding: 1rem;
+    }
+
+    .form-body {
+        padding: 1rem;
+    }
+
+    .form-footer {
+        padding: 1rem;
+    }
+
+    .form-header h2 {
+        font-size: 1rem;
+    }
+
+    .form-input {
+        min-height: 44px;
+        font-size: 0.85rem;
+    }
+
+    .btn-form {
+        min-height: 44px;
+        font-size: 0.85rem;
+    }
+
+    .alert-warning {
+        padding: 0.8rem;
+    }
+
+    .alert-warning p {
+        font-size: 0.8rem;
+    }
+}
+
+/* =========================
+   FIX OVERFLOW
+========================= */
+body {
+    overflow-x: hidden;
+}
+
+.form-container,
+.form-card,
+.form-body,
+.form-footer {
+    min-width: 0;
+}
+
+.form-header h2,
+.form-hint,
+.alert-warning p {
+    word-break: break-word;
+}
+
+.form-input {
+    max-width: 100%;
+}
 </style>
 @endpush
 

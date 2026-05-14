@@ -288,6 +288,125 @@
             width: 100%;
         }
     }
+    @media (max-width: 768px) {
+
+    .form-container {
+        padding: 1rem;
+    }
+
+    .form-card {
+        border-radius: 10px;
+    }
+
+    .form-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .form-header h2 {
+        font-size: 1.1rem;
+        line-height: 1.4;
+    }
+
+    .btn-back {
+        padding: 0;
+        font-size: 0.95rem;
+    }
+
+    .form-body {
+        padding: 1.25rem;
+    }
+
+    .alert-warning,
+    .alert-info {
+        flex-direction: row;
+        align-items: flex-start;
+        font-size: 0.85rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .date-range-wrapper {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .date-separator {
+        padding: 0;
+        text-align: left;
+    }
+
+    .form-input {
+        font-size: 0.9rem;
+        padding: 0.75rem;
+    }
+
+    .form-footer {
+        padding: 1rem 1.25rem;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .footer-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn-form,
+    .btn-delete {
+        width: 100%;
+        text-align: center;
+    }
+
+    .info-badge {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .form-container {
+        padding: 0.75rem;
+    }
+
+    .form-body {
+        padding: 1rem;
+    }
+
+    .form-header {
+        padding: 1rem;
+    }
+
+    .form-footer {
+        padding: 1rem;
+    }
+
+    .form-header h2 {
+        font-size: 1rem;
+    }
+
+    .form-hint {
+        font-size: 0.8rem;
+        line-height: 1.5;
+    }
+
+    .alert-warning p,
+    .alert-info p {
+        font-size: 0.82rem;
+        line-height: 1.5;
+    }
+
+    .btn-form {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+}
 </style>
 @endpush
 

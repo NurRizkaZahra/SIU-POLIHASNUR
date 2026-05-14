@@ -194,6 +194,192 @@
         border-left: 4px solid #f44336;
         color: #c62828;
     }
+    /* =========================
+   TABLET RESPONSIVE
+========================= */
+@media (max-width: 1024px) {
+
+    .exam-schedule-container {
+        padding: 1.5rem;
+    }
+
+    .schedule-header {
+        padding: 1.25rem;
+    }
+
+    .schedule-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .schedule-actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .date-range-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .date-input-group {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .date-input {
+        width: 100%;
+    }
+
+    .btn-save {
+        width: 100%;
+    }
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+
+    .exam-schedule-container {
+        padding: 1rem;
+    }
+
+    .schedule-header {
+        padding: 1rem;
+        border-radius: 10px;
+    }
+
+    .schedule-header > div {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 1rem;
+    }
+
+    .schedule-header h2 {
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+    .btn-add {
+        width: 100%;
+        justify-content: center;
+        font-size: 0.95rem;
+    }
+
+    .schedule-card {
+        padding: 1rem;
+        border-radius: 10px;
+    }
+
+    .schedule-title {
+        gap: 0.8rem;
+        padding-bottom: 0.8rem;
+    }
+
+    .schedule-title h3 {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    .schedule-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .schedule-actions a,
+    .schedule-actions form {
+        width: 100%;
+    }
+
+    .btn-action {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .date-range-form {
+        gap: 0.8rem;
+    }
+
+    .date-input-group label {
+        font-size: 0.9rem;
+    }
+
+    .date-input {
+        width: 100%;
+        font-size: 0.9rem;
+    }
+
+    .btn-save {
+        width: 100%;
+        padding: 0.75rem;
+    }
+
+    .alert {
+        padding: 0.9rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .no-schedule {
+        padding: 2rem 1rem;
+    }
+
+    .no-schedule i {
+        font-size: 3rem;
+    }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+@media (max-width: 480px) {
+
+    .exam-schedule-container {
+        padding: 0.8rem;
+    }
+
+    .schedule-header h2 {
+        font-size: 1.05rem;
+    }
+
+    .schedule-title h3 {
+        font-size: 0.95rem;
+    }
+
+    .btn-add,
+    .btn-action,
+    .btn-save {
+        min-height: 44px;
+        font-size: 0.85rem;
+    }
+
+    .date-input {
+        padding: 0.65rem 0.8rem;
+    }
+
+    .alert {
+        font-size: 0.85rem;
+    }
+}
+
+/* =========================
+   FIX OVERFLOW
+========================= */
+body {
+    overflow-x: hidden;
+}
+
+.exam-schedule-container,
+.schedule-card,
+.schedule-header {
+    min-width: 0;
+}
+
+.schedule-title h3 {
+    word-break: break-word;
+}
 </style>
 @endpush
 
