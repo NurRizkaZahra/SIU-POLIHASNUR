@@ -77,7 +77,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/profile',
-            [AdminProfileController::class, 'index']
+        [AdminProfileController::class, 'index']
         )->name('profile');
 
         Route::get('/profile/edit',
@@ -314,7 +314,7 @@ Route::middleware(['auth', 'role:camaba'])
         )->name('questions');
 
         Route::post('/{examId}/save-answer',
-            [ExamController::class, 'saveAnswer'])  
+            [ExamController::class, 'saveAnswer'])
         ->name('saveAnswer');
 
         Route::post('/submit/{examId}',

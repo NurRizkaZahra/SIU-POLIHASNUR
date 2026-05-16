@@ -18,15 +18,11 @@
         </div>
 
         @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
+            <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
         @if(session('error'))
-            <div class="alert alert-error">
-                {{ session('error') }}
-            </div>
+            <div class="alert alert-error">{{ session('error') }}</div>
         @endif
 
         @if($pendingExams->count() > 0)
@@ -42,26 +38,26 @@
 
                 <div class="card-body">
                     <p class="time-info">{{ $exam->created_at->diffForHumans() }}</p>
-                    
+
                     <div class="info-row">
                         <strong>{{ $exam->user->name ?? 'Unknown User' }}</strong>
                     </div>
-                    
+
                     @if($exam->user->email)
                     <div class="info-row">
                         Email: {{ $exam->user->email }}
                     </div>
                     @endif
 
-                   @if($exam->examSchedule)
-<div class="info-row">
-    <strong>Gelombang:</strong> {{ $exam->examSchedule->wave_name }}
-</div>
-<div class="info-row">
-    <strong>Tanggal Ujian:</strong> 
-    {{ \Carbon\Carbon::parse($exam->examSchedule->exam_date)->format('d M Y') }}
-</div>
-@endif
+                    @if($exam->examSchedule)
+                    <div class="info-row">
+                        <strong>Gelombang:</strong> {{ $exam->examSchedule->wave_name }}
+                    </div>
+                    <div class="info-row">
+                        <strong>Tanggal Ujian:</strong>
+                        {{ \Carbon\Carbon::parse($exam->examSchedule->exam_date)->format('d M Y') }}
+                    </div>
+                    @endif
 
                     @if($exam->start_time && $exam->end_time)
                     <div class="info-row">
@@ -77,16 +73,18 @@
                 </div>
 
                 <div class="card-actions">
-                    <form action="{{ route('admin.exam.approve', $exam->id) }}" method="POST" style="display: inline;">
+                    <form action="{{ route('admin.exam.approve', $exam->id) }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-terima" onclick="return confirm('Terima pengajuan jadwal ujian ini?')">
+                        <button type="submit" class="btn btn-terima"
+                            onclick="return confirm('Terima pengajuan jadwal ujian ini?')">
                             TERIMA
                         </button>
                     </form>
-                    
-                    <form action="{{ route('admin.exam.reject', $exam->id) }}" method="POST" style="display: inline;">
+
+                    <form action="{{ route('admin.exam.reject', $exam->id) }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-tolak" onclick="return confirm('Tolak pengajuan jadwal ujian ini?')">
+                        <button type="submit" class="btn btn-tolak"
+                            onclick="return confirm('Tolak pengajuan jadwal ujian ini?')">
                             TOLAK
                         </button>
                     </form>
@@ -96,7 +94,8 @@
         @else
             <div class="empty-state">
                 <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
                 <h3>Tidak Ada Notifikasi</h3>
                 <p>Semua pengajuan jadwal ujian sudah diproses.</p>
@@ -106,16 +105,18 @@
 </div>
 
 <style>
+/* ── Base ── */
 .notification-container {
     max-width: 900px;
     margin: 0 auto;
     padding: 20px;
     background: #f5f5f5;
     min-height: 100vh;
+    box-sizing: border-box;
 }
 
 .notification-header {
-    background: linear-gradient(135deg, #1e5a9e 50%, #3b82f6 100%); 
+    background: linear-gradient(135deg, #1e5a9e 50%, #3b82f6 100%);
     color: white;
     padding: 20px;
     border-radius: 10px 10px 0 0;
@@ -123,6 +124,8 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .notification-header h1 {
@@ -138,6 +141,8 @@
     border-radius: 20px;
     font-size: 14px;
     font-weight: bold;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .notification-content {
@@ -146,16 +151,10 @@
     padding: 20px;
 }
 
-.notification-title {
-    margin-bottom: 20px;
-}
+.notification-title        { margin-bottom: 20px; }
+.notification-title h2     { font-size: 20px; font-weight: bold; color: #333; }
 
-.notification-title h2 {
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-}
-
+/* ── Notification Card ── */
 .notification-card {
     background: white;
     border: 3px solid #fbbf24;
@@ -172,17 +171,18 @@
     margin-bottom: 15px;
     padding-bottom: 10px;
     border-bottom: 2px solid #f3f4f6;
+    flex-wrap: wrap;
 }
 
-.card-icon {
-    font-size: 24px;
-}
+.card-icon { font-size: 24px; flex-shrink: 0; }
 
 .card-title {
     display: flex;
     align-items: center;
     gap: 10px;
     flex: 1;
+    flex-wrap: wrap;
+    min-width: 0;
 }
 
 .card-title strong {
@@ -197,6 +197,8 @@
     border-radius: 20px;
     font-size: 12px;
     font-weight: bold;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .card-body {
@@ -216,11 +218,15 @@
     margin-bottom: 5px;
 }
 
+/* ── Card Actions ── */
 .card-actions {
     display: flex;
     gap: 10px;
     justify-content: flex-start;
+    flex-wrap: wrap;
 }
+
+.card-actions form { display: inline; }
 
 .btn {
     padding: 10px 30px;
@@ -230,30 +236,24 @@
     cursor: pointer;
     font-size: 14px;
     transition: all 0.3s;
+    white-space: nowrap;
 }
 
-.btn-terima {
-    background: #fbbf24;
-    color: #1f2937;
-}
-
+.btn-terima { background: #fbbf24; color: #1f2937; }
 .btn-terima:hover {
     background: #f59e0b;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(251, 191, 36, 0.3);
+    box-shadow: 0 4px 8px rgba(251,191,36,0.3);
 }
 
-.btn-tolak {
-    background: #1e40af;
-    color: white;
-}
-
+.btn-tolak { background: #1e40af; color: white; }
 .btn-tolak:hover {
     background: #1e3a8a;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(30, 64, 175, 0.3);
+    box-shadow: 0 4px 8px rgba(30,64,175,0.3);
 }
 
+/* ── Alerts ── */
 .alert {
     padding: 15px;
     border-radius: 8px;
@@ -261,18 +261,10 @@
     font-size: 14px;
 }
 
-.alert-success {
-    background: #d1fae5;
-    border: 1px solid #10b981;
-    color: #065f46;
-}
+.alert-success { background: #d1fae5; border: 1px solid #10b981; color: #065f46; }
+.alert-error   { background: #fee2e2; border: 1px solid #ef4444; color: #991b1b; }
 
-.alert-error {
-    background: #fee2e2;
-    border: 1px solid #ef4444;
-    color: #991b1b;
-}
-
+/* ── Empty State ── */
 .empty-state {
     text-align: center;
     padding: 60px 20px;
@@ -285,15 +277,90 @@
     margin: 0 auto 20px;
 }
 
-.empty-state h3 {
-    font-size: 18px;
-    color: #374151;
-    margin-bottom: 10px;
+.empty-state h3 { font-size: 18px; color: #374151; margin-bottom: 10px; }
+.empty-state p  { color: #6b7280; font-size: 14px; }
+
+/* ════════════════════════════
+   RESPONSIVE
+════════════════════════════ */
+
+/* Tablet */
+@media (max-width: 768px) {
+    .notification-container { padding: 14px; }
+
+    .notification-header { padding: 16px 18px; border-radius: 8px 8px 0 0; }
+    .notification-header h1 { font-size: 20px; }
+
+    .notification-content { padding: 16px; }
+    .notification-title h2 { font-size: 17px; }
+
+    .notification-card { padding: 16px; border-radius: 12px; }
+
+    .card-title strong { font-size: 14px; }
+
+    .btn { padding: 10px 24px; font-size: 13px; }
 }
 
-.empty-state p {
-    color: #6b7280;
-    font-size: 14px;
+/* Mobile */
+@media (max-width: 480px) {
+    .notification-container { padding: 10px; }
+
+    .notification-header {
+        padding: 14px;
+        border-radius: 8px 8px 0 0;
+        gap: 8px;
+    }
+
+    .notification-header h1 { font-size: 17px; }
+
+    .badge-new { font-size: 12px; padding: 4px 12px; }
+
+    .notification-content { padding: 12px; border-radius: 8px; }
+
+    .notification-title h2 { font-size: 15px; }
+
+    .notification-card {
+        padding: 14px;
+        border-radius: 10px;
+        border-width: 2px;
+        margin-bottom: 14px;
+    }
+
+    .card-icon { font-size: 20px; }
+
+    .card-title strong { font-size: 13.5px; }
+
+    .badge-baru { font-size: 11px; padding: 3px 10px; }
+
+    .time-info  { font-size: 12px; }
+    .info-row   { font-size: 13px; }
+
+    /* Tombol full width di HP kecil */
+    .card-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .card-actions form { display: block; width: 100%; }
+
+    .btn {
+        width: 100%;
+        padding: 11px 20px;
+        font-size: 13px;
+        text-align: center;
+        display: block;
+    }
+
+    .empty-state  { padding: 40px 14px; }
+    .empty-icon   { width: 60px; height: 60px; }
+    .empty-state h3 { font-size: 16px; }
+    .empty-state p  { font-size: 13px; }
+}
+
+@media (max-width: 360px) {
+    .notification-header h1 { font-size: 15px; }
+    .notification-card { padding: 12px; }
+    .card-title strong { font-size: 13px; }
 }
 </style>
 @endsection

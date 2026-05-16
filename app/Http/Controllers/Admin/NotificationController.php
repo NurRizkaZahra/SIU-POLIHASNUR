@@ -7,6 +7,8 @@ use App\Models\Exam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ExamScheduleNotificationMail;
 
 class NotificationController extends Controller
 {
@@ -76,6 +78,9 @@ if ($notification) {
  }
             DB::commit();
 
+            Mail::to($exam->user->email)
+    ->send(new ExamScheduleNotificationMail($exam, 'approved'));
+
             // Log activity
             Log::info('Exam application approved', [
                 'admin_id' => auth()->id(),
@@ -131,6 +136,9 @@ if ($notification) {
 
             DB::commit();
 
+            Mail::to($exam->user->email)
+    ->send(new ExamScheduleNotificationMail($exam, 'rejected'));
+    
             // Log activity
             Log::info('Exam application rejected', [
                 'admin_id' => auth()->id(),

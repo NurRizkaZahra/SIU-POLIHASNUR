@@ -358,6 +358,215 @@
             justify-content: flex-end;
         }
     }
+    /* =========================================
+   RESPONSIVE TABLET
+========================================= */
+@media (max-width: 992px) {
+
+    .groups-container {
+        padding: 16px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .group-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .group-actions {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 12px;
+    }
+
+    .group-info {
+        width: 100%;
+    }
+
+    .group-content {
+        width: 100%;
+    }
+
+    .group-name {
+        word-break: break-word;
+    }
+
+    .group-meta {
+        gap: 8px;
+    }
+}
+
+/* =========================================
+   RESPONSIVE MOBILE
+========================================= */
+@media (max-width: 768px) {
+
+    .groups-container {
+        padding: 12px;
+    }
+
+    .header-section {
+        justify-content: stretch;
+    }
+
+    .btn-add-new {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .stat-card {
+        padding: 18px;
+        border-radius: 14px;
+    }
+
+    .stat-value {
+        font-size: 28px;
+    }
+
+    .group-card {
+        padding: 16px;
+        border-radius: 14px;
+    }
+
+    .group-header {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .group-info {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 14px;
+        width: 100%;
+    }
+
+    .group-number {
+        min-width: 42px;
+        height: 42px;
+        font-size: 16px;
+    }
+
+    .group-content {
+        width: 100%;
+    }
+
+    .group-name {
+        font-size: 15px;
+        line-height: 1.5;
+        word-break: break-word;
+    }
+
+    .group-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .meta-badge {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+
+    .group-actions {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 6px;
+    }
+
+    .btn-action {
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+    }
+
+    .alert-success,
+    .alert-error {
+        padding: 14px 16px;
+        font-size: 14px;
+        border-radius: 10px;
+    }
+
+    .empty-state {
+        padding: 40px 20px;
+    }
+
+    .empty-title {
+        font-size: 18px;
+    }
+
+    .empty-text {
+        font-size: 13px;
+    }
+}
+
+/* =========================================
+   EXTRA SMALL MOBILE
+========================================= */
+@media (max-width: 480px) {
+
+    .groups-container {
+        padding: 10px;
+    }
+
+    .group-card {
+        padding: 14px;
+    }
+
+    .group-info {
+        gap: 12px;
+    }
+
+    .group-number {
+        min-width: 38px;
+        height: 38px;
+        font-size: 14px;
+        border-radius: 8px;
+    }
+
+    .group-name {
+        font-size: 14px;
+    }
+
+    .meta-badge {
+        width: fit-content;
+        max-width: 100%;
+        word-break: break-word;
+    }
+
+    .group-actions {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .btn-action {
+        width: 38px;
+        height: 38px;
+    }
+
+    .stat-value {
+        font-size: 24px;
+    }
+
+    .stat-label {
+        font-size: 13px;
+    }
+
+    .btn-add-new {
+        font-size: 13px;
+        padding: 10px 14px;
+    }
+}
 </style>
 
 <div class="groups-container">

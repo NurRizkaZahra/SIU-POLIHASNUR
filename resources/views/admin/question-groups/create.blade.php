@@ -113,6 +113,242 @@
         border-radius: 10px;
         margin-bottom: 25px;
     }
+    .form-container {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 20px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .form-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    
+    .form-group {
+        margin-bottom: 25px;
+    }
+    
+    .form-label {
+        display: block;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 8px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+    
+    .required {
+        color: #ef4444;
+    }
+    
+    .form-input,
+    .form-select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        font-size: 14px;
+        transition: all 0.3s;
+        box-sizing: border-box;
+        background: white;
+    }
+    
+    .form-input:focus,
+    .form-select:focus {
+        outline: none;
+        border-color: #2b6cb0;
+        box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.1);
+    }
+    
+    .form-hint {
+        font-size: 12px;
+        color: #64748b;
+        margin-top: 5px;
+        line-height: 1.5;
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 2px solid #e5e7eb;
+        flex-wrap: wrap;
+    }
+    
+    .btn {
+        padding: 12px 24px;
+        border-radius: 10px;
+        font-weight: 600;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        white-space: nowrap;
+        box-sizing: border-box;
+    }
+    
+    .btn-cancel {
+        background: #f1f5f9;
+        color: #475569;
+    }
+    
+    .btn-cancel:hover {
+        background: #e2e8f0;
+        color: #475569;
+    }
+    
+    .btn-submit {
+        background: linear-gradient(135deg, #2b6cb0 0%, #1e5a9e 100%);
+        color: white;
+    }
+    
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(43, 108, 176, 0.3);
+        color: white;
+    }
+    
+    .error-message {
+        background: #fee2e2;
+        border: 2px solid #ef4444;
+        color: #dc2626;
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        overflow-wrap: break-word;
+    }
+
+    .info-box {
+        background: #dbeafe;
+        border: 2px solid #3b82f6;
+        color: #1e40af;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        overflow-wrap: break-word;
+    }
+
+    .info-box p {
+        line-height: 1.6;
+    }
+
+    /* =========================
+       TABLET
+    ========================= */
+    @media (max-width: 768px) {
+
+        .form-container {
+            padding: 16px;
+        }
+
+        .form-card {
+            padding: 24px;
+            border-radius: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .btn {
+            padding: 11px 20px;
+            font-size: 14px;
+        }
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+    @media (max-width: 576px) {
+
+        .form-container {
+            padding: 12px;
+        }
+
+        .form-card {
+            padding: 20px 16px;
+            border-radius: 12px;
+        }
+
+        .form-label {
+            font-size: 13px;
+        }
+
+        .form-input,
+        .form-select {
+            padding: 11px 13px;
+            font-size: 13px;
+            border-radius: 9px;
+        }
+
+        .form-hint {
+            font-size: 11px;
+        }
+
+        .info-box,
+        .error-message {
+            padding: 12px;
+            font-size: 13px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+            gap: 10px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 13px;
+        }
+    }
+
+    /* =========================
+       SMALL MOBILE
+    ========================= */
+    @media (max-width: 400px) {
+
+        .form-container {
+            padding: 10px;
+        }
+
+        .form-card {
+            padding: 16px 14px;
+        }
+
+        .form-label {
+            font-size: 12.5px;
+        }
+
+        .form-input,
+        .form-select {
+            font-size: 12.5px;
+            padding: 10px 12px;
+        }
+
+        .btn {
+            font-size: 12.5px;
+            padding: 11px;
+        }
+
+        .info-box,
+        .error-message {
+            font-size: 12px;
+        }
+    }
 </style>
 
 <div class="form-container">
