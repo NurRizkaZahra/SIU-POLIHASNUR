@@ -40,24 +40,32 @@
         </a>
 
         <!-- Profile Dropdown -->
+        {{-- Profil dropdown --}}
         <div class="profile-dropdown">
-            <button class="icon-btn" onclick="toggleProfileDropdown()" title="Profil">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
-                </svg>
-            </button>
+           <button class="icon-btn profile-btn" onclick="toggleProfileDropdown()">
+    <img
+        src="{{ auth()->user()->photo 
+            ? asset('storage/' . auth()->user()->photo) 
+            : asset('images/default-avatar.png') }}"
+        alt="Profile"
+        class="profile-avatar">
+        </button>
 
             <div class="dropdown-menu" id="profileDropdown">
                 <div class="dropdown-header">
-                    <div class="user-info">
-                        <strong>{{ auth()->user()->name ?? 'Guest' }}</strong>
-                        <small>{{ auth()->user()->email ?? 'guest@example.com' }}</small>
-                    </div>
-                </div>
+    <img
+        src="{{ auth()->user()->photo 
+            ? asset('storage/' . auth()->user()->photo) 
+            : asset('images/default-avatar.png') }}"
+        class="dropdown-avatar">
 
-                <div class="dropdown-divider"></div>
+    <div class="user-info">
+        <strong>{{ auth()->user()->name }}</strong>
+        <small>{{ auth()->user()->email }}</small>
+    </div>
+</div>
 
-                <a href="{{ route('profile.edit') }}" class="dropdown-item">
+                <a href="{{ route('camaba.profile-edit') }}" class="dropdown-item">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
                     </svg>

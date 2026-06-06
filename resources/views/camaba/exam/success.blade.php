@@ -343,9 +343,15 @@ body {
         </div>
 
         <!-- Back Button -->
-        <a href="{{ route('camaba.dashboard') }}" class="btn-back">
-            Kembali ke Dashboard
-        </a>
+       @if($exam->status === 'completed')
+    <a href="{{ route('camaba.dashboard') }}" class="btn-back">
+        Kembali ke Dashboard
+    </a>
+@else
+    <a href="{{ route('camaba.exam.index') }}" class="btn-back">
+        Kembali ke Daftar Ujian
+    </a>
+@endif
     </div>
 </div>
 @endsection

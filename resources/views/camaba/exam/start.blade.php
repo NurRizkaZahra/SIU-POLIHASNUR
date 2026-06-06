@@ -67,22 +67,26 @@
     }
 
     /* Profile icon */
-    .profile-icon {
-        width: 58px;
-        height: 58px;
-        background: #1e3a8a;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 20px;
-    }
+.profile-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 3px solid #1e3a8a;
+    flex-shrink: 0;
+}
 
-    .profile-icon svg {
-        width: 28px;
-        height: 28px;
-        color: white;
-    }
+.profile-icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+/* HAPUS rule ini */
+/* .profile-icon svg { ... } */
 
     /* ══════════════════════════════════════════
        VIDEO TUTORIAL — hanya tampil jika $isPsikotes
@@ -556,12 +560,13 @@ body {
         @endif
 
         {{-- Profile Icon --}}
-        <div class="profile-icon">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-        </div>
+<div class="profile-icon">
+    <img src="{{ auth()->user()->photo 
+        ? asset('storage/' . auth()->user()->photo) 
+        : asset('images/default-avatar.png') }}"
+        alt="Avatar"
+        class="profile-icon-img">
+</div>
 
         {{-- ══════════════════════════════════════
              VIDEO TUTORIAL

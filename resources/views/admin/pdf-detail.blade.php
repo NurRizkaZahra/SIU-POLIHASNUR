@@ -57,6 +57,18 @@ td.label {
 
         <table>
             <tr>
+    <td class="label">Foto</td>
+    <td>
+        @if($camaba->photo)
+            <img src="{{ public_path('storage/' . $camaba->photo) }}"
+                 width="120"
+                 style="border:1px solid #000;">
+        @else
+            -
+        @endif
+    </td>
+</tr>
+            <tr>
                  <td class="label">Nama Lengkap</td>
                 <td>{{ $camaba->personalData->full_name ?? '-' }}</td>
             </tr>

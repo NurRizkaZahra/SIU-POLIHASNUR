@@ -16,6 +16,7 @@ use App\Http\Controllers\Camaba\ExamController;
 use App\Http\Controllers\Camaba\CamabaController;
 use App\Http\Controllers\Camaba\ExamScheduleController;
 use App\Http\Controllers\Camaba\NotificationCamabaController;
+use App\Http\Controllers\Camaba\ProfileController as CamabaProfileController;
 // PROFILE
 use App\Http\Controllers\ProfileController;
 
@@ -50,7 +51,6 @@ Route::get('/dashboard', function () {
     }
 
     return view('dashboard');
-
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
@@ -65,7 +65,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard/admin', fn() => view('admin.dashboard'))
         ->name('dashboard.admin');
 
-    Route::get('/admin/dashboard/stats',
+    Route::get(
+        '/admin/dashboard/stats',
         [App\Http\Controllers\Admin\AdminDashboardController::class, 'getStats']
     )->name('admin.dashboard.stats');
 
@@ -76,19 +77,23 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::prefix('admin')->name('admin.')->group(function () {
 
-        Route::get('/profile',
-        [AdminProfileController::class, 'index']
+        Route::get(
+            '/profile',
+            [AdminProfileController::class, 'index']
         )->name('profile');
 
-        Route::get('/profile/edit',
+        Route::get(
+            '/profile/edit',
             [AdminProfileController::class, 'edit']
-        )->name('profile.edit');
+        )->name('profile-edit');
 
-        Route::put('/profile',
+        Route::put(
+            '/profile',
             [AdminProfileController::class, 'update']
         )->name('profile.update');
 
-        Route::get('/profile/change-password',
+        Route::get(
+            '/profile/change-password',
             [AdminProfileController::class, 'changePassword']
         )->name('profile.change-password');
 
@@ -97,13 +102,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         | QUESTION GROUPS + QUESTIONS
         */
 
-        Route::resource('question-groups',
+        Route::resource(
+            'question-groups',
             QuestionGroupController::class
         );
 
-        Route::resource('questions',
-            QuestionController::class);
-
+        Route::resource(
+            'questions',
+            QuestionController::class
+        );
     });
 
 
@@ -112,26 +119,31 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     */
 
 
-    Route::get('/admin/registration',
+    Route::get(
+        '/admin/registration',
         [AdminRegistrationController::class, 'index']
     )->name('admin.registration');
 
-    Route::get('/admin/registration/{id}',
+    Route::get(
+        '/admin/registration/{id}',
         [AdminRegistrationController::class, 'show']
     )->name('admin.registration.show');
 
-    Route::post('/admin/registration/{id}/exam-status',
+    Route::post(
+        '/admin/registration/{id}/exam-status',
         [AdminRegistrationController::class, 'updateExamStatus']
     )->name('admin.registration.update-status');
 
     Route::get('/admin/registration/{id}/pdf', [App\Http\Controllers\Admin\AdminRegistrationController::class, 'downloadPdf'])
-    ->name('admin.registration.pdf');
+        ->name('admin.registration.pdf');
 
-    Route::get('/admin/registration/print/all',
+    Route::get(
+        '/admin/registration/print/all',
         [AdminRegistrationController::class, 'print']
     )->name('admin.registration.print');
 
-    Route::get('/admin/registration/export/excel',
+    Route::get(
+        '/admin/registration/export/excel',
         [AdminRegistrationController::class, 'export']
     )->name('admin.registration.export');
 
@@ -140,27 +152,33 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     | EXAM SCHEDULE ADMIN
     */
 
-    Route::get('/admin/exam-schedule',
+    Route::get(
+        '/admin/exam-schedule',
         [ExamScheduleAdminController::class, 'index']
     )->name('admin.exam-schedule-admin');
 
-    Route::get('/admin/exam-schedule/create',
+    Route::get(
+        '/admin/exam-schedule/create',
         [ExamScheduleAdminController::class, 'create']
     )->name('admin.exam-schedule-create');
 
-    Route::post('/admin/exam-schedule',
+    Route::post(
+        '/admin/exam-schedule',
         [ExamScheduleAdminController::class, 'store']
     )->name('admin.exam-schedule-store');
 
-    Route::get('/admin/exam-schedule/{id}/edit',
+    Route::get(
+        '/admin/exam-schedule/{id}/edit',
         [ExamScheduleAdminController::class, 'edit']
     )->name('admin.exam-schedule-edit');
 
-    Route::put('/admin/exam-schedule/{id}',
+    Route::put(
+        '/admin/exam-schedule/{id}',
         [ExamScheduleAdminController::class, 'update']
     )->name('admin.exam-schedule-update');
 
-    Route::delete('/admin/exam-schedule/{id}',
+    Route::delete(
+        '/admin/exam-schedule/{id}',
         [ExamScheduleAdminController::class, 'destroy']
     )->name('admin.exam-schedule-destroy');
 
@@ -169,19 +187,23 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     | EXAM APPROVAL
     */
 
-    Route::get('/exam/notifications',
+    Route::get(
+        '/exam/notifications',
         [AdminExamController::class, 'notifications']
     )->name('exam.notifications');
 
-    Route::post('/exam/{id}/approve',
+    Route::post(
+        '/exam/{id}/approve',
         [AdminExamController::class, 'approve']
     )->name('admin.exam.approve');
 
-    Route::post('/exam/{id}/reject',
+    Route::post(
+        '/exam/{id}/reject',
         [AdminExamController::class, 'reject']
     )->name('admin.exam.reject');
 
-    Route::post('/exam/bulk-approve',
+    Route::post(
+        '/exam/bulk-approve',
         [AdminExamController::class, 'bulkApprove']
     )->name('admin.exam.bulk-approve');
 
@@ -190,18 +212,20 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     | RESULT ADMIN
     */
 
-    Route::get('/admin/results',
+    Route::get(
+        '/admin/results',
         [AdminResultController::class, 'index']
     )->name('admin.results');
 
-    Route::get('/admin/results/print',
+    Route::get(
+        '/admin/results/print',
         [AdminResultController::class, 'print']
     )->name('admin.results.print');
 
-    Route::get('/admin/results/export-excel',
+    Route::get(
+        '/admin/results/export-excel',
         [AdminResultController::class, 'exportExcel']
     )->name('admin.results.excel');
-
 });
 
 
@@ -218,117 +242,158 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 */
 
 Route::middleware(['auth', 'role:camaba'])
-->prefix('camaba')
-->name('camaba.')
-->group(function () {
+    ->prefix('camaba')
+    ->name('camaba.')
+    ->group(function () {
 
-    // ======================
-    // DASHBOARD
-    // ======================
-    Route::get('/dashboard', fn() => view('camaba.dashboard'))
-        ->name('dashboard');
-
-
-    // ======================
-    // NOTIFICATIONS
-    // ======================
-    Route::get('/notifications',
-        [NotificationCamabaController::class, 'index']
-    )->name('notifications');
-
-    Route::delete('/notifications/{id}',
-        [NotificationCamabaController::class, 'delete']
-    )->name('notifications.delete');
+        // ======================
+        // DASHBOARD
+        // ======================
+        Route::get('/dashboard', fn() => view('camaba.dashboard'))
+            ->name('dashboard');
 
 
-    // ======================
-    // REGISTRATION AWAL
-    // ======================
-   Route::get('/registration',
-    [CamabaController::class, 'registration']
-)->name('registration');
-
-    // ======================
-    // FORM DATA DIRI
-    // ======================
-    Route::post('/personal-data/save',
-        [CamabaController::class,'simpanDataDiri']
-    )->name('personal-data.save');
-
-    Route::post('/education-data/save',
-        [CamabaController::class,'simpanDataPendidikan']
-    )->name('education-data.save');
-
-    Route::post('/family-data/save',
-        [CamabaController::class,'simpanDataKeluarga']
-    )->name('family-data.save');
+        /*
+    | PROFILE CAMABA
+    */
 
 
-    // ======================
-    // FORM LANJUTAN
-    // ======================
-   Route::get('/registration-advanced',
-    [CamabaController::class, 'pendaftaranLanjutan']
-)->name('registration-advanced');
+        Route::get(
+            '/profile',
+            [CamabaProfileController::class, 'index']
+        )->name('profile');
 
-    Route::post('/admission-path/save',
-        [CamabaController::class,'simpanJalurMasuk']
-    )->name('admission-path.save');
+        Route::get(
+            '/profile/edit',
+            [CamabaProfileController::class, 'edit']
+        )->name('profile-edit');
 
-    Route::post('/program-selection/save',
-        [CamabaController::class,'simpanProgramStudi']
-    )->name('program-selection.save');
+        Route::put(
+            '/profile',
+            [CamabaProfileController::class, 'update']
+        )->name('profile.update');
+
+        Route::get(
+            '/profile/change-password',
+            [CamabaProfileController::class, 'changePassword']
+        )->name('profile.change-password');
+
+        // ======================
+        // NOTIFICATIONS
+        // ======================
+        Route::get(
+            '/notifications',
+            [NotificationCamabaController::class, 'index']
+        )->name('notifications');
+
+        Route::delete(
+            '/notifications/{id}',
+            [NotificationCamabaController::class, 'delete']
+        )->name('notifications.delete');
 
 
-    // ======================
-    // JADWAL UJIAN
-    // ======================
-    Route::get('/exam-schedule',
-        [ExamScheduleController::class, 'index']
-    )->name('exam-schedule');
+        // ======================
+        // REGISTRATION AWAL
+        // ======================
+        Route::get(
+            '/registration',
+            [CamabaController::class, 'registration']
+        )->name('registration');
 
-    Route::post('/exam-schedule',
-        [ExamScheduleController::class, 'store']
-    )->name('exam-schedule.store');
+        // ======================
+        // FORM DATA DIRI
+        // ======================
+        Route::post(
+            '/personal-data/save',
+            [CamabaController::class, 'simpanDataDiri']
+        )->name('personal-data.save');
+
+        Route::post(
+            '/education-data/save',
+            [CamabaController::class, 'simpanDataPendidikan']
+        )->name('education-data.save');
+
+        Route::post(
+            '/family-data/save',
+            [CamabaController::class, 'simpanDataKeluarga']
+        )->name('family-data.save');
 
 
-    // ======================
-    // EXAM FEATURE
-    // ======================
-    Route::prefix('exam')->name('exam.')->group(function () {
+        // ======================
+        // FORM LANJUTAN
+        // ======================
+        Route::get(
+            '/registration-advanced',
+            [CamabaController::class, 'pendaftaranLanjutan']
+        )->name('registration-advanced');
 
-        Route::get('/',
-            [ExamController::class, 'index']
-        )->name('index');
+        Route::post(
+            '/admission-path/save',
+            [CamabaController::class, 'simpanJalurMasuk']
+        )->name('admission-path.save');
 
-        Route::get('/start/{group}/{tes?}',
-            [ExamController::class, 'showExam']
-        )->name('start');
+        Route::post(
+            '/program-selection/save',
+            [CamabaController::class, 'simpanProgramStudi']
+        )->name('program-selection.save');
 
-        Route::post('/start',
-            [ExamController::class, 'start']
-        )->name('begin');
 
-        Route::get('/questions/{examId}/{groupId}',
-            [ExamController::class, 'questions']
-        )->name('questions');
+        // ======================
+        // JADWAL UJIAN
+        // ======================
+        Route::get(
+            '/exam-schedule',
+            [ExamScheduleController::class, 'index']
+        )->name('exam-schedule');
 
-        Route::post('/{examId}/save-answer',
-            [ExamController::class, 'saveAnswer'])
-        ->name('saveAnswer');
+        Route::post(
+            '/exam-schedule',
+            [ExamScheduleController::class, 'store']
+        )->name('exam-schedule.store');
 
-        Route::post('/submit/{examId}',
-            [ExamController::class, 'submit']
-        )->name('submit');
 
-        Route::get('/success/{examId}',
-            [ExamController::class, 'success']
-        )->name('success');
+        // ======================
+        // EXAM FEATURE
+        // ======================
+        Route::prefix('exam')->name('exam.')->group(function () {
 
+            Route::get(
+                '/',
+                [ExamController::class, 'index']
+            )->name('index');
+
+            Route::get(
+                '/start/{group}/{tes?}',
+                [ExamController::class, 'showExam']
+            )->name('start');
+
+            Route::post(
+                '/start',
+                [ExamController::class, 'start']
+            )->name('begin');
+
+            Route::get(
+                '/questions/{examId}/{groupId}',
+                [ExamController::class, 'questions']
+            )->name('questions');
+
+            Route::post(
+                '/{examId}/save-answer',
+                [ExamController::class, 'saveAnswer']
+            )
+                ->name('saveAnswer');
+
+            Route::post(
+                '/submit/{examId}',
+                [ExamController::class, 'submit']
+            )->name('submit');
+
+            Route::get(
+                '/success/{examId}',
+                [ExamController::class, 'success']
+            )->name('success');
+        });
     });
-
-});
-
 
 /*
 |--------------------------------------------------------------------------
@@ -338,19 +403,19 @@ Route::middleware(['auth', 'role:camaba'])
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/profile',
+    Route::get(
+        '/profile',
         [ProfileController::class, 'edit']
     )->name('profile.edit');
 
-    Route::patch('/profile',
+    Route::patch(
+        '/profile',
         [ProfileController::class, 'update']
     )->name('profile.update');
 
-    Route::delete('/profile',
+    Route::delete(
+        '/profile',
         [ProfileController::class, 'destroy']
     )->name('profile.destroy');
-
 });
-
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

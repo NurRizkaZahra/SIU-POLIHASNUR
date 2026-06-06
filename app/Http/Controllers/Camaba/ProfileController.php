@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Camaba;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -12,12 +12,12 @@ class ProfileController extends Controller
     public function index()
     { 
         $user = Auth::user();
-        return view('admin.profile', compact('user'));
+        return view('camaba.profile', compact('user'));
     }
     public function edit()
 {
     $user = Auth::user();
-    return view('admin.profile-edit', compact('user'));
+    return view('camaba.profile-edit', compact('user'));
 }
 
 public function update(Request $request)
@@ -71,12 +71,12 @@ public function update(Request $request)
     $user->save();
 
     return redirect()
-        ->route('admin.profile')
+        ->route('camaba.profile')
         ->with('success', 'Profil berhasil diperbarui.');
 }
 
 public function changePassword()
 {
-    return view('admin.profile.change-password');
+    return view('camaba.profile.change-password');
 }
 }

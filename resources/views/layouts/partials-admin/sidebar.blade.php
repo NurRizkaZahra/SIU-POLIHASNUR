@@ -9,12 +9,13 @@
     <div class="profile">
         <a href="{{ route('admin.profile') }}" class="profile" style="text-decoration:none; color:inherit;">
             <div class="profile-icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4
-                    1.79-4 4 1.79 4 4 4zm0 2c-2.67
-                    0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                </svg>
-            </div>
+    <img
+        src="{{ auth()->user()->photo
+            ? asset('storage/' . auth()->user()->photo)
+            : asset('images/default-avatar.png') }}"
+        alt="Profile"
+        class="sidebar-avatar">
+</div>
             <div class="badge">{{ auth()->user()->role ?? 'Admin' }}</div>
             <div class="profile-name">{{ auth()->user()->name ?? 'Nur Rizka Zahra' }}</div>
         </a>
@@ -87,6 +88,26 @@
 
     .sidebar-overlay.show { display: block; }
 
+    .profile-icon{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    overflow:hidden;
+    margin:0 auto;
+    border:4px solid #fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.sidebar-avatar{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
+    display:block;
+}
+
     /* ========================
        RESPONSIVE — sidebar
     ======================== */
@@ -135,9 +156,19 @@
             height: 64px;
         }
 
-        .profile-icon svg {
-            width: 40px;
-            height: 40px;
-        }
+        .profile-icon{
+    width:80px;
+    height:80px;
+    margin:0 auto 12px;
+    overflow:hidden;
+    border-radius:50%;
+    border:3px solid rgba(255,255,255,.2);
+}
+
+.sidebar-avatar{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
     }
 </style>

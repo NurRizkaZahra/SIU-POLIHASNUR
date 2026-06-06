@@ -71,6 +71,13 @@
         color: #333;
         font-size: 15px;
     }
+    .profile-photo{
+    width:180px;
+    height:180px;
+    object-fit:cover;
+    border-radius:12px;
+    border:3px solid #1e5a96;
+}
 
     /* ── Button group ── */
     .button-group {
@@ -221,16 +228,28 @@
 
         {{-- DATA DIRI --}}
         <h5 style="color:#1e5a96;font-weight:600;margin-bottom:15px;font-size:17px;">Data Diri</h5>
+        
         <div class="data-row">
-            <div class="data-item">
-                <strong>Nama Lengkap:</strong>
-                <span>{{ $camaba->personalData->full_name ?? '-' }}</span>
-            </div>
-            <div class="data-item">
-                <strong>NIK:</strong>
-                <span>{{ $camaba->personalData->nik ?? '-' }}</span>
-            </div>
-        </div>
+    <div class="data-item" style="grid-column:1 / -1; text-align:center;">
+        @if($camaba->photo)
+            <img src="{{ asset('storage/' . $camaba->photo) }}"
+                 alt="Foto Profil"
+                 class="profile-photo">
+        @endif
+    </div>
+</div>
+
+<div class="data-row">
+    <div class="data-item">
+        <strong>Nama Lengkap:</strong>
+        <span>{{ $camaba->personalData->full_name ?? '-' }}</span>
+    </div>
+
+    <div class="data-item">
+        <strong>NIK:</strong>
+        <span>{{ $camaba->personalData->nik ?? '-' }}</span>
+    </div>
+</div>
 
         <div class="data-row">
             <div class="data-item">

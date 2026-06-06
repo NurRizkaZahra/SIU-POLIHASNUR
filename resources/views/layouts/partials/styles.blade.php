@@ -53,36 +53,47 @@
     }
 
     .logo {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 30px;
-        font-weight: 600;
-        font-size: 16px;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 0;
+    margin-bottom: 10px;
+
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: .5px;
+}
 
     .profile {
         text-align: center;
-        margin-bottom: 40px;
+        margin-bottom: 15px;
     }
 
     .profile-icon {
-        width: 80px;
-        height: 80px;
-        background: white;
-        border-radius: 50%;
-        margin: 0 auto 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 15px;
+    border: 4px solid rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+}
 
-    .profile-icon svg {
-        width: 50px;
-        height: 50px;
-        fill: #1e5a96;
-    }
+/* Hapus rule ini karena sudah tidak pakai SVG */
+/* .profile-icon svg { ... } */
 
+.sidebar-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
     .badge {
         background: #ffd700;
         color: #1e5a96;
@@ -206,16 +217,148 @@
     }
 
     .icon-btn {
-        background: none;
-        border: none;
-        color: white;
-        cursor: pointer;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.15);
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.icon-btn:hover {
+    background: rgba(255,255,255,.25);
+    transform: translateY(-2px);
+}
+
+.icon-btn svg,
+.icon-btn i {
+    width: 18px;
+    height: 18px;
+}
+/* Profile button di header */
+.profile-btn {
+    padding: 2px;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    overflow: hidden;
+}
+
+.profile-btn:hover {
+    border-color: rgba(255, 255, 255, 0.9);
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Dropdown */
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    background: white;
+    min-width: 250px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e5e7eb;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+.dropdown-menu.show {
+    display: block;
+    animation: dropdownFadeIn 0.2s ease;
+}
+
+@keyframes dropdownFadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-header {
+    padding: 15px;
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dropdown-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    flex-shrink: 0;
+}
+
+.user-info strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 170px;
+}
+
+.user-info small {
+    display: block;
+    font-size: 12px;
+    opacity: 0.85;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 170px;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 0;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    color: #374151;
+    text-decoration: none;
+    transition: background 0.2s;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+}
+
+.dropdown-item:hover { background: #f3f4f6; }
+.dropdown-item svg   { flex-shrink: 0; }
+
+.logout-btn       { color: #dc2626; }
+.logout-btn:hover { background: #fee2e2; }
 
     /* =====================
        CONTENT
@@ -440,27 +583,66 @@
        DROPDOWN (dari header.blade.php)
     ===================== */
     .profile-dropdown {
-        position: relative;
-    }
+    position: relative;
+    display: inline-block;
+}
 
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        right: 0;
-        top: 110%;
-        background: white;
-        color: #111827;
-        min-width: 240px;
-        border-radius: 8px;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-        z-index: 999;
-        overflow: hidden;
-    }
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
 
-    .dropdown-menu.show {
-        display: block;
-        animation: fadeIn 0.25s ease;
-    }
+    width: 250px;
+    background: #fff;
+    border-radius: 12px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,.12);
+    border: 1px solid #e5e7eb;
+
+    overflow: hidden;
+    z-index: 9999;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+
+    transition: all .25s ease;
+}
+
+.dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu a,
+.dropdown-menu button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+    padding: 12px 16px;
+
+    color: #374151;
+    text-decoration: none;
+    background: none;
+    border: none;
+
+    cursor: pointer;
+    transition: .2s;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+    background: #f3f4f6;
+}
+
+.dropdown-menu hr {
+    margin: 0;
+    border: none;
+    border-top: 1px solid #e5e7eb;
+}
 
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(-10px); }

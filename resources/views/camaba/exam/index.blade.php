@@ -50,17 +50,22 @@
     }
 
     .student-avatar {
-        width: 40px;
-        height: 40px;
-        background: #1e3a8a;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2px solid #e2e8f0;
+}
 
-    .student-avatar svg { width: 22px; height: 22px; color: white; }
+.student-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
     .student-details    { flex: 1; }
     .student-name       { font-size: 14px; font-weight: 700; color: #1e293b; margin: 0 0 2px; }
     .student-wave       { font-size: 12px; color: #64748b; margin: 0; }
@@ -436,19 +441,20 @@
     </div>
 
     {{-- Student Bar --}}
-    <div class="student-bar">
-        <div class="student-avatar">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-            </svg>
-        </div>
-        <div class="student-details">
-            <p class="student-name">{{ Auth::user()->name }}</p>
-            <p class="student-wave">{{ optional($schedules->first())->wave_name ?? 'Gelombang tidak diketahui' }}</p>
-        </div>
-        <span class="student-date">{{ date('d/m/Y') }}</span>
+<div class="student-bar">
+    <div class="student-avatar">
+        <img src="{{ auth()->user()->photo 
+            ? asset('storage/' . auth()->user()->photo) 
+            : asset('images/default-avatar.png') }}"
+            alt="Avatar"
+            class="student-avatar-img">
     </div>
+    <div class="student-details">
+        <p class="student-name">{{ Auth::user()->name }}</p>
+        <p class="student-wave">{{ optional($schedules->first())->wave_name ?? 'Gelombang tidak diketahui' }}</p>
+    </div>
+    <span class="student-date">{{ date('d/m/Y') }}</span>
+</div>
 
     <div class="exam-container">
 

@@ -1,7 +1,7 @@
-@extends('layouts.app-admin')
+@extends('layouts.app')
 
-@section('title', 'Profile Admin')
-@section('page-title', 'PROFILE ADMIN')
+@section('title', 'Profile Camaba')
+@section('page-title', 'PROFILE CAMABA')
 
 @section('content')
 <style>
@@ -316,14 +316,14 @@
                 <div class="user-info">
                     <h1 class="user-name">{{ $user->name }}</h1>
                     <div class="badges-container">
-                        <span class="badge badge-admin">
-                            ★ Administrator
+                        <span class="badge badge-camaba">
+                            Camaba
                         </span>
                     </div>
                 </div>
             </div>
             
-            <button type="button" class="btn-edit" onclick="window.location.href='{{ route('admin.profile-edit') }}'">
+            <button type="button" class="btn-edit" onclick="window.location.href='{{ route('camaba.profile-edit') }}'">
                 <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                 </svg>
@@ -362,7 +362,7 @@
                 <div class="info-item">
                     <div class="info-label">Role</div>
                     <div class="info-value">
-                        <span class="badge badge-admin">Administrator</span>
+                        <span class="badge badge-camaba">Camaba</span>
                     </div>
                 </div>
             </div>
@@ -370,7 +370,7 @@
         
         <!-- Tombol Kembali di Kanan -->
         <div class="footer-actions">
-            <a href="{{ route('dashboard.admin') }}" class="btn-back">
+            <a href="{{ route('camaba.dashboard') }}" class="btn-back">
                 <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                 </svg>

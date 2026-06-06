@@ -121,8 +121,8 @@ class ExamController extends Controller
     $user = auth()->user();
 
     $schedule = ExamSchedule::whereHas('exams', function ($query) use ($user) {
-    $query->where('user_id', $user->id)
-          ->whereIn('status', ['approved', 'in_progress', 'completed']);
+        $query->where('user_id', $user->id)
+              ->whereIn('status', ['approved', 'in_progress', 'completed']);
     })
     ->latest()
     ->first();
@@ -172,6 +172,39 @@ class ExamController extends Controller
                 $tutorialVideoUrl =
                     str_replace('/view', '/preview', $url);
             }
+        }
+    }
+
+    /**
+     * VALIDASI:
+     * Jangan izinkan membuka tes yang sudah selesai dikerjakan
+     */
+    $exam = Exam::where('user_id', $user->id)
+        ->latest()
+        ->first();
+
+    if ($exam && $groupId) {
+
+        $totalQuestions = Question::where(
+            'question_group_id',
+            $groupId
+        )->count();
+
+        $answeredQuestions = ExamAnswer::where('exam_id', $exam->id)
+            ->whereIn('question_id', function ($q) use ($groupId) {
+
+                $q->select('id')
+                  ->from('questions')
+                  ->where('question_group_id', $groupId);
+
+            })
+            ->count();
+
+        if ($totalQuestions > 0 && $answeredQuestions >= $totalQuestions) {
+
+            return redirect()
+                ->route('camaba.exam.index')
+                ->with('error', $examLabel . ' sudah dikerjakan dan tidak dapat dibuka kembali.');
         }
     }
 
