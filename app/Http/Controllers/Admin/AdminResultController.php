@@ -23,31 +23,9 @@ class AdminResultController extends Controller
             ->values()          // reset index
             ->map(function($exam) {
 
-                $scorePU = 0;
-                $scorePSI = 0;
-
-                foreach ($exam->answers as $answer) {
-                    $type = $answer->question->group ? $answer->question->group->type : 'PU';
-
-                    if ($type == 'PU') {
-                        $scorePU += $answer->score;
-                    } else {
-                        $scorePSI += $answer->score;
-                    }
-                }
-                $iqMapping = [
-    16 => 66, 17 => 70, 18 => 73, 19 => 76,
-    20 => 79, 21 => 81, 22 => 83, 23 => 84,
-    24 => 86, 25 => 87, 26 => 89, 27 => 91,
-    28 => 92, 29 => 94, 30 => 96, 31 => 97,
-    32 => 99, 33 => 102, 34 => 105, 35 => 107,
-    36 => 109, 37 => 118, 38 => 123, 39 => 127,
-    40 => 133, 41 => 139
-];
-
-$nilaiIQ = $iqMapping[$scorePSI] ?? 0;
-
-$nilaiPU = $scorePU * 4;
+            $nilaiPU  = $exam->score_pu ?? 0;
+            $scorePSI = $exam->score_psi ?? 0;
+            $nilaiIQ  = $exam->iq ?? 0;
 
                 return [
                     'name' => $exam->user->name,

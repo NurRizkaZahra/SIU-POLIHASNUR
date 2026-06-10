@@ -570,12 +570,11 @@ body {
                 @switch($notif->exam->status ?? 'pending')
                     @case('approved')
     @if($notif->examSchedule)
-        <form action="{{ route('camaba.exam.begin', $notif->examSchedule->id) }}" method="POST">
-            @csrf
-            <button type="submit" class="btn-action btn-start">
-                ▶️ Mulai Ujian
-            </button>
-        </form>
+        <a href="{{ route('camaba.exam.index') }}"
+   class="btn-action btn-start"
+   style="text-decoration:none;">
+    ▶️ Mulai Ujian
+</a>
     @else
         <button class="btn-action btn-waiting" disabled>
             Jadwal tidak tersedia

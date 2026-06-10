@@ -228,7 +228,7 @@
             <div class="form-group" id="psi-video-field" style="display:none;">
                 <label class="form-label">Video Tutorial PSI</label>
                 <input type="url" name="video_tutorial" class="form-input psi-video-input"
-                    placeholder="Masukkan link video (YouTube / Google Drive / dll)">
+                    placeholder="Masukkan link video tutorial (YouTube)">
             </div>
 
             <!-- Kelompok Soal -->

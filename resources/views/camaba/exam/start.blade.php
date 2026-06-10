@@ -596,11 +596,12 @@ body {
             <div class="video-embed">
                 @if(!empty($tutorialVideoUrl))
                     <iframe
-                        src="{{ $tutorialVideoUrl }}"
-                        title="Tutorial {{ $examLabel }}"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen>
-                    </iframe>
+    src="{{ $tutorialVideoUrl }}"
+    title="Tutorial {{ $examLabel }}"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen>
+</iframe>
                 @else
                     <div class="video-placeholder">
                         <div class="play-circle">▶</div>

@@ -156,23 +156,39 @@ class ExamController extends Controller
             ->where('video_tutorial', '!=', '')
             ->first();
 
-        if ($question && $question->video_tutorial) {
+      if ($question && $question->video_tutorial) {
 
-            $url = $question->video_tutorial;
+    $url = trim($question->video_tutorial);
 
-            if (preg_match('/\/file\/d\/([a-zA-Z0-9_-]+)/', $url, $matches)) {
+    // Link YouTube biasa
+    if (preg_match('/youtube\.com\/watch\?v=([^&]+)/', $url, $matches)) {
 
-                $tutorialVideoUrl =
-                    'https://drive.google.com/file/d/' .
-                    $matches[1] .
-                    '/preview';
+        $tutorialVideoUrl =
+            'https://www.youtube.com/embed/' . $matches[1];
 
-            } else {
+    }
 
-                $tutorialVideoUrl =
-                    str_replace('/view', '/preview', $url);
-            }
-        }
+    // Link YouTube pendek
+    elseif (preg_match('/youtu\.be\/([^?]+)/', $url, $matches)) {
+
+        $tutorialVideoUrl =
+            'https://www.youtube.com/embed/' . $matches[1];
+
+    }
+
+    // Jika sudah format embed
+    elseif (str_contains($url, 'youtube.com/embed/')) {
+
+        $tutorialVideoUrl = $url;
+
+    }
+
+    // Fallback
+    else {
+
+        $tutorialVideoUrl = null;
+    }
+}
     }
 
     /**
