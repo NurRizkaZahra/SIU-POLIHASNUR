@@ -299,10 +299,27 @@ class ExamController extends Controller
 
     $examSchedule = ExamSchedule::findOrFail($exam->exam_schedule_id);
 
-    $questions = Question::with('group')
-        ->where('question_group_id', $groupId)
-        ->orderBy('id')
+    $sessionKey = 'exam_order_' . $examId . '_' . $groupId;
+
+    if (!session()->has($sessionKey)) {
+
+    $questionIds = Question::where('question_group_id', $groupId)
+        ->inRandomOrder()
+        ->pluck('id')
+        ->toArray();
+
+    session([$sessionKey => $questionIds]);
+}
+
+    $questionIds = session($sessionKey);
+
+        $questions = Question::with('group')
+        ->whereIn('id', $questionIds)
         ->get()
+        ->sortBy(function ($question) use ($questionIds) {
+        return array_search($question->id, $questionIds);
+        })
+        ->values()
         ->map(function ($question) {
 
             $choices = $question->answer_choices;
