@@ -327,9 +327,21 @@ body {
                 <span class="info-value">{{ $answeredQuestions }} soal</span>
             </div>
             <div class="info-row">
-                <span class="info-label">⏱️ Durasi:</span>
-                <span class="info-value">{{ $exam->examSchedule->duration }} menit</span>
-            </div>
+    <span class="info-label">⏱️ Durasi:</span>
+    <span class="info-value">
+        @if($exam->started_at && $exam->finished_at)
+            @php
+                $seconds = $exam->started_at->diffInSeconds($exam->finished_at);
+                $minutes = floor($seconds / 60);
+                $remainingSeconds = $seconds % 60;
+            @endphp
+
+            {{ $minutes }} menit {{ $remainingSeconds }} detik
+        @else
+            -
+        @endif
+    </span>
+</div>
         </div>
 
         <!-- Submit Time -->

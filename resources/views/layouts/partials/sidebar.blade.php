@@ -7,18 +7,20 @@
     </div>
 
      <div class="profile">
-        <a href="{{ route('admin.profile') }}" class="profile" style="text-decoration:none; color:inherit;">
-            <div class="profile-icon">
-    <img
-        src="{{ auth()->user()->photo
-            ? asset('storage/' . auth()->user()->photo)
-            : asset('images/default-avatar.png') }}"
-        alt="Profile"
-        class="sidebar-avatar">
-</div>
+    <a href="{{ route('camaba.profile') }}" class="profile" style="text-decoration:none; color:inherit;">
+        <div class="profile-icon">
+            <img
+                src="{{ auth()->user()->photo
+                    ? asset('storage/' . auth()->user()->photo)
+                    : asset('images/default-avatar.png') }}"
+                alt="Profile"
+                class="sidebar-avatar">
+        </div>
+
         <div class="badge">{{ auth()->user()->role ?? 'camaba' }}</div>
         <div class="profile-name">{{ auth()->user()->name ?? 'Guest User' }}</div>
-    </div>
+    </a>
+</div>
 
     <ul class="menu">
         @role('camaba')

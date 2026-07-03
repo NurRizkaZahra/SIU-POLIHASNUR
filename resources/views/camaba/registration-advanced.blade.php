@@ -11,8 +11,8 @@
     ===================== */
     .pendaftaran-container {
         max-width: 1000px;
-        margin: 15px auto;
-        padding: 20px;
+        margin: 20px auto;
+        padding: 20 px;
     }
 
     .form-section {

@@ -11,8 +11,8 @@
     ===================== */
     .pendaftaran-container {
         max-width: 1000px;
-        margin: 15px auto;
-        padding: 20px;
+        margin: 20px auto;
+        padding: 20 px;
     }
 
     .form-title {
@@ -154,7 +154,7 @@
         background: #1e5a96;
         color: white;
         padding: 12px 35px;
-        margin-top: 24px;
+        margin-top: 10px;
         border: none;
         border-radius: 8px;
         cursor: pointer;
@@ -180,22 +180,25 @@
 
     .next-wrapper {
         display: flex;
-        justify-content: center;
-        margin-top: 15px;
-        margin-bottom: 70px;
+        justify-content: flex-end;
+        margin-top: 8px;
+        margin-bottom: 30px;
     }
 
     .next-btn {
         background: #DBD328;
         color: #0d3d6b;
-        padding: 15px 50px;
+        padding: 12px 35px;
         border: none;
         border-radius: 8px;
         cursor: pointer;
         font-weight: 600;
-        font-size: 18px;
-        display: block;
-        margin: 30px auto 0;
+        font-size: 15px;
+        display: inline-block;
+        width: fit-content;
+        box-sizing: border-box;
+        text-align: center;
+        margin: 20px auto 0;
         transition: all 0.3s;
         text-decoration: none;
         box-shadow: 0 4px 8px rgba(101, 100, 24, 0.2);
@@ -292,6 +295,7 @@
 
         /* Next button lebih kompak */
         .next-btn {
+            width: 100%;
             padding: 13px 36px;
             font-size: 16px;
         }
@@ -343,10 +347,9 @@
         }
 
         .next-btn {
-            width: 100%;
-            text-align: center;
-            padding: 13px 20px;
-        }
+        padding: 13px 20px;
+        font-size: 15px;
+    }
     }
 </style>
 
@@ -599,8 +602,10 @@
     </div>
 </form>
 
+<div class="pendaftaran-container">
 <div class="next-wrapper">
     <a href="{{ route('camaba.registration-advanced') }}" class="next-btn">Next →</a>
+</div>
 </div>
 
 <script>

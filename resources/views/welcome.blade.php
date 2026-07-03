@@ -13,6 +13,7 @@
 
     <style>
         /* Gaya Kustom Utama */
+        html, body { overflow-x: hidden; max-width: 100%; }
         body { font-family: 'Instrument Sans', sans-serif; background-color: #FDFDFC; }
         .text-polihasnur-blue { color: #1A56A8; }
         .bg-polihasnur-blue { background-color: #1A56A8; }
@@ -66,23 +67,25 @@
         }
 
         /* ── HERO ── */
-        .bg-gradient-hero {
-            background: linear-gradient(135deg, #A8E8FD 0%, #DFF8FF 100%);
-            position: relative;
-            overflow: hidden;
-            min-height: 400px;
-        }
-        .hero-building-image {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 120%;
-            max-width: 1500px;
-            height: auto;
-            transform: translateX(-50%);
-            z-index: 0;
-            opacity: 0.5;
-        }
+        .bg-gradient-hero{
+    position:relative;
+    overflow:hidden;
+    min-height:500px;
+}
+        .hero-building-image{
+    position:absolute;
+    left:0;
+    bottom:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+    object-position:bottom center;
+
+    opacity:.45;
+    z-index:0;
+}
         .hero-content {
             position: relative;
             z-index: 10;
@@ -233,6 +236,27 @@
         }
         .jalur-dot.active { background: #1e5a96; }
 
+        /* ── PROGRAM STUDI NAV BUTTON ── */
+        .prog-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #1A56A8;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 20;
+            align-items: center;
+            justify-content: center;
+        }
+        .prog-nav-btn.prev { left: 8px; }
+        .prog-nav-btn.next { right: 8px; }
+
         /* ── FOOTER LINK ── */
         .footer-link { color: rgba(255,255,255,0.8); transition: color 0.2s; }
         .footer-link:hover { color: white; }
@@ -279,6 +303,14 @@
                 align-items: flex-start;
             }
 
+            /* FIX: space-x-4 (Tailwind) menambahkan margin-left ke elemen ke-2
+               dengan asumsi layout horizontal. Setelah diubah jadi column di atas,
+               margin-left itu masih nempel dan bikin tombol kedua overflow ke kanan.
+               Reset di sini supaya tidak konflik. */
+            .hero-content .flex.space-x-4 > * {
+                margin-left: 0 !important;
+            }
+
             .hero-content .flex.space-x-4 a {
                 width: 100%;
                 text-align: center;
@@ -297,6 +329,7 @@
 
             /* Program Studi */
             .study-card { height: 230px; }
+            .prog-nav-btn { display: none !important; }
 
             /* Carousel galeri */
             .carousel-container { height: 240px !important; }
@@ -368,7 +401,7 @@
 
             {{-- Desktop auth --}}
             <div class="flex items-center space-x-3 text-sm desktop-auth">
-                <a href="{{ route('login') }}" class="px-5 py-2 font-semibold transition-all border rounded-md border-polihasnur-blue text-polihasnur-blue hover:bg-polihasnur-blue hover:text-white">Log In</a>
+                <a href="{{ route('login') }}" class="px-5 py-2 font-semibold transition-all border rounded-md border-polihasnur-blue text-polihasnur-blue hover:bg-polihasnur-blue">Login</a>
                 <a href="{{ route('register') }}" class="px-5 py-2 font-semibold text-white transition-all border rounded-md bg-polihasnur-blue border-polihasnur-blue hover:bg-blue-700">Register</a>
             </div>
 
@@ -459,9 +492,11 @@
             <h2 class="mb-10 text-3xl font-extrabold text-center text-polihasnur-blue">7 Program Studi Unggulan</h2>
 
             <div class="relative max-w-full mx-auto">
-                <button id="progPrev" aria-label="Prev program"
-                    class="absolute z-20 items-center justify-center hidden w-10 h-10 -translate-y-1/2 bg-white rounded-full shadow-md md:flex left-2 top-1/2 text-polihasnur-blue">
+                <button id="progPrev" aria-label="Prev program" class="hidden prog-nav-btn md:flex" style="left: 8px;">
                     ‹
+                </button>
+                <button id="progNext" aria-label="Next program" class="hidden prog-nav-btn md:flex" style="right: 8px;">
+                    ›
                 </button>
 
                 <div id="programViewport" class="px-4 overflow-x-auto scroll-smooth no-scrollbar md:px-6">
@@ -687,6 +722,20 @@
             ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>'
             : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>';
     });
+
+    /* ── PROGRAM STUDI SLIDER (prev/next di desktop) ── */
+    const programViewport = document.getElementById('programViewport');
+    const progPrevBtn = document.getElementById('progPrev');
+    const progNextBtn = document.getElementById('progNext');
+    if (programViewport && progPrevBtn && progNextBtn) {
+        const scrollAmount = 340;
+        progPrevBtn.addEventListener('click', () => {
+            programViewport.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        });
+        progNextBtn.addEventListener('click', () => {
+            programViewport.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        });
+    }
 
     /* ── JALUR MASUK SLIDER ── */
     const jalurSlider          = document.getElementById('jalurSlider');
