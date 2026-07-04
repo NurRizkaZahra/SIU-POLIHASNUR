@@ -59,13 +59,25 @@ td.label {
             <tr>
     <td class="label">Foto</td>
     <td>
-        @if($camaba->photo)
-            <img src="{{ public_path('storage/' . $camaba->photo) }}"
-                 width="120"
-                 style="border:1px solid #000;">
-        @else
-            -
-        @endif
+       @php
+    $image = '';
+
+    if ($camaba->photo) {
+        $path = storage_path('app/public/' . $camaba->photo);
+
+        if (file_exists($path)) {
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $image = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        }
+    }
+@endphp
+
+@if($image)
+    <img src="{{ $image }}" width="120">
+@else
+    Tidak ada foto
+@endif
     </td>
 </tr>
             <tr>
