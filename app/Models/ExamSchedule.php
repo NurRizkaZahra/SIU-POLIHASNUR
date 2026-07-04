@@ -60,13 +60,13 @@ class ExamSchedule extends Model
     public function getDateRangeAttribute()
     {
         return Carbon::parse($this->start_date)->format('d M Y') . ' - ' .
-               Carbon::parse($this->end_date)->format('d M Y');
+            Carbon::parse($this->end_date)->format('d M Y');
     }
 
     public function getFormattedDateRangeAttribute()
     {
         return Carbon::parse($this->start_date)->isoFormat('D MMMM Y') . ' - ' .
-               Carbon::parse($this->end_date)->isoFormat('D MMMM Y');
+            Carbon::parse($this->end_date)->isoFormat('D MMMM Y');
     }
 
     public function getRemainingQuota()
@@ -139,7 +139,7 @@ class ExamSchedule extends Model
 
     public function getStatusBadgeClass()
     {
-        return match($this->status) {
+        return match ($this->status) {
             self::STATUS_ACTIVE => 'badge-success',
             self::STATUS_INACTIVE => 'badge-warning',
             self::STATUS_CLOSED => 'badge-danger',
@@ -149,7 +149,7 @@ class ExamSchedule extends Model
 
     public function getStatusText()
     {
-        return match($this->status) {
+        return match ($this->status) {
             self::STATUS_ACTIVE => 'Aktif',
             self::STATUS_INACTIVE => 'Tidak Aktif',
             self::STATUS_CLOSED => 'Ditutup',
@@ -169,17 +169,17 @@ class ExamSchedule extends Model
     public function hasUserApplied($userId)
     {
         return $this->exams()
-                    ->where('user_id', $userId)
-                    ->whereIn('status', [Exam::STATUS_PENDING, Exam::STATUS_APPROVED])
-                    ->exists();
+            ->where('user_id', $userId)
+            ->whereIn('status', [Exam::STATUS_PENDING, Exam::STATUS_APPROVED])
+            ->exists();
     }
 
     public function getUserExamStatus($userId)
     {
         return $this->exams()
-                    ->where('user_id', $userId)
-                    ->whereIn('status', [Exam::STATUS_PENDING, Exam::STATUS_APPROVED])
-                    ->first();
+            ->where('user_id', $userId)
+            ->whereIn('status', [Exam::STATUS_PENDING, Exam::STATUS_APPROVED])
+            ->first();
     }
 
     // ================= SCOPES =================
@@ -202,15 +202,15 @@ class ExamSchedule extends Model
     public function scopeAvailable($query)
     {
         return $query->where('status', self::STATUS_ACTIVE)
-                     ->where('end_date', '>=', now()->startOfDay());
+            ->where('end_date', '>=', now()->startOfDay());
     }
 
     public function scopeCurrentlyActive($query)
     {
         $today = now()->startOfDay();
         return $query->where('status', self::STATUS_ACTIVE)
-                     ->whereDate('start_date', '<=', $today)
-                     ->whereDate('end_date', '>=', $today);
+            ->whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today);
     }
 
     public function scopeUpcoming($query)
@@ -227,12 +227,12 @@ class ExamSchedule extends Model
     {
         return $query->where(function ($q) {
             $q->whereNull('participant_quota')
-              ->orWhereColumn('participant_quota', '>', function ($subQuery) {
-                  $subQuery->selectRaw('COUNT(*)')
-                           ->from('exam')
-                           ->whereColumn('exam.exam_schedule_id', 'exam_schedules.id')
-                           ->where('exam.status', Exam::STATUS_APPROVED);
-              });
+                ->orWhereColumn('participant_quota', '>', function ($subQuery) {
+                    $subQuery->selectRaw('COUNT(*)')
+                        ->from('exam')
+                        ->whereColumn('exam.exam_schedule_id', 'exam_schedules.id')
+                        ->where('exam.status', Exam::STATUS_APPROVED);
+                });
         });
     }
 

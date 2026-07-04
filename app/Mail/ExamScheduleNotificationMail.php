@@ -18,6 +18,6 @@ class ExamScheduleNotificationMail extends Mailable
     public function build()
     {
         return $this->subject('Notifikasi Jadwal Ujian')
-                    ->view('emails.exam-schedule-notification');
+            ->view('emails.exam-schedule-notification');
     }
 }

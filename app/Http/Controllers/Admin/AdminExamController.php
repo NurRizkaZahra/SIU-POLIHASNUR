@@ -39,8 +39,8 @@ class AdminExamController extends Controller
         // Kirim notifikasi untuk camaba
         Notification::create([
             'user_id' => $exam->user_id,
-            'exam_schedule_id' => $exam->exam_schedule_id, 
-            'exam_id' => $exam->id,// ✅ DITAMBAHKAN
+            'exam_schedule_id' => $exam->exam_schedule_id,
+            'exam_id' => $exam->id, 
             'title'   => 'Exam Schedule Approved',
             'message' => 'Your exam request has been approved. Please check your exam schedule.',
             'type'    => 'exam_schedule',
@@ -63,7 +63,7 @@ class AdminExamController extends Controller
         Notification::create([
             'user_id' => $exam->user_id,
             'exam_schedule_id' => $exam->exam_schedule_id,
-            'exam_id' => $exam->id, // ✅ DITAMBAHKAN
+            'exam_id' => $exam->id, 
             'title'   => 'Exam Schedule Rejected',
             'message' => 'Your exam request has been rejected. Please submit a new schedule.',
             'type'    => 'exam_schedule',
@@ -93,7 +93,7 @@ class AdminExamController extends Controller
             Notification::create([
                 'user_id' => $exam->user_id,
                 'exam_schedule_id' => $exam->exam_schedule_id,
-                 'exam_id' => $exam->id, // ✅ DITAMBAHKAN
+                'exam_id' => $exam->id, 
                 'title'   => 'Exam Schedule Approved',
                 'message' => 'Your exam request has been approved.',
                 'type'    => 'exam_schedule',

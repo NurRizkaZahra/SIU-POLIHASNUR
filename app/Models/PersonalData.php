@@ -11,10 +11,18 @@ class PersonalData extends Model
     protected $table = 'personal_data';
     protected $primaryKey = 'id_personal';
     protected $fillable = [
-        'id_user','full_name', 'gender', 'place_of_birth','date_of_birth','religion', 
-        'nik', 'kk_number', 'phone','address'
+        'id_user',
+        'full_name',
+        'gender',
+        'place_of_birth',
+        'date_of_birth',
+        'religion',
+        'nik',
+        'kk_number',
+        'phone',
+        'address'
     ];
-    
+
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user');

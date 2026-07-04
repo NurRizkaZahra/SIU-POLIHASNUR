@@ -16,11 +16,11 @@ class ExamScheduleAdminController extends Controller
     {
         // Tampilkan SEMUA jadwal ujian, tidak harus punya pengajuan
         $examSchedules = ExamSchedule::withCount([
-                'exams as total_applications',
-                'pendingExams as pending_count',
-                'approvedExams as approved_count',
-                'rejectedExams as rejected_count'
-            ])
+            'exams as total_applications',
+            'pendingExams as pending_count',
+            'approvedExams as approved_count',
+            'rejectedExams as rejected_count'
+        ])
             ->orderBy('start_date', 'desc')
             ->get();
 
@@ -47,7 +47,7 @@ class ExamScheduleAdminController extends Controller
             'participant_quota' => 'nullable|integer|min:1',
             'status' => 'required|in:active,inactive',
         ]);
-        
+
         ExamSchedule::create($request->only(
             'wave_name',
             'start_date',
@@ -67,7 +67,7 @@ class ExamScheduleAdminController extends Controller
     {
         // Tidak perlu has('exams'), tetap boleh edit meski belum ada pengajuan
         $examSchedule = ExamSchedule::findOrFail($id);
-        
+
         return view('admin.exam-schedule-edit', compact('examSchedule'));
     }
 
@@ -75,36 +75,36 @@ class ExamScheduleAdminController extends Controller
      * Update an existing exam schedule
      */
     public function update(Request $request, $id)
-{
-    $examSchedule = ExamSchedule::findOrFail($id);
+    {
+        $examSchedule = ExamSchedule::findOrFail($id);
 
-    // CEK DULU apakah sudah ada peserta approved
-    if ($examSchedule->approvedExams()->exists()) {
-        return redirect()->back()
-            ->with('error', 'Tidak dapat mengubah jadwal karena sudah ada peserta yang disetujui.');
+        // CEK DULU apakah sudah ada peserta approved
+        if ($examSchedule->approvedExams()->exists()) {
+            return redirect()->back()
+                ->with('error', 'Tidak dapat mengubah jadwal karena sudah ada peserta yang disetujui.');
+        }
+
+        // Baru validasi
+        $request->validate([
+            'wave_name' => 'required|string|max:50',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'participant_quota' => 'nullable|integer|min:1',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        // Baru update
+        $examSchedule->update($request->only(
+            'wave_name',
+            'start_date',
+            'end_date',
+            'participant_quota',
+            'status'
+        ));
+
+        return redirect()->route('admin.exam-schedule-admin')
+            ->with('success', 'Jadwal ujian berhasil diupdate!');
     }
-
-    // Baru validasi
-    $request->validate([
-        'wave_name' => 'required|string|max:50',
-        'start_date' => 'required|date',
-        'end_date' => 'required|date|after_or_equal:start_date',
-        'participant_quota' => 'nullable|integer|min:1',
-        'status' => 'required|in:active,inactive',
-    ]);
-
-    // Baru update
-    $examSchedule->update($request->only(
-        'wave_name',
-        'start_date',
-        'end_date',
-        'participant_quota',
-        'status'
-    ));
-
-    return redirect()->route('admin.exam-schedule-admin')
-        ->with('success', 'Jadwal ujian berhasil diupdate!');
-}
 
     /**
      * Delete an exam schedule
@@ -112,40 +112,40 @@ class ExamScheduleAdminController extends Controller
      */
     public function destroy($id)
     {
-         $examSchedule = ExamSchedule::findOrFail($id);
-        
+        $examSchedule = ExamSchedule::findOrFail($id);
+
         // if ($examSchedule->approvedExams()->exists()) {
         //     return redirect()->route('admin.exam-schedule-admin')
         //         ->with('error', 'Tidak dapat menghapus jadwal yang sudah memiliki pengajuan disetujui!');
         // }
-        
-       $examSchedule->exams()->delete();
-        
+
+        $examSchedule->exams()->delete();
+
         $examSchedule->delete();
 
-         return redirect()->route('admin.exam-schedule-admin')
+        return redirect()->route('admin.exam-schedule-admin')
             ->with('success', 'Jadwal ujian berhasil dihapus!');
-     }
-    
+    }
+
     /**
      * Lihat detail jadwal dengan daftar camaba yang mengajukan
      */
     public function show($id)
     {
         $examSchedule = ExamSchedule::with([
-            'exams.user' => function($query) {
+            'exams.user' => function ($query) {
                 $query->select('id', 'name', 'email');
             }
         ])
-        ->withCount(['pendingExams', 'approvedExams', 'rejectedExams'])
-        ->findOrFail($id);
-        
+            ->withCount(['pendingExams', 'approvedExams', 'rejectedExams'])
+            ->findOrFail($id);
+
         $groupedExams = [
             'pending' => $examSchedule->pendingExams,
             'approved' => $examSchedule->approvedExams,
             'rejected' => $examSchedule->rejectedExams,
         ];
-        
+
         return view('admin.exam-schedule-detail', compact('examSchedule', 'groupedExams'));
     }
 }

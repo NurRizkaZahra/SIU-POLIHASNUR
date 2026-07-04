@@ -19,13 +19,13 @@ class AdminResultController extends Controller
             ->where('status', 'completed')
             ->orderBy('created_at', 'asc')
             ->get()
-            ->unique('user_id') // inilah kuncinya
-            ->values()          // reset index
-            ->map(function($exam) {
+            ->unique('user_id')
+            ->values()
+            ->map(function ($exam) {
 
-            $nilaiPU  = $exam->score_pu ?? 0;
-            $scorePSI = $exam->score_psi ?? 0;
-            $nilaiIQ  = $exam->iq ?? 0;
+                $nilaiPU  = $exam->score_pu ?? 0;
+                $scorePSI = $exam->score_psi ?? 0;
+                $nilaiIQ  = $exam->iq ?? 0;
 
                 return [
                     'name' => $exam->user->name,
@@ -100,7 +100,7 @@ class AdminResultController extends Controller
         }
 
         // Auto size
-        foreach(range('A','F') as $col) {
+        foreach (range('A', 'F') as $col) {
             $sheet->getColumnDimension($col)->setAutoSize(true);
         }
 

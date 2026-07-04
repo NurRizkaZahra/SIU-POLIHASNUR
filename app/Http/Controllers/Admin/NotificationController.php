@@ -49,12 +49,12 @@ class NotificationController extends Controller
             $conflict = Exam::where('exam_schedule_id', $exam->exam_schedule_id)
                 ->where('status', Exam::STATUS_APPROVED)
                 ->where('id', '!=', $exam->id)
-                ->where(function($query) use ($exam) {
+                ->where(function ($query) use ($exam) {
                     $query->whereBetween('start_time', [$exam->start_time, $exam->end_time])
                         ->orWhereBetween('end_time', [$exam->start_time, $exam->end_time])
-                        ->orWhere(function($q) use ($exam) {
+                        ->orWhere(function ($q) use ($exam) {
                             $q->where('start_time', '<=', $exam->start_time)
-                              ->where('end_time', '>=', $exam->end_time);
+                                ->where('end_time', '>=', $exam->end_time);
                         });
                 })
                 ->exists();
@@ -64,22 +64,22 @@ class NotificationController extends Controller
             }
 
             // Approve exam
-           $exam->update(['status' => Exam::STATUS_APPROVED]);
+            $exam->update(['status' => Exam::STATUS_APPROVED]);
 
-$notification = \App\Models\Notification::where('exam_id', $exam->id)->first();
+            $notification = \App\Models\Notification::where('exam_id', $exam->id)->first();
 
-if ($notification) {
-    $notification->update([
-        'title' => 'Pengajuan Jadwal Disetujui',
-        'message' => 'Pengajuan jadwal ujian Anda telah disetujui admin.',
-        'exam_id' => $exam->id,
-        'is_read' => false
-     ]);
- }
+            if ($notification) {
+                $notification->update([
+                    'title' => 'Pengajuan Jadwal Disetujui',
+                    'message' => 'Pengajuan jadwal ujian Anda telah disetujui admin.',
+                    'exam_id' => $exam->id,
+                    'is_read' => false
+                ]);
+            }
             DB::commit();
 
             Mail::to($exam->user->email)
-    ->send(new ExamScheduleNotificationMail($exam, 'approved'));
+                ->send(new ExamScheduleNotificationMail($exam, 'approved'));
 
             // Log activity
             Log::info('Exam application approved', [
@@ -91,10 +91,9 @@ if ($notification) {
             // TODO: Kirim notifikasi ke user (email, push notification, dll)
 
             return redirect()->back()->with('success', 'Pengajuan ujian berhasil diterima!');
-
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             Log::error('Error approving exam', [
                 'admin_id' => auth()->id(),
                 'exam_id' => $id,
@@ -123,22 +122,22 @@ if ($notification) {
             // Reject exam
             $exam->update(['status' => Exam::STATUS_REJECTED]);
 
-$notification = \App\Models\Notification::where('exam_id', $exam->id)->first();
+            $notification = \App\Models\Notification::where('exam_id', $exam->id)->first();
 
-if ($notification) {
-    $notification->update([
-    'title' => 'Pengajuan Jadwal Ditolak',
-    'message' => 'Pengajuan jadwal ujian Anda ditolak admin.',
-    'exam_id' => $exam->id,
-    'is_read' => false
-]);
-}
+            if ($notification) {
+                $notification->update([
+                    'title' => 'Pengajuan Jadwal Ditolak',
+                    'message' => 'Pengajuan jadwal ujian Anda ditolak admin.',
+                    'exam_id' => $exam->id,
+                    'is_read' => false
+                ]);
+            }
 
             DB::commit();
 
             Mail::to($exam->user->email)
-    ->send(new ExamScheduleNotificationMail($exam, 'rejected'));
-    
+                ->send(new ExamScheduleNotificationMail($exam, 'rejected'));
+
             // Log activity
             Log::info('Exam application rejected', [
                 'admin_id' => auth()->id(),
@@ -149,10 +148,9 @@ if ($notification) {
             // TODO: Kirim notifikasi ke user (email, push notification, dll)
 
             return redirect()->back()->with('success', 'Pengajuan ujian ditolak.');
-
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             Log::error('Error rejecting exam', [
                 'admin_id' => auth()->id(),
                 'exam_id' => $id,
@@ -217,10 +215,9 @@ if ($notification) {
             }
 
             return redirect()->back()->with('success', $message);
-
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             Log::error('Error bulk approving exams', [
                 'admin_id' => auth()->id(),
                 'error' => $e->getMessage()

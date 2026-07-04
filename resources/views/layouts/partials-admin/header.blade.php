@@ -16,10 +16,12 @@
         <a href="{{ route('exam.notifications') }}" class="icon-btn-link">
             <button class="icon-btn" style="position: relative;">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                    <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+                    <path
+                        d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z" />
                 </svg>
-                @if($pendingCount > 0)
-                    <span style="position:absolute;top:-5px;right:-5px;background:#ef4444;color:white;font-size:10px;font-weight:bold;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;animation:pulse 2s infinite;">
+                @if ($pendingCount > 0)
+                    <span
+                        style="position:absolute;top:-5px;right:-5px;background:#ef4444;color:white;font-size:10px;font-weight:bold;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;animation:pulse 2s infinite;">
                         {{ $pendingCount > 9 ? '9+' : $pendingCount }}
                     </span>
                 @endif
@@ -28,32 +30,26 @@
 
         {{-- Profil dropdown --}}
         <div class="profile-dropdown">
-           <button class="icon-btn profile-btn" onclick="toggleProfileDropdown()">
-    <img
-        src="{{ auth()->user()->photo 
-            ? asset('storage/' . auth()->user()->photo) 
-            : asset('images/default-avatar.png') }}"
-        alt="Profile"
-        class="profile-avatar">
-</button>
+            <button class="icon-btn profile-btn" onclick="toggleProfileDropdown()">
+                <img src="{{ auth()->user()->photo ? asset('storage/' . auth()->user()->photo) : asset('images/default-avatar.png') }}"
+                    alt="Profile" class="profile-avatar">
+            </button>
 
             <div class="dropdown-menu" id="profileDropdown">
                 <div class="dropdown-header">
-    <img
-        src="{{ auth()->user()->photo 
-            ? asset('storage/' . auth()->user()->photo) 
-            : asset('images/default-avatar.png') }}"
-        class="dropdown-avatar">
+                    <img src="{{ auth()->user()->photo ? asset('storage/' . auth()->user()->photo) : asset('images/default-avatar.png') }}"
+                        class="dropdown-avatar">
 
-    <div class="user-info">
-        <strong>{{ auth()->user()->name }}</strong>
-        <small>{{ auth()->user()->email }}</small>
-    </div>
-</div>
+                    <div class="user-info">
+                        <strong>{{ auth()->user()->name }}</strong>
+                        <small>{{ auth()->user()->email }}</small>
+                    </div>
+                </div>
                 <div class="dropdown-divider"></div>
                 <a href="{{ route('admin.profile') }}" class="dropdown-item">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
                     </svg>
                     Profile
                 </a>
@@ -62,7 +58,8 @@
                     @csrf
                     <button type="submit" class="dropdown-item logout-btn">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+                            <path
+                                d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
                         </svg>
                         Logout
                     </button>
@@ -79,8 +76,17 @@
     }
 
     @keyframes pulse {
-        0%, 100% { transform: scale(1);   opacity: 1; }
-        50%       { transform: scale(1.1); opacity: 0.8; }
+
+        0%,
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        50% {
+            transform: scale(1.1);
+            opacity: 0.8;
+        }
     }
 
     /* Profile Dropdown */
@@ -98,7 +104,7 @@
         background: white;
         min-width: 250px;
         border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         z-index: 1000;
         overflow: hidden;
     }
@@ -107,26 +113,34 @@
         display: block;
         animation: dropdownFadeIn 0.2s ease;
     }
-    .dropdown-header{
-    padding:15px;
-    background:linear-gradient(135deg,#1e40af 0%,#3b82f6 100%);
-    color:white;
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
 
-.dropdown-avatar{
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    object-fit:cover;
-    border:2px solid rgba(255,255,255,.4);
-}
+    .dropdown-header {
+        padding: 15px;
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .dropdown-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid rgba(255, 255, 255, .4);
+    }
 
     @keyframes dropdownFadeIn {
-        from { opacity: 0; transform: translateY(-10px); }
-        to   { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .dropdown-header {
@@ -134,21 +148,22 @@
         background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
         color: white;
     }
-    .profile-btn{
-    width:40px;
-    height:40px;
-    padding:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
 
-.profile-avatar{
-    width:24px;
-    height:24px;
-    border-radius:50%;
-    object-fit:cover;
-}
+    .profile-btn {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .profile-avatar {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
 
     .user-info strong {
         display: block;
@@ -193,16 +208,27 @@
         font-size: 14px;
     }
 
-    .dropdown-item:hover { background: #f3f4f6; }
-    .dropdown-item svg   { flex-shrink: 0; }
+    .dropdown-item:hover {
+        background: #f3f4f6;
+    }
 
-    .logout-btn       { color: #dc2626; }
-    .logout-btn:hover { background: #fee2e2; }
+    .dropdown-item svg {
+        flex-shrink: 0;
+    }
+
+    .logout-btn {
+        color: #dc2626;
+    }
+
+    .logout-btn:hover {
+        background: #fee2e2;
+    }
 
     /* ========================
        RESPONSIVE — header
     ======================== */
     @media (max-width: 640px) {
+
         /* Kecilkan judul agar tidak meluber */
         .header-title {
             font-size: 15px !important;
@@ -212,7 +238,9 @@
             max-width: 160px;
         }
 
-        .header-actions { gap: 12px; }
+        .header-actions {
+            gap: 12px;
+        }
 
         /* Dropdown tidak keluar layar di kanan */
         .dropdown-menu {
@@ -222,8 +250,14 @@
     }
 
     @media (max-width: 400px) {
-        .header-title { max-width: 120px; font-size: 13px !important; }
-        .dropdown-menu { min-width: 200px; }
+        .header-title {
+            max-width: 120px;
+            font-size: 13px !important;
+        }
+
+        .dropdown-menu {
+            min-width: 200px;
+        }
     }
 </style>
 
@@ -234,7 +268,7 @@
     }
 
     window.addEventListener('click', function(e) {
-        const dropdown   = document.getElementById('profileDropdown');
+        const dropdown = document.getElementById('profileDropdown');
         const profileBtn = document.querySelector('.profile-dropdown .icon-btn');
         if (!dropdown.contains(e.target) && !profileBtn.contains(e.target)) {
             dropdown.classList.remove('show');

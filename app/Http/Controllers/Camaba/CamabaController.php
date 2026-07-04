@@ -35,7 +35,7 @@ class CamabaController extends Controller
         $request->validate([
             'photo' => 'required|image|mimes:jpeg,png,jpg|max:2048'
         ]);
-        
+
         $user = Auth::user();
 
         // Hapus foto lama jika ada
@@ -50,7 +50,7 @@ class CamabaController extends Controller
         DB::table('users')->where('id', $user->id)->update(['photo' => $path]);
 
         return response()->json([
-            'success' => true, 
+            'success' => true,
             'message' => 'Foto berhasil diupload',
             'path' => Storage::url($path)
         ]);
@@ -80,32 +80,32 @@ class CamabaController extends Controller
     // PENDAFTARAN
     // =============================
     public function registration()
-{
-    $personalData = PersonalData::where('id_user', Auth::id())->first();
-    $educationData = EducationData::where('id_user', Auth::id())->first();
-    $keluarga = FamilyData::where('id_user', Auth::id())->first();
-    return view('camaba.registration', compact('personalData', 'educationData', 'keluarga'));
-}
+    {
+        $personalData = PersonalData::where('id_user', Auth::id())->first();
+        $educationData = EducationData::where('id_user', Auth::id())->first();
+        $keluarga = FamilyData::where('id_user', Auth::id())->first();
+        return view('camaba.registration', compact('personalData', 'educationData', 'keluarga'));
+    }
 
-  public function pendaftaranLanjutan()
-{
-    $path = AdmissionPath::where('id_user', Auth::id())->first();
+    public function pendaftaranLanjutan()
+    {
+        $path = AdmissionPath::where('id_user', Auth::id())->first();
 
-    $programTerpilih = ProgramSelection::where('user_id', Auth::id())->first();
+        $programTerpilih = ProgramSelection::where('user_id', Auth::id())->first();
 
-    $studyPrograms = StudyProgram::all();
+        $studyPrograms = StudyProgram::all();
 
-    return view('camaba.registration-advanced', compact(
-        'path',
-        'programTerpilih',
-        'studyPrograms'
-    ));
-}
+        return view('camaba.registration-advanced', compact(
+            'path',
+            'programTerpilih',
+            'studyPrograms'
+        ));
+    }
 
     // =============================
     // SIMPAN DATA DIRI
     // =============================
-     public function showPersonalData()
+    public function showPersonalData()
     {
         $user = Auth::user();
 
@@ -145,7 +145,7 @@ class CamabaController extends Controller
         );
 
         return redirect()->route('camaba.registration')
-    ->with('success', 'Data diri berhasil disimpan!');
+            ->with('success', 'Data diri berhasil disimpan!');
     }
 
     // =============================
@@ -176,8 +176,8 @@ class CamabaController extends Controller
             ]
         );
 
-     return redirect()->route('camaba.registration')
-    ->with('success', 'Data pendidikan berhasil disimpan!');
+        return redirect()->route('camaba.registration')
+            ->with('success', 'Data pendidikan berhasil disimpan!');
     }
 
     // =============================
@@ -213,48 +213,48 @@ class CamabaController extends Controller
         );
 
         return redirect()->route('camaba.registration')
-    ->with('success', 'Data keluarga berhasil disimpan!');
+            ->with('success', 'Data keluarga berhasil disimpan!');
     }
 
 
     // =============================
     // SIMPAN JALUR MASUK
     // =============================
-   public function simpanJalurMasuk(Request $request)
-{
-    $request->validate([
-        'path_name' => 'required|string|max:100',
-    ]);
-    
-    AdmissionPath::updateOrCreate(
-        ['id_user' => Auth::id()],
-        ['path_name' => $request->path_name]
+    public function simpanJalurMasuk(Request $request)
+    {
+        $request->validate([
+            'path_name' => 'required|string|max:100',
+        ]);
 
-    );
+        AdmissionPath::updateOrCreate(
+            ['id_user' => Auth::id()],
+            ['path_name' => $request->path_name]
 
-    return back()->with('success', 'Jalur masuk berhasil disimpan!');
-}
+        );
+
+        return back()->with('success', 'Jalur masuk berhasil disimpan!');
+    }
 
     // =============================
     // SIMPAN PROGRAM STUDI
     // =============================
     public function simpanProgramStudi(Request $request)
-{
-    $request->validate([
-        'id_program_1' => 'required|different:id_program_2',
-        'id_program_2' => 'nullable|different:id_program_1',
-    ]);
+    {
+        $request->validate([
+            'id_program_1' => 'required|different:id_program_2',
+            'id_program_2' => 'nullable|different:id_program_1',
+        ]);
 
-    ProgramSelection::updateOrCreate(
-        ['user_id' => Auth::id()],
-        [
-            'id_program_1' => $request->id_program_1,
-            'id_program_2' => $request->id_program_2,
-        ]
-    );
+        ProgramSelection::updateOrCreate(
+            ['user_id' => Auth::id()],
+            [
+                'id_program_1' => $request->id_program_1,
+                'id_program_2' => $request->id_program_2,
+            ]
+        );
 
-    return back()->with('success', 'Pilihan program studi berhasil disimpan!');
-}
+        return back()->with('success', 'Pilihan program studi berhasil disimpan!');
+    }
     // =============================
     // HALAMAN TAMBAHAN
     // =============================

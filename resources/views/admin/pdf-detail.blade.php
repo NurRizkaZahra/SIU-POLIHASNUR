@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>Detail Pendaftar</title>
@@ -9,7 +10,8 @@
             font-size: 12px;
             color: #333;
         }
-         .title {
+
+        .title {
             text-align: center;
             font-size: 22px;
             font-weight: bold;
@@ -26,7 +28,7 @@
             color: white;
             padding: 8px;
             font-size: 14px;
-             font-weight: bold;
+            font-weight: bold;
             margin-bottom: 10px;
         }
 
@@ -40,13 +42,15 @@
             padding: 8px;
             vertical-align: top;
         }
-td.label {
+
+        td.label {
             width: 30%;
             font-weight: bold;
             background: #f5f5f5;
         }
     </style>
 </head>
+
 <body>
 
     <div class="title">DETAIL PENDAFTAR</div>
@@ -57,36 +61,36 @@ td.label {
 
         <table>
             <tr>
-    <td class="label">Foto</td>
-    <td>
-       @php
-    $image = '';
+                <td class="label">Foto</td>
+                <td>
+                    @php
+                        $image = '';
 
-    if ($camaba->photo) {
-        $path = storage_path('app/public/' . $camaba->photo);
+                        if ($camaba->photo) {
+                            $path = storage_path('app/public/' . $camaba->photo);
 
-        if (file_exists($path)) {
-            $type = pathinfo($path, PATHINFO_EXTENSION);
-            $data = file_get_contents($path);
-            $image = 'data:image/' . $type . ';base64,' . base64_encode($data);
-        }
-    }
-@endphp
+                            if (file_exists($path)) {
+                                $type = pathinfo($path, PATHINFO_EXTENSION);
+                                $data = file_get_contents($path);
+                                $image = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                            }
+                        }
+                    @endphp
 
-@if($image)
-    <img src="{{ $image }}" width="120">
-@else
-    Tidak ada foto
-@endif
-    </td>
-</tr>
+                    @if ($image)
+                        <img src="{{ $image }}" width="120">
+                    @else
+                        Tidak ada foto
+                    @endif
+                </td>
+            </tr>
             <tr>
-                 <td class="label">Nama Lengkap</td>
+                <td class="label">Nama Lengkap</td>
                 <td>{{ $camaba->personalData->full_name ?? '-' }}</td>
             </tr>
-            
+
             <tr>
-                 <td class="label">Alamat Lengkap</td>
+                <td class="label">Alamat Lengkap</td>
                 <td>{{ $camaba->personalData->address ?? '-' }}</td>
             </tr>
 
@@ -94,17 +98,17 @@ td.label {
                 <td class="label">Tempat Lahir</td>
                 <td>{{ $camaba->personalData->place_of_birth ?? '-' }}</td>
             </tr>
-            
+
             <tr>
                 <td class="label">Telepon/HP</td>
                 <td>{{ $camaba->personalData->phone ?? '-' }}</td>
             </tr>
-            
+
             <tr>
                 <td class="label">Jenis Kelamin</td>
                 <td>{{ $camaba->personalData->gender ?? '-' }}</td>
             </tr>
-            
+
             <tr>
                 <td class="label">Agama</td>
                 <td>{{ $camaba->personalData->religion ?? '-' }}</td>
@@ -153,12 +157,12 @@ td.label {
 
             <tr>
                 <td class="label">Tahun Masuk</td>
-                <td>{{ $camaba->educationData->year_of_entry?? '-' }}</td>
+                <td>{{ $camaba->educationData->year_of_entry ?? '-' }}</td>
             </tr>
 
             <tr>
                 <td class="label">Prestasi Akademik dan Nilai Akademik</td>
-                <td>{{ $camaba->educationData->achievement?? '-' }}</td>
+                <td>{{ $camaba->educationData->achievement ?? '-' }}</td>
             </tr>
 
             <tr>
@@ -182,7 +186,7 @@ td.label {
                 <td>{{ $camaba->familyData->number_of_children ?? '-' }}</td>
             </tr>
 
-             <tr>
+            <tr>
                 <td class="label">Pekerjaan Ayah</td>
                 <td>{{ $camaba->familyData->father_job ?? '-' }}</td>
             </tr>
@@ -225,11 +229,11 @@ td.label {
         <table>
             <tr>
                 <td class="label">Jalur Masuk</td>
-                <td>{{$camaba->admissionPath->path_name ?? '-' }}</td>
+                <td>{{ $camaba->admissionPath->path_name ?? '-' }}</td>
             </tr>
         </table>
     </div>
-     {{-- PROGRAM STUDI --}}
+    {{-- PROGRAM STUDI --}}
     <div class="section">
         <div class="section-title">Program Studi</div>
 
@@ -245,5 +249,6 @@ td.label {
             </tr>
         </table>
     </div>
-    </body>
+</body>
+
 </html>

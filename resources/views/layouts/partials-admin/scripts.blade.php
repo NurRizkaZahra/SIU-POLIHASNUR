@@ -5,9 +5,9 @@
        - Mobile   : slide-in sidebar + tampilkan overlay
     ══════════════════════════════════════ */
     function toggleSidebar() {
-        const sidebar     = document.querySelector('.sidebar');
+        const sidebar = document.querySelector('.sidebar');
         const mainContent = document.querySelector('.main-content');
-        const overlay     = document.getElementById('sidebarOverlay');
+        const overlay = document.getElementById('sidebarOverlay');
 
         const isMobile = window.innerWidth <= 768;
 
@@ -34,10 +34,10 @@
     }
 
     /* Tutup sidebar saat resize ke desktop supaya layout tidak kacau */
-    window.addEventListener('resize', function () {
-        const sidebar     = document.querySelector('.sidebar');
+    window.addEventListener('resize', function() {
+        const sidebar = document.querySelector('.sidebar');
         const mainContent = document.querySelector('.main-content');
-        const overlay     = document.getElementById('sidebarOverlay');
+        const overlay = document.getElementById('sidebarOverlay');
 
         if (window.innerWidth > 768) {
             /* Kembali ke desktop: pastikan sidebar terlihat */
@@ -70,7 +70,7 @@
     }
 
     function toggleFormSection(header) {
-        const body    = header.nextElementSibling;
+        const body = header.nextElementSibling;
         const chevron = header.querySelector('.chevron-icon');
         body.classList.toggle('open');
         chevron.classList.toggle('open');

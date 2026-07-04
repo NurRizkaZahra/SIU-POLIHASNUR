@@ -3,367 +3,370 @@
 @section('page-title', 'Ujian Selesai')
 
 @section('content')
-<style>
-    .success-wrapper {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #ffffff;
-        padding: 1rem;
-    }
-
-    .success-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 16px;
-        padding: 1.5rem 1.8rem;
-        max-width: 400px;
-        width: 100%;
-        text-align: center;
-        box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
-        animation: slideUp 0.5s ease;
-    }
-
-    @keyframes slideUp {
-        from {
-            opacity: 0;
-            transform: translateY(50px);
+    <style>
+        .success-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            padding: 1rem;
         }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
 
-    .success-icon {
-        width: 70px;
-        height: 70px;
-        margin: 0 auto 1rem;
-        background: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        animation: scaleIn 0.6s ease 0.2s both;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    @keyframes scaleIn {
-        from {
-            transform: scale(0);
-        }
-        to {
-            transform: scale(1);
-        }
-    }
-
-    .success-icon svg {
-        width: 35px;
-        height: 35px;
-        stroke: #667eea;
-        stroke-width: 4;
-        fill: none;
-    }
-
-    .success-title {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: white;
-        margin-bottom: 1rem;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        line-height: 1.3;
-    }
-
-    .success-message {
-        font-size: 1.05rem;
-        color: rgba(255, 255, 255, 0.9);
-        line-height: 1.7;
-        margin-bottom: 2rem;
-    }
-
-    .exam-info-box {
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(10px);
-        border-radius: 10px;
-        padding: 1rem;
-        margin-bottom: 1rem;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .info-row {
-        display: flex;
-        justify-content: space-between;
-        padding: 0.35rem 0;
-        font-size: 0.85rem;
-    }
-
-    .info-label {
-        color: rgba(255, 255, 255, 0.8);
-        font-weight: 500;
-    }
-
-    .info-value {
-        color: white;
-        font-weight: 700;
-    }
-
-    .submit-time {
-        color: white;
-        font-weight: 700;
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
-        background: rgba(255, 255, 255, 0.1);
-        padding: 0.7rem;
-        border-radius: 8px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        line-height: 1.5;
-    }
-
-    .note-text {
-        background: rgba(255, 243, 205, 0.95);
-        border: 1px solid #ffc107;
-        border-radius: 8px;
-        padding: 1rem;
-        color: #856404;
-        font-size: 0.9rem;
-        margin-top: 1.5rem;
-        line-height: 1.6;
-    }
-
-    .btn-back {
-        background: white;
-        color: #667eea;
-        padding: 0.75rem 2rem;
-        border: none;
-        border-radius: 8px;
-        font-size: 0.95rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-block;
-        margin-top: 0.5rem;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .btn-back:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        color: #667eea;
-    }
-
-    @media (max-width: 768px) {
         .success-card {
-            padding: 2rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 1.5rem 1.8rem;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1rem;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.6s ease 0.2s both;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .success-icon svg {
+            width: 35px;
+            height: 35px;
+            stroke: #667eea;
+            stroke-width: 4;
+            fill: none;
         }
 
         .success-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            line-height: 1.3;
         }
-    }
-    /* =========================
-   RESPONSIVE TABLET
-========================= */
-@media (max-width: 768px) {
 
-    .success-wrapper {
-        padding: 1rem;
-        align-items: center;
-    }
+        .success-message {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
 
-    .success-card {
-        max-width: 100%;
-        padding: 2rem 1.5rem;
-        border-radius: 14px;
-    }
+        .exam-info-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
-    .success-icon {
-        width: 65px;
-        height: 65px;
-    }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.35rem 0;
+            font-size: 0.85rem;
+        }
 
-    .success-icon svg {
-        width: 32px;
-        height: 32px;
-    }
+        .info-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
 
-    .success-title {
-        font-size: 1.15rem;
-        line-height: 1.5;
-        margin-bottom: 0.9rem;
-    }
+        .info-value {
+            color: white;
+            font-weight: 700;
+        }
 
-    .success-message {
-        font-size: 0.95rem;
-        margin-bottom: 1.5rem;
-    }
+        .submit-time {
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.7rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            line-height: 1.5;
+        }
 
-    .exam-info-box {
-        padding: 0.9rem;
-    }
+        .note-text {
+            background: rgba(255, 243, 205, 0.95);
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 1rem;
+            color: #856404;
+            font-size: 0.9rem;
+            margin-top: 1.5rem;
+            line-height: 1.6;
+        }
 
-    .info-row {
-        font-size: 0.82rem;
-        gap: 0.5rem;
-    }
+        .btn-back {
+            background: white;
+            color: #667eea;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 0.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
 
-    .submit-time {
-        font-size: 0.85rem;
-        padding: 0.75rem;
-    }
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            color: #667eea;
+        }
 
-    .note-text {
-        font-size: 0.85rem;
-        padding: 0.9rem;
-    }
+        @media (max-width: 768px) {
+            .success-card {
+                padding: 2rem 1.5rem;
+            }
 
-    .btn-back {
-        width: 100%;
-        text-align: center;
-        padding: 0.85rem 1rem;
-        font-size: 0.9rem;
-    }
-}
+            .success-title {
+                font-size: 1.5rem;
+            }
+        }
 
-/* =========================
-   SMALL MOBILE
-========================= */
-@media (max-width: 480px) {
+        /* =========================
+       RESPONSIVE TABLET
+    ========================= */
+        @media (max-width: 768px) {
 
-    .success-wrapper {
-        padding: 0.75rem;
-    }
+            .success-wrapper {
+                padding: 1rem;
+                align-items: center;
+            }
 
-    .success-card {
-        padding: 1.5rem 1rem;
-        border-radius: 12px;
-    }
+            .success-card {
+                max-width: 100%;
+                padding: 2rem 1.5rem;
+                border-radius: 14px;
+            }
 
-    .success-icon {
-        width: 58px;
-        height: 58px;
-        margin-bottom: 0.9rem;
-    }
+            .success-icon {
+                width: 65px;
+                height: 65px;
+            }
 
-    .success-icon svg {
-        width: 28px;
-        height: 28px;
-    }
+            .success-icon svg {
+                width: 32px;
+                height: 32px;
+            }
 
-    .success-title {
-        font-size: 1rem;
-    }
+            .success-title {
+                font-size: 1.15rem;
+                line-height: 1.5;
+                margin-bottom: 0.9rem;
+            }
 
-    .success-message {
-        font-size: 0.9rem;
-        line-height: 1.6;
-    }
+            .success-message {
+                font-size: 0.95rem;
+                margin-bottom: 1.5rem;
+            }
 
-    .exam-info-box {
-        padding: 0.8rem;
-    }
+            .exam-info-box {
+                padding: 0.9rem;
+            }
 
-    .info-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.2rem;
-        padding: 0.45rem 0;
-        font-size: 0.8rem;
-    }
+            .info-row {
+                font-size: 0.82rem;
+                gap: 0.5rem;
+            }
 
-    .submit-time {
-        font-size: 0.8rem;
-        line-height: 1.6;
-    }
+            .submit-time {
+                font-size: 0.85rem;
+                padding: 0.75rem;
+            }
 
-    .note-text {
-        font-size: 0.8rem;
-        line-height: 1.5;
-    }
+            .note-text {
+                font-size: 0.85rem;
+                padding: 0.9rem;
+            }
 
-    .btn-back {
-        font-size: 0.85rem;
-        padding: 0.8rem;
-        border-radius: 7px;
-    }
-}
+            .btn-back {
+                width: 100%;
+                text-align: center;
+                padding: 0.85rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
 
-/* =========================
-   EXTRA FIX
-========================= */
-body {
-    overflow-x: hidden;
-}
+        /* =========================
+       SMALL MOBILE
+    ========================= */
+        @media (max-width: 480px) {
 
-.success-card,
-.exam-info-box,
-.submit-time {
-    word-break: break-word;
-}
-</style>
+            .success-wrapper {
+                padding: 0.75rem;
+            }
 
-<div class="success-wrapper">
-    <div class="success-card">
-        <!-- Success Icon -->
-        <div class="success-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-        </div>
+            .success-card {
+                padding: 1.5rem 1rem;
+                border-radius: 12px;
+            }
 
-        <!-- Title -->
-        <h1 class="success-title">
-            Selamat! Anda telah menyelesaikan Ujian/Seleksi
-        </h1>
-        
-        <!-- Exam Info -->
-        <div class="exam-info-box">
-            <div class="info-row">
-                <span class="info-label">📋 Jumlah Pertanyaan:</span>
-                <span class="info-value">{{ $totalQuestions }} soal</span>
+            .success-icon {
+                width: 58px;
+                height: 58px;
+                margin-bottom: 0.9rem;
+            }
+
+            .success-icon svg {
+                width: 28px;
+                height: 28px;
+            }
+
+            .success-title {
+                font-size: 1rem;
+            }
+
+            .success-message {
+                font-size: 0.9rem;
+                line-height: 1.6;
+            }
+
+            .exam-info-box {
+                padding: 0.8rem;
+            }
+
+            .info-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.2rem;
+                padding: 0.45rem 0;
+                font-size: 0.8rem;
+            }
+
+            .submit-time {
+                font-size: 0.8rem;
+                line-height: 1.6;
+            }
+
+            .note-text {
+                font-size: 0.8rem;
+                line-height: 1.5;
+            }
+
+            .btn-back {
+                font-size: 0.85rem;
+                padding: 0.8rem;
+                border-radius: 7px;
+            }
+        }
+
+        /* =========================
+       EXTRA FIX
+    ========================= */
+        body {
+            overflow-x: hidden;
+        }
+
+        .success-card,
+        .exam-info-box,
+        .submit-time {
+            word-break: break-word;
+        }
+    </style>
+
+    <div class="success-wrapper">
+        <div class="success-card">
+            <!-- Success Icon -->
+            <div class="success-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
             </div>
-            <div class="info-row">
-                <span class="info-label">✅ Soal Terjawab:</span>
-                <span class="info-value">{{ $answeredQuestions }} soal</span>
+
+            <!-- Title -->
+            <h1 class="success-title">
+                Selamat! Anda telah menyelesaikan Ujian/Seleksi
+            </h1>
+
+            <!-- Exam Info -->
+            <div class="exam-info-box">
+                <div class="info-row">
+                    <span class="info-label">📋 Jumlah Pertanyaan:</span>
+                    <span class="info-value">{{ $totalQuestions }} soal</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">✅ Soal Terjawab:</span>
+                    <span class="info-value">{{ $answeredQuestions }} soal</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">⏱️ Durasi:</span>
+                    <span class="info-value">
+                        @if ($exam->started_at && $exam->finished_at)
+                            @php
+                                $seconds = $exam->started_at->diffInSeconds($exam->finished_at);
+                                $minutes = floor($seconds / 60);
+                                $remainingSeconds = $seconds % 60;
+                            @endphp
+
+                            {{ $minutes }} menit {{ $remainingSeconds }} detik
+                        @else
+                            -
+                        @endif
+                    </span>
+                </div>
             </div>
-            <div class="info-row">
-    <span class="info-label">⏱️ Durasi:</span>
-    <span class="info-value">
-        @if($exam->started_at && $exam->finished_at)
-            @php
-                $seconds = $exam->started_at->diffInSeconds($exam->finished_at);
-                $minutes = floor($seconds / 60);
-                $remainingSeconds = $seconds % 60;
-            @endphp
 
-            {{ $minutes }} menit {{ $remainingSeconds }} detik
-        @else
-            -
-        @endif
-    </span>
-</div>
-        </div>
+            <!-- Submit Time -->
+            <div class="submit-time">
+                Submit<br>
+                @if ($exam->finished_at)
+                    {{ $exam->finished_at->locale('id')->isoFormat('dddd, D MMMM YYYY') }}
+                @else
+                    {{ now()->locale('id')->isoFormat('dddd, D MMMM YYYY') }}
+                @endif
+            </div>
 
-        <!-- Submit Time -->
-        <div class="submit-time">
-            Submit<br>
-            @if($exam->finished_at)
-                {{ $exam->finished_at->locale('id')->isoFormat('dddd, D MMMM YYYY') }}
+            <!-- Back Button -->
+            @if ($exam->status === 'completed')
+                <a href="{{ route('camaba.dashboard') }}" class="btn-back">
+                    Kembali ke Dashboard
+                </a>
             @else
-                {{ now()->locale('id')->isoFormat('dddd, D MMMM YYYY') }}
+                <a href="{{ route('camaba.exam.index') }}" class="btn-back">
+                    Kembali ke Daftar Ujian
+                </a>
             @endif
         </div>
-
-        <!-- Back Button -->
-       @if($exam->status === 'completed')
-    <a href="{{ route('camaba.dashboard') }}" class="btn-back">
-        Kembali ke Dashboard
-    </a>
-@else
-    <a href="{{ route('camaba.exam.index') }}" class="btn-back">
-        Kembali ke Daftar Ujian
-    </a>
-@endif
     </div>
-</div>
 @endsection

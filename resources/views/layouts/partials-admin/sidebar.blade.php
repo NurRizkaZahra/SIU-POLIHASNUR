@@ -9,13 +9,9 @@
     <div class="profile">
         <a href="{{ route('admin.profile') }}" class="profile" style="text-decoration:none; color:inherit;">
             <div class="profile-icon">
-    <img
-        src="{{ auth()->user()->photo
-            ? asset('storage/' . auth()->user()->photo)
-            : asset('images/default-avatar.png') }}"
-        alt="Profile"
-        class="sidebar-avatar">
-</div>
+                <img src="{{ auth()->user()->photo ? asset('storage/' . auth()->user()->photo) : asset('images/default-avatar.png') }}"
+                    alt="Profile" class="sidebar-avatar">
+            </div>
             <div class="badge">{{ auth()->user()->role ?? 'Admin' }}</div>
             <div class="profile-name">{{ auth()->user()->name ?? 'Nur Rizka Zahra' }}</div>
         </a>
@@ -26,8 +22,8 @@
         {{-- BERANDA --}}
         <li class="menu-item">
             <a href="{{ route('dashboard.admin') }}"
-               class="menu-link {{ request()->routeIs('dashboard.admin') ? 'active' : '' }}"
-               onclick="closeSidebarOnMobile()">
+                class="menu-link {{ request()->routeIs('dashboard.admin') ? 'active' : '' }}"
+                onclick="closeSidebarOnMobile()">
                 <span class="menu-icon">🏠</span>
                 <span>BERANDA</span>
             </a>
@@ -36,8 +32,8 @@
         {{-- PENDAFTARAN --}}
         <li class="menu-item">
             <a href="{{ route('admin.registration') }}"
-               class="menu-link {{ request()->routeIs('admin.registration') ? 'active' : '' }}"
-               onclick="closeSidebarOnMobile()">
+                class="menu-link {{ request()->routeIs('admin.registration') ? 'active' : '' }}"
+                onclick="closeSidebarOnMobile()">
                 <span class="menu-icon">📋</span>
                 <span>PENDAFTARAN</span>
             </a>
@@ -46,8 +42,8 @@
         {{-- JADWAL UJIAN --}}
         <li class="menu-item">
             <a href="{{ route('admin.exam-schedule-admin') }}"
-               class="menu-link {{ request()->routeIs('admin.exam-schedule-admin') ? 'active' : '' }}"
-               onclick="closeSidebarOnMobile()">
+                class="menu-link {{ request()->routeIs('admin.exam-schedule-admin') ? 'active' : '' }}"
+                onclick="closeSidebarOnMobile()">
                 <span class="menu-icon">📅</span>
                 <span>JADWAL UJIAN</span>
             </a>
@@ -56,8 +52,8 @@
         {{-- UJIAN --}}
         <li class="menu-item">
             <a href="{{ route('admin.questions.index') }}"
-               class="menu-link {{ request()->routeIs('admin.questions.*') ? 'active' : '' }}"
-               onclick="closeSidebarOnMobile()">
+                class="menu-link {{ request()->routeIs('admin.questions.*') ? 'active' : '' }}"
+                onclick="closeSidebarOnMobile()">
                 <span class="menu-icon">🧾</span>
                 <span>UJIAN</span>
             </a>
@@ -66,8 +62,8 @@
         {{-- HASIL --}}
         <li class="menu-item">
             <a href="{{ route('admin.results') }}"
-               class="menu-link {{ request()->routeIs('admin.results') ? 'active' : '' }}"
-               onclick="closeSidebarOnMobile()">
+                class="menu-link {{ request()->routeIs('admin.results') ? 'active' : '' }}"
+                onclick="closeSidebarOnMobile()">
                 <span class="menu-icon">📝</span>
                 <span>HASIL</span>
             </a>
@@ -86,32 +82,35 @@
         z-index: 999;
     }
 
-    .sidebar-overlay.show { display: block; }
+    .sidebar-overlay.show {
+        display: block;
+    }
 
-    .profile-icon{
-    width:90px;
-    height:90px;
-    border-radius:50%;
-    overflow:hidden;
-    margin:0 auto;
-    border:4px solid #fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
+    .profile-icon {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 0 auto;
+        border: 4px solid #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-.sidebar-avatar{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    border-radius:50%;
-    display:block;
-}
+    .sidebar-avatar {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        display: block;
+    }
 
     /* ========================
        RESPONSIVE — sidebar
     ======================== */
     @media (max-width: 768px) {
+
         /* Sidebar tersembunyi di kiri, muncul saat toggle */
         .sidebar {
             transform: translateX(-250px);
@@ -143,8 +142,13 @@
 
     /* Tablet (768–1024) — sidebar lebih sempit */
     @media (min-width: 769px) and (max-width: 1024px) {
-        .sidebar { width: 210px; }
-        .main-content { margin-left: 210px; }
+        .sidebar {
+            width: 210px;
+        }
+
+        .main-content {
+            margin-left: 210px;
+        }
 
         .menu-link {
             font-size: 13px;
@@ -156,19 +160,19 @@
             height: 64px;
         }
 
-        .profile-icon{
-    width:80px;
-    height:80px;
-    margin:0 auto 12px;
-    overflow:hidden;
-    border-radius:50%;
-    border:3px solid rgba(255,255,255,.2);
-}
+        .profile-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 12px;
+            overflow: hidden;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, .2);
+        }
 
-.sidebar-avatar{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
+        .sidebar-avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     }
 </style>

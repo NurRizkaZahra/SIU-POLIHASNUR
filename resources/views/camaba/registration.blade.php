@@ -5,630 +5,632 @@
 @section('page-title', 'PENDAFTARAN')
 
 @section('content')
-<style>
-    /* =====================
-       FORM PENDAFTARAN
-    ===================== */
-    .pendaftaran-container {
-        max-width: 1000px;
-        margin: 20px auto;
-        padding: 20 px;
-    }
-
-    .form-title {
-        text-align: center;
-        color: #1e5a96;
-        font-size: 32px;
-        font-weight: 700;
-        margin-bottom: 30px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .form-section {
-        background: white;
-        border-radius: 12px;
-        margin-bottom: 20px;
-        overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        border: 2px solid #1e5a96;
-    }
-
-    .section-header {
-        background: #1e5a96;
-        color: white;
-        padding: 18px 25px;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-weight: 600;
-        font-size: 16px;
-        transition: background 0.3s;
-        user-select: none;
-    }
-
-    .section-header:hover {
-        background: #0d3d6b;
-    }
-
-    .chevron-icon {
-        width: 28px;
-        height: 28px;
-        background: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #1e5a96;
-        font-weight: bold;
-        font-size: 16px;
-        transition: transform 0.3s ease;
-        flex-shrink: 0;
-    }
-
-    .chevron-icon.open {
-        transform: rotate(180deg);
-    }
-
-    .section-body {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.4s ease;
-        background: #f8f9fa;
-    }
-
-    .section-body.open {
-        max-height: 2500px;
-        padding: 30px 25px;
-    }
-
-    .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        margin-bottom: 20px;
-    }
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .form-group label {
-        font-weight: 500;
-        color: #333;
-        margin-bottom: 8px;
-        font-size: 14px;
-    }
-
-    .form-group input,
-    .form-group select {
-        padding: 12px 15px;
-        border: 2px solid #ddd;
-        border-radius: 8px;
-        font-size: 14px;
-        transition: all 0.3s;
-        background: white;
-        /* Pastikan input tidak meluap di mobile */
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus {
-        outline: none;
-        border-color: #1e5a96;
-        box-shadow: 0 0 0 3px rgba(30, 90, 150, 0.1);
-    }
-
-    .radio-group {
-        display: flex;
-        gap: 20px;
-        flex-wrap: wrap;
-        margin-top: 8px;
-    }
-
-    .radio-group label {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-weight: normal;
-        cursor: pointer;
-        padding: 8px 12px;
-        border-radius: 6px;
-        transition: background 0.3s;
-    }
-
-    .radio-group label:hover {
-        background: #e3f2fd;
-    }
-
-    .radio-group input[type="radio"] {
-        width: 18px;
-        height: 18px;
-        cursor: pointer;
-        accent-color: #1e5a96;
-    }
-
-    .save-btn {
-        background: #1e5a96;
-        color: white;
-        padding: 12px 35px;
-        margin-top: 10px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 15px;
-        float: right;
-        transition: all 0.3s;
-        box-shadow: 0 4px 8px rgba(30, 90, 150, 0.2);
-    }
-
-    .save-btn:hover {
-        background: #0d3d6b;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(30, 90, 150, 0.3);
-    }
-
-    /* Clearfix agar container tidak kolaps setelah float */
-    .section-body.open::after {
-        content: '';
-        display: table;
-        clear: both;
-    }
-
-    .next-wrapper {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 8px;
-        margin-bottom: 30px;
-    }
-
-    .next-btn {
-        background: #DBD328;
-        color: #0d3d6b;
-        padding: 12px 35px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 15px;
-        display: inline-block;
-        width: fit-content;
-        box-sizing: border-box;
-        text-align: center;
-        margin: 20px auto 0;
-        transition: all 0.3s;
-        text-decoration: none;
-        box-shadow: 0 4px 8px rgba(101, 100, 24, 0.2);
-    }
-
-    .next-btn:hover {
-        background: #c9c224;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(101, 100, 24, 0.3);
-    }
-
-    /* Alert Messages */
-    .alert {
-        padding: 15px 20px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        font-weight: 500;
-    }
-
-    .alert-success {
-        background: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-    }
-
-    .alert-error {
-        background: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
-
-    /* =====================
-       RESPONSIVE — TABLET (≤ 1024px)
-    ===================== */
-    @media (max-width: 1024px) {
+    <style>
+        /* =====================
+           FORM PENDAFTARAN
+        ===================== */
         .pendaftaran-container {
-            max-width: 100%;
-            padding: 20px;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20 px;
         }
 
         .form-title {
-            font-size: 28px;
-        }
-    }
-
-    /* =====================
-       RESPONSIVE — MOBILE (≤ 768px)
-    ===================== */
-    @media (max-width: 768px) {
-        .pendaftaran-container {
-            padding: 12px;
-            margin: 10px auto;
+            text-align: center;
+            color: #1e5a96;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .form-title {
-            font-size: 22px;
+        .form-section {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid #1e5a96;
+        }
+
+        .section-header {
+            background: #1e5a96;
+            color: white;
+            padding: 18px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 16px;
+            transition: background 0.3s;
+            user-select: none;
+        }
+
+        .section-header:hover {
+            background: #0d3d6b;
+        }
+
+        .chevron-icon {
+            width: 28px;
+            height: 28px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1e5a96;
+            font-weight: bold;
+            font-size: 16px;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .chevron-icon.open {
+            transform: rotate(180deg);
+        }
+
+        .section-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            background: #f8f9fa;
+        }
+
+        .section-body.open {
+            max-height: 2500px;
+            padding: 30px 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
             margin-bottom: 20px;
         }
 
-        /* Section header lebih kompak */
-        .section-header {
-            padding: 14px 16px;
-            font-size: 14px;
-        }
-
-        /* Section body padding lebih kecil */
-        .section-body.open {
-            padding: 20px 16px;
-        }
-
-        /* Grid 2 kolom → 1 kolom */
-        .form-row {
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        /* Radio group wrap lebih rapat */
-        .radio-group {
-            gap: 10px;
-        }
-
-        .radio-group label {
-            padding: 6px 10px;
-            font-size: 13px;
-        }
-
-        /* Save button full-width di mobile agar tidak terpotong */
-        .save-btn {
-            float: none;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        /* Next button lebih kompak */
-        .next-btn {
-            width: 100%;
-            padding: 13px 36px;
-            font-size: 16px;
-        }
-
-        .next-wrapper {
-            margin-bottom: 40px;
-        }
-    }
-
-    /* =====================
-       RESPONSIVE — SMALL MOBILE (≤ 480px)
-    ===================== */
-    @media (max-width: 480px) {
-        .pendaftaran-container {
-            padding: 10px;
-        }
-
-        .form-title {
-            font-size: 18px;
-        }
-
-        .section-header {
-            padding: 12px 14px;
-            font-size: 13px;
-        }
-
-        .section-body.open {
-            padding: 16px 12px;
+        .form-group {
+            display: flex;
+            flex-direction: column;
         }
 
         .form-group label {
-            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
         }
 
         .form-group input,
         .form-group select {
-            padding: 10px 12px;
-            font-size: 13px;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            background: white;
+            /* Pastikan input tidak meluap di mobile */
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        /* Radio agama banyak, biarkan wrap ke 1 kolom */
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #1e5a96;
+            box-shadow: 0 0 0 3px rgba(30, 90, 150, 0.1);
+        }
+
         .radio-group {
-            flex-direction: column;
-            gap: 6px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 8px;
         }
 
         .radio-group label {
-            padding: 6px 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: normal;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+
+        .radio-group label:hover {
+            background: #e3f2fd;
+        }
+
+        .radio-group input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #1e5a96;
+        }
+
+        .save-btn {
+            background: #1e5a96;
+            color: white;
+            padding: 12px 35px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            float: right;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(30, 90, 150, 0.2);
+        }
+
+        .save-btn:hover {
+            background: #0d3d6b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(30, 90, 150, 0.3);
+        }
+
+        /* Clearfix agar container tidak kolaps setelah float */
+        .section-body.open::after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+
+        .next-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 8px;
+            margin-bottom: 30px;
         }
 
         .next-btn {
-        padding: 13px 20px;
-        font-size: 15px;
-    }
-    }
-</style>
+            background: #DBD328;
+            color: #0d3d6b;
+            padding: 12px 35px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            display: inline-block;
+            width: fit-content;
+            box-sizing: border-box;
+            text-align: center;
+            margin: 20px auto 0;
+            transition: all 0.3s;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(101, 100, 24, 0.2);
+        }
 
-<div class="pendaftaran-container">
-    {{-- ALERT SUCCESS / ERROR --}}
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+        .next-btn:hover {
+            background: #c9c224;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(101, 100, 24, 0.3);
+        }
 
-    @if(session('error'))
-        <div class="alert alert-error">
-            {{ session('error') }}
-        </div>
-    @endif
+        /* Alert Messages */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
 
-    {{-- FORM DATA DIRI --}}
-    <form action="{{ route('camaba.personal-data.save') }}" method="POST">
-        @csrf
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
 
-        <div class="form-section">
-            <div class="section-header" onclick="toggleFormSection(this)">
-                <span>DATA DIRI</span>
-                <div class="chevron-icon open">∨</div>
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* =====================
+           RESPONSIVE — TABLET (≤ 1024px)
+        ===================== */
+        @media (max-width: 1024px) {
+            .pendaftaran-container {
+                max-width: 100%;
+                padding: 20px;
+            }
+
+            .form-title {
+                font-size: 28px;
+            }
+        }
+
+        /* =====================
+           RESPONSIVE — MOBILE (≤ 768px)
+        ===================== */
+        @media (max-width: 768px) {
+            .pendaftaran-container {
+                padding: 12px;
+                margin: 10px auto;
+            }
+
+            .form-title {
+                font-size: 22px;
+                margin-bottom: 20px;
+            }
+
+            /* Section header lebih kompak */
+            .section-header {
+                padding: 14px 16px;
+                font-size: 14px;
+            }
+
+            /* Section body padding lebih kecil */
+            .section-body.open {
+                padding: 20px 16px;
+            }
+
+            /* Grid 2 kolom → 1 kolom */
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                margin-bottom: 15px;
+            }
+
+            /* Radio group wrap lebih rapat */
+            .radio-group {
+                gap: 10px;
+            }
+
+            .radio-group label {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+
+            /* Save button full-width di mobile agar tidak terpotong */
+            .save-btn {
+                float: none;
+                width: 100%;
+                margin-top: 20px;
+            }
+
+            /* Next button lebih kompak */
+            .next-btn {
+                width: 100%;
+                padding: 13px 36px;
+                font-size: 16px;
+            }
+
+            .next-wrapper {
+                margin-bottom: 40px;
+            }
+        }
+
+        /* =====================
+           RESPONSIVE — SMALL MOBILE (≤ 480px)
+        ===================== */
+        @media (max-width: 480px) {
+            .pendaftaran-container {
+                padding: 10px;
+            }
+
+            .form-title {
+                font-size: 18px;
+            }
+
+            .section-header {
+                padding: 12px 14px;
+                font-size: 13px;
+            }
+
+            .section-body.open {
+                padding: 16px 12px;
+            }
+
+            .form-group label {
+                font-size: 13px;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            /* Radio agama banyak, biarkan wrap ke 1 kolom */
+            .radio-group {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .radio-group label {
+                padding: 6px 8px;
+            }
+
+            .next-btn {
+                padding: 13px 20px;
+                font-size: 15px;
+            }
+        }
+    </style>
+
+    <div class="pendaftaran-container">
+        {{-- ALERT SUCCESS / ERROR --}}
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
             </div>
+        @endif
 
-            <div class="section-body open">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nama Lengkap: <span style="color: red;">*</span></label>
-                        <input type="text" name="full_name" value="{{ $personalData->full_name ?? '' }}" placeholder="Masukkan nama lengkap" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Alamat Lengkap: <span style="color: red;">*</span></label>
-                        <input type="text" name="address" value="{{ $personalData->address ?? '' }}" placeholder="Masukkan alamat" required>
-                    </div>
+        @if (session('error'))
+            <div class="alert alert-error">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        {{-- FORM DATA DIRI --}}
+        <form action="{{ route('camaba.personal-data.save') }}" method="POST">
+            @csrf
+
+            <div class="form-section">
+                <div class="section-header" onclick="toggleFormSection(this)">
+                    <span>DATA DIRI</span>
+                    <div class="chevron-icon open">∨</div>
                 </div>
 
-                <div class="form-row">
+                <div class="section-body open">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nama Lengkap: <span style="color: red;">*</span></label>
+                            <input type="text" name="full_name" value="{{ $personalData->full_name ?? '' }}"
+                                placeholder="Masukkan nama lengkap" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Alamat Lengkap: <span style="color: red;">*</span></label>
+                            <input type="text" name="address" value="{{ $personalData->address ?? '' }}"
+                                placeholder="Masukkan alamat" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tempat Lahir: <span style="color: red;">*</span></label>
+                            <input type="text" name="place_of_birth" value="{{ $personalData->place_of_birth ?? '' }}"
+                                placeholder="Kota lahir" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Telepon/HP: <span style="color: red;">*</span></label>
+                            <input type="text" name="phone" value="{{ $personalData->phone ?? '' }}"
+                                placeholder="Telepon/HP" required>
+                        </div>
+                    </div>
+
                     <div class="form-group">
-                        <label>Tempat Lahir: <span style="color: red;">*</span></label>
-                        <input type="text" name="place_of_birth" value="{{ $personalData->place_of_birth ?? '' }}" placeholder="Kota lahir" required>
+                        <label>Jenis Kelamin: <span style="color: red;">*</span></label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="gender" value="Laki-laki"
+                                    {{ ($personalData->gender ?? '') == 'Laki-laki' ? 'checked' : '' }}> Laki-laki
+                            </label>
+                            <label>
+                                <input type="radio" name="gender" value="Perempuan"
+                                    {{ ($personalData->gender ?? '') == 'Perempuan' ? 'checked' : '' }}> Perempuan
+                            </label>
+                        </div>
                     </div>
+
                     <div class="form-group">
-                        <label>Telepon/HP: <span style="color: red;">*</span></label>
-                        <input type="text" name="phone" value="{{ $personalData->phone ?? '' }}" placeholder="Telepon/HP" required>
+                        <label>Agama: <span style="color: red;">*</span></label>
+                        <div class="radio-group">
+                            @foreach (['Islam', 'Kristen', 'Katolik', 'Hindu', 'Budha', 'Lainnya'] as $agama)
+                                <label>
+                                    <input type="radio" name="religion" value="{{ $agama }}"
+                                        {{ ($personalData->religion ?? '') == $agama ? 'checked' : '' }}>{{ $agama }}
+                                </label>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label>Jenis Kelamin: <span style="color: red;">*</span></label>
-                    <div class="radio-group">
-                        <label>
-                            <input type="radio" name="gender" value="Laki-laki"
-                             {{ ($personalData->gender ?? '') == 'Laki-laki' ? 'checked' : '' }}> Laki-laki
-                        </label>
-                        <label>
-                            <input type="radio" name="gender" value="Perempuan"
-                             {{ ($personalData->gender ?? '') == 'Perempuan' ? 'checked' : '' }}> Perempuan
-                        </label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>No. Kartu Keluarga: <span style="color: red;">*</span></label>
+                            <input type="text" name="kk_number" value="{{ $personalData->kk_number ?? '' }}"
+                                placeholder="Nomor KK" required>
+                        </div>
+                        <div class="form-group">
+                            <label>NIK: <span style="color: red;">*</span></label>
+                            <input type="text" name="nik" value="{{ $personalData->nik ?? '' }}"
+                                placeholder="Nomor NIK" required>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label>Agama: <span style="color: red;">*</span></label>
-                    <div class="radio-group">
-                        @foreach(['Islam', 'Kristen', 'Katolik', 'Hindu', 'Budha', 'Lainnya'] as $agama)
-                        <label>
-                            <input type="radio" name="religion" value="{{ $agama }}"
-                            {{ ($personalData->religion ?? '') == $agama ? 'checked' : '' }}>{{ $agama }}
-                        </label>
-                        @endforeach
-                    </div>
-                </div>
-
-                <div class="form-row">
                     <div class="form-group">
-                        <label>No. Kartu Keluarga: <span style="color: red;">*</span></label>
-                        <input type="text" name="kk_number" value="{{ $personalData->kk_number ?? '' }}" placeholder="Nomor KK" required>
+                        <label>Tanggal Lahir: <span style="color: red;">*</span></label>
+                        <input type="date" name="date_of_birth" value="{{ $personalData->date_of_birth ?? '' }}"
+                            required>
                     </div>
+
+                    <button type="submit" class="save-btn">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    {{-- PENDIDIKAN --}}
+    <form action="{{ route('camaba.education-data.save') }}" method="POST">
+        @csrf
+        <div class="pendaftaran-container">
+            <div class="form-section">
+                <div class="section-header" onclick="toggleFormSection(this)">
+                    <span>PENDIDIKAN</span>
+                    <div class="chevron-icon open">∨</div>
+                </div>
+                <div class="section-body open">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Sekolah Asal: <span style="color: red;">*</span></label>
+                            <input type="text" name="school_name"
+                                value="{{ old('school_name', $educationData->school_name ?? '') }}"
+                                placeholder="Nama sekolah" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nomor Pokok Sekolah Nasional (NPSN): <span style="color: red;">*</span></label>
+                            <input type="text" name="school_code"
+                                value="{{ old('school_code', $educationData->school_code ?? '') }}" placeholder="NPSN"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Alamat Sekolah: <span style="color: red;">*</span></label>
+                            <input type="text" name="school_address"
+                                value="{{ old('school_address', $educationData->school_address ?? '') }}"
+                                placeholder="Masukkan Alamat Lengkap" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Jurusan/Program Keahlian: <span style="color: red;">*</span></label>
+                            <input type="text" name="major" value="{{ old('major', $educationData->major ?? '') }}"
+                                placeholder="Program keahlian" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tahun Masuk: <span style="color: red;">*</span></label>
+                            <input type="text" name="year_of_entry"
+                                value="{{ old('year_of_entry', $educationData->year_of_entry ?? '') }}"
+                                placeholder="Tahun" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Prestasi Akademik dan Nilai Akademik: </label>
+                            <input type="text" name="achievement"
+                                value="{{ old('achievement', $educationData->achievement ?? '') }}"
+                                placeholder="Prestasi">
+                        </div>
+                    </div>
+
                     <div class="form-group">
-                        <label>NIK: <span style="color: red;">*</span></label>
-                        <input type="text" name="nik" value="{{ $personalData->nik ?? '' }}" placeholder="Nomor NIK" required>
+                        <label>Nomor Induk Siswa Nasional (NISN): <span style="color: red;">*</span></label>
+                        <input type="text" name="nisn" value="{{ old('nisn', $educationData->nisn ?? '') }}"
+                            placeholder="NISN" required>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label>Tanggal Lahir: <span style="color: red;">*</span></label>
-                    <input type="date" name="date_of_birth" value="{{ $personalData->date_of_birth ?? '' }}" required>
+                    <button type="submit" class="save-btn">Save</button>
                 </div>
-
-                <button type="submit" class="save-btn">Save</button>
             </div>
         </div>
     </form>
-</div>
 
-{{-- PENDIDIKAN --}}
-<form action="{{ route('camaba.education-data.save') }}" method="POST">
-    @csrf
-    <div class="pendaftaran-container">
-        <div class="form-section">
-            <div class="section-header" onclick="toggleFormSection(this)">
-                <span>PENDIDIKAN</span>
-                <div class="chevron-icon open">∨</div>
-            </div>
-            <div class="section-body open">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Sekolah Asal: <span style="color: red;">*</span></label>
-                        <input type="text" name="school_name" value="{{ old('school_name', $educationData->school_name ?? '') }}" placeholder="Nama sekolah" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Nomor Pokok Sekolah Nasional (NPSN): <span style="color: red;">*</span></label>
-                        <input type="text" name="school_code" value="{{ old('school_code', $educationData->school_code ?? '') }}" placeholder="NPSN" required>
-                    </div>
+    {{-- KELUARGA --}}
+    <form action="{{ route('camaba.family-data.save') }}" method="POST">
+        @csrf
+        <div class="pendaftaran-container">
+            <div class="form-section">
+                <div class="section-header" onclick="toggleFormSection(this)">
+                    <span>KELUARGA</span>
+                    <div class="chevron-icon open">∨</div>
                 </div>
+                <div class="section-body open">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nama Ayah/Wali: <span style="color: red;">*</span></label>
+                            <input type="text" name="father_name" value="{{ $keluarga->father_name ?? '' }}"
+                                placeholder="Nama ayah" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Jumlah Anak: <span style="color: red;">*</span></label>
+                            <input type="number" name="number_of_children"
+                                value="{{ $keluarga->number_of_children ?? '' }}" placeholder="Jumlah" required>
+                        </div>
+                    </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Alamat Sekolah: <span style="color: red;">*</span></label>
-                        <input type="text" name="school_address"
-                               value="{{ old('school_address', $educationData->school_address ?? '') }}"
-                               placeholder="Masukkan Alamat Lengkap" required>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Pekerjaan Ayah: <span style="color: red;">*</span></label>
+                            <input type="text" name="father_job" value="{{ $keluarga->father_job ?? '' }}"
+                                placeholder="Pekerjaan" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Anak Ke: <span style="color: red;">*</span></label>
+                            <input type="number" name="child_order" value="{{ $keluarga->child_order ?? '' }}"
+                                placeholder="Urutan" required>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Jurusan/Program Keahlian: <span style="color: red;">*</span></label>
-                        <input type="text" name="major"
-                               value="{{ old('major', $educationData->major ?? '') }}"
-                               placeholder="Program keahlian" required>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nama Ibu/Wali: <span style="color: red;">*</span></label>
+                            <input type="text" name="mother_name" value="{{ $keluarga->mother_name ?? '' }}"
+                                placeholder="Nama ibu" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Penghasilan Ayah dan Ibu: <span style="color: red;">*</span></label>
+                            <select name="parent_income" required>
+                                <option value="">Pilih range</option>
+                                @foreach (['< Rp 1.000.000', 'Rp 1.000.000 - Rp 2.499.000', 'Rp 2.500.000 - Rp 4.999.000', '> Rp 5.000.000'] as $income)
+                                    <option value="{{ $income }}"
+                                        {{ isset($keluarga) && $keluarga->parent_income == $income ? 'selected' : '' }}>
+                                        {{ $income }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Pekerjaan Ibu: <span style="color: red;">*</span></label>
+                            <input type="text" name="mother_job" value="{{ $keluarga->mother_job ?? '' }}"
+                                placeholder="Pekerjaan" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Alamat: <span style="color: red;">*</span></label>
+                            <input type="text" name="parent_address" value="{{ $keluarga->parent_address ?? '' }}"
+                                placeholder="Alamat lengkap" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nomor HP: <span style="color: red;">*</span></label>
+                        <input type="tel" name="parent_phone" value="{{ $keluarga->parent_phone ?? '' }}"
+                            placeholder="Nomor HP" required>
+                    </div>
+
+                    <button type="submit" class="save-btn">Save</button>
                 </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Tahun Masuk: <span style="color: red;">*</span></label>
-                        <input type="text" name="year_of_entry"
-                               value="{{ old('year_of_entry', $educationData->year_of_entry ?? '') }}"
-                               placeholder="Tahun" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Prestasi Akademik dan Nilai Akademik: </label>
-                        <input type="text" name="achievement"
-                               value="{{ old('achievement', $educationData->achievement ?? '') }}"
-                               placeholder="Prestasi">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Nomor Induk Siswa Nasional (NISN): <span style="color: red;">*</span></label>
-                    <input type="text" name="nisn"
-                           value="{{ old('nisn', $educationData->nisn ?? '') }}"
-                           placeholder="NISN" required>
-                </div>
-
-                <button type="submit" class="save-btn">Save</button>
-            </div>
-        </div>
-    </div>
-</form>
-
-{{-- KELUARGA --}}
-<form action="{{ route('camaba.family-data.save') }}" method="POST">
-    @csrf
-    <div class="pendaftaran-container">
-        <div class="form-section">
-            <div class="section-header" onclick="toggleFormSection(this)">
-                <span>KELUARGA</span>
-                <div class="chevron-icon open">∨</div>
-            </div>
-            <div class="section-body open">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nama Ayah/Wali: <span style="color: red;">*</span></label>
-                        <input type="text" name="father_name" value="{{ $keluarga->father_name ?? '' }}" placeholder="Nama ayah" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Jumlah Anak: <span style="color: red;">*</span></label>
-                        <input type="number" name="number_of_children" value="{{ $keluarga->number_of_children ?? '' }}" placeholder="Jumlah" required>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Pekerjaan Ayah: <span style="color: red;">*</span></label>
-                        <input type="text" name="father_job"
-                               value="{{ $keluarga->father_job ?? '' }}"
-                               placeholder="Pekerjaan" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Anak Ke: <span style="color: red;">*</span></label>
-                        <input type="number" name="child_order"
-                               value="{{ $keluarga->child_order ?? '' }}"
-                               placeholder="Urutan" required>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nama Ibu/Wali: <span style="color: red;">*</span></label>
-                        <input type="text" name="mother_name"
-                               value="{{ $keluarga->mother_name ?? '' }}"
-                               placeholder="Nama ibu" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Penghasilan Ayah dan Ibu: <span style="color: red;">*</span></label>
-                        <select name="parent_income" required>
-                            <option value="">Pilih range</option>
-                            @foreach ([
-                                '< Rp 1.000.000',
-                                'Rp 1.000.000 - Rp 2.499.000',
-                                'Rp 2.500.000 - Rp 4.999.000',
-                                '> Rp 5.000.000'
-                            ] as $income)
-                                <option value="{{ $income }}"
-                                    {{ isset($keluarga) && $keluarga->parent_income == $income ? 'selected' : '' }}>
-                                    {{ $income }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Pekerjaan Ibu: <span style="color: red;">*</span></label>
-                        <input type="text" name="mother_job"
-                               value="{{ $keluarga->mother_job ?? '' }}"
-                               placeholder="Pekerjaan" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Alamat: <span style="color: red;">*</span></label>
-                        <input type="text" name="parent_address"
-                               value="{{ $keluarga->parent_address ?? '' }}"
-                               placeholder="Alamat lengkap" required>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Nomor HP: <span style="color: red;">*</span></label>
-                    <input type="tel" name="parent_phone"
-                           value="{{ $keluarga->parent_phone ?? '' }}"
-                           placeholder="Nomor HP" required>
-                </div>
-
-                <button type="submit" class="save-btn">Save</button>
             </div>
         </div>
+    </form>
+
+    <div class="pendaftaran-container">
+        <div class="next-wrapper">
+            <a href="{{ route('camaba.registration-advanced') }}" class="next-btn">Next →</a>
+        </div>
     </div>
-</form>
 
-<div class="pendaftaran-container">
-<div class="next-wrapper">
-    <a href="{{ route('camaba.registration-advanced') }}" class="next-btn">Next →</a>
-</div>
-</div>
+    <script>
+        function toggleFormSection(header) {
+            const body = header.nextElementSibling;
+            const chevron = header.querySelector('.chevron-icon');
+            body.classList.toggle('open');
+            chevron.classList.toggle('open');
+        }
 
-<script>
-    function toggleFormSection(header) {
-        const body    = header.nextElementSibling;
-        const chevron = header.querySelector('.chevron-icon');
-        body.classList.toggle('open');
-        chevron.classList.toggle('open');
-    }
+        function saveSection(sectionName) {
+            alert('Data ' + sectionName + ' berhasil disimpan!');
+        }
 
-    function saveSection(sectionName) {
-        alert('Data ' + sectionName + ' berhasil disimpan!');
-    }
-
-    // Auto-hide alerts after 5 seconds
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.alert').forEach(function (alert) {
-            setTimeout(function () {
-                alert.style.transition = 'opacity 0.5s ease';
-                alert.style.opacity    = '0';
-                setTimeout(function () { alert.remove(); }, 500);
-            }, 5000);
+        // Auto-hide alerts after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.alert').forEach(function(alert) {
+                setTimeout(function() {
+                    alert.style.transition = 'opacity 0.5s ease';
+                    alert.style.opacity = '0';
+                    setTimeout(function() {
+                        alert.remove();
+                    }, 500);
+                }, 5000);
+            });
         });
-    });
-</script>
+    </script>
 @endsection

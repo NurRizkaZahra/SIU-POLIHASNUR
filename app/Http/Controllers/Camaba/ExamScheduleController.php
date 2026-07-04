@@ -46,7 +46,7 @@ class ExamScheduleController extends Controller
         $validated = $request->validate([
             'exam_schedule_id' => 'required|exists:exam_schedules,id',
             'exam_date' => 'required|date'
-        ],[
+        ], [
             'exam_schedule_id.required' => 'Jadwal ujian harus dipilih.',
             'exam_schedule_id.exists' => 'Jadwal ujian tidak valid.',
         ]);
@@ -58,26 +58,26 @@ class ExamScheduleController extends Controller
             // =====================================================
             // 1️⃣ GLOBAL CHECK: User hanya boleh ajukan ujian 1x
             // =====================================================
-           // $alreadyApplied = Exam::where('user_id', auth()->id())->exists();
+            // $alreadyApplied = Exam::where('user_id', auth()->id())->exists();
 
-           // if ($alreadyApplied) {
-             // return response()->json([
-                //  'success' => false,
-                 //  'message' => 'Anda hanya dapat mengajukan jadwal ujian satu kali saja.'
-               // ], 400);
-           // }
+            // if ($alreadyApplied) {
+            // return response()->json([
+            //  'success' => false,
+            //  'message' => 'Anda hanya dapat mengajukan jadwal ujian satu kali saja.'
+            // ], 400);
+            // }
 
             // Lock row jadwal ujian
-           $selectedDate = Carbon::parse($validated['exam_date']);
-$startDate = Carbon::parse($examSchedule->start_date);
-$endDate = Carbon::parse($examSchedule->end_date);
+            $selectedDate = Carbon::parse($validated['exam_date']);
+            $startDate = Carbon::parse($examSchedule->start_date);
+            $endDate = Carbon::parse($examSchedule->end_date);
 
-if ($selectedDate->lt($startDate) || $selectedDate->gt($endDate)) {
-    return response()->json([
-        'success' => false,
-        'message' => 'Tanggal yang dipilih tidak berada dalam rentang gelombang.'
-    ], 400);
-}
+            if ($selectedDate->lt($startDate) || $selectedDate->gt($endDate)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tanggal yang dipilih tidak berada dalam rentang gelombang.'
+                ], 400);
+            }
 
             // 2️⃣ Cek apakah pendaftaran gelombang dibuka
             if (!$examSchedule->isRegistrationOpen()) {
@@ -126,16 +126,15 @@ if ($selectedDate->lt($startDate) || $selectedDate->gt($endDate)) {
                     'formatted_time' => $exam->getFormattedTime(),
                 ]
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
 
             Log::error('Error submitting exam application: ' . $e->getMessage());
 
             return response()->json([
-               'success' => false,
-               'message' => 'Terjadi kesalahan. Silakan coba lagi.'
-           ], 500);
+                'success' => false,
+                'message' => 'Terjadi kesalahan. Silakan coba lagi.'
+            ], 500);
         }
     }
 
@@ -185,7 +184,6 @@ if ($selectedDate->lt($startDate) || $selectedDate->gt($endDate)) {
                 'success' => true,
                 'message' => 'Pengajuan berhasil dibatalkan.'
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error cancelling exam: ' . $e->getMessage());
@@ -279,4 +277,3 @@ if ($selectedDate->lt($startDate) || $selectedDate->gt($endDate)) {
             ->with('success', 'Notifikasi berhasil dihapus.');
     }
 }
-

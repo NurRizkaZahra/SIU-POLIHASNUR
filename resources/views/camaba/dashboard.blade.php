@@ -4,86 +4,87 @@
 @section('page-title', 'BERANDA')
 
 @push('styles')
-<style>
-    /*
-     * CSS khusus halaman dashboard ini.
-     * Base styles (hero, step, section) sudah ada di partials/styles.blade.php.
-     * Di sini hanya override untuk kasus yang belum ditangani di base styles.
-     */
+    <style>
+        /*
+         * CSS khusus halaman dashboard ini.
+         * Base styles (hero, step, section) sudah ada di partials/styles.blade.php.
+         * Di sini hanya override untuk kasus yang belum ditangani di base styles.
+         */
 
-    /*
-     * Di tablet, hero section cukup pendek sehingga badge bisa terpotong.
-     * Pastikan hero punya min-height agar badge tidak overflow.
-     */
-    @media (max-width: 1024px) and (min-width: 769px) {
-        .hero-section {
-            min-height: 420px;
+        /*
+         * Di tablet, hero section cukup pendek sehingga badge bisa terpotong.
+         * Pastikan hero punya min-height agar badge tidak overflow.
+         */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .hero-section {
+                min-height: 420px;
+            }
+
+            /* Badge sedikit mengecil agar tidak memakan terlalu banyak ruang */
+            .badge-kampus {
+                top: 30px;
+                right: 30px;
+                font-size: 15px;
+                padding: 15px 20px;
+            }
         }
 
-        /* Badge sedikit mengecil agar tidak memakan terlalu banyak ruang */
-        .badge-kampus {
-            top: 30px;
-            right: 30px;
-            font-size: 15px;
-            padding: 15px 20px;
-        }
-    }
+        /*
+         * Mobile: hero berubah ke layout column, badge turun ke bawah konten.
+         * Ini memastikan tidak ada overlap antara hero-content dan badge-kampus.
+         */
+        @media (max-width: 768px) {
+            .hero-section {
+                flex-direction: column;
+                align-items: flex-start;
+                height: auto;
+                min-height: 0;
+                padding-bottom: 30px;
+            }
 
-    /*
-     * Mobile: hero berubah ke layout column, badge turun ke bawah konten.
-     * Ini memastikan tidak ada overlap antara hero-content dan badge-kampus.
-     */
-    @media (max-width: 768px) {
-        .hero-section {
-            flex-direction: column;
-            align-items: flex-start;
-            height: auto;
-            min-height: 0;
-            padding-bottom: 30px;
-        }
+            /* Badge ikut aliran normal (bukan absolute) di mobile */
+            .badge-kampus {
+                position: relative;
+                top: auto;
+                right: auto;
+                transform: none;
+                margin-top: 20px;
+                align-self: flex-start;
+                font-size: 14px;
+                padding: 12px 18px;
+                /* Hapus rotasi agar tidak terlihat janggal di ruang sempit */
+                transform: none;
+            }
 
-        /* Badge ikut aliran normal (bukan absolute) di mobile */
-        .badge-kampus {
-            position: relative;
-            top: auto;
-            right: auto;
-            transform: none;
-            margin-top: 20px;
-            align-self: flex-start;
-            font-size: 14px;
-            padding: 12px 18px;
-            /* Hapus rotasi agar tidak terlihat janggal di ruang sempit */
-            transform: none;
+            /* Step list tidak perlu max-width di mobile, biarkan full width */
+            .step-list {
+                max-width: 100%;
+            }
         }
 
-        /* Step list tidak perlu max-width di mobile, biarkan full width */
-        .step-list {
-            max-width: 100%;
-        }
-    }
+        @media (max-width: 480px) {
 
-    @media (max-width: 480px) {
-        /* Tombol hero full-width di layar sangat kecil */
-        .hero-buttons {
-            flex-direction: column;
-        }
+            /* Tombol hero full-width di layar sangat kecil */
+            .hero-buttons {
+                flex-direction: column;
+            }
 
-        .hero-buttons .btn-primary,
-        .hero-buttons .btn-secondary {
-            width: 100%;
-            text-align: center;
-        }
+            .hero-buttons .btn-primary,
+            .hero-buttons .btn-secondary {
+                width: 100%;
+                text-align: center;
+            }
 
-        /* Step text lebih kecil sedikit agar tidak terpotong */
-        .step-text {
-            font-size: 13px;
-        }
+            /* Step text lebih kecil sedikit agar tidak terpotong */
+            .step-text {
+                font-size: 13px;
+            }
 
-        .step-detail {
-            font-size: 13px;
+            .step-detail {
+                font-size: 13px;
+            }
         }
-    }
-</style>
+    </style>
 @endpush
 
 @section('content')
@@ -92,7 +93,9 @@
         <div class="hero-content">
             <h1 class="hero-title">Selamat Datang di<br>SIU (Sistem Informasi Ujian)<br>Politeknik Hasnur</h1>
             <p class="hero-subtitle">
-                Sistem ini dirancang untuk mendukung proses evaluasi akademik di Politeknik Hasnur secara efisien, transparan, dan modern. Melalui platform ini, mahasiswa dapat mengikuti ujian secara online, aman, dan mudah diakses kapan saja.
+                Sistem ini dirancang untuk mendukung proses evaluasi akademik di Politeknik Hasnur secara efisien,
+                transparan, dan modern. Melalui platform ini, mahasiswa dapat mengikuti ujian secara online, aman, dan mudah
+                diakses kapan saja.
             </p>
             <div class="hero-buttons">
                 <a href="{{ route('camaba.exam-schedule') }}" class="btn-primary">Pilih Jadwal</a>
@@ -159,7 +162,8 @@
                 </div>
                 <div class="step-content">
                     <div class="step-detail">
-                        Daftar ulang dilaksanakan di Kampus Politeknik Hasnur dengan membayarkan uang Rp 300.000 *(DP Seragam dan Jas Almamater)<br>
+                        Daftar ulang dilaksanakan di Kampus Politeknik Hasnur dengan membayarkan uang Rp 300.000 *(DP
+                        Seragam dan Jas Almamater)<br>
                     </div>
                 </div>
             </div>

@@ -4,733 +4,747 @@
 @section('page-title', 'KELOMPOK SOAL')
 
 @section('content')
-<style>
-    .groups-container {
-        padding: 20px;
-        max-width: 1400px;
-        margin: 0 auto;
-    }
-    
-    .header-section {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-    
-    .btn-add-new {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: #fbbf24;
-        color: #1e293b;
-        padding: 10px 20px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 14px;
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-    
-    .btn-add-new:hover {
-        background: #f59e0b;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
-        color: #1e293b;
-    }
-    
-    .btn-icon {
-        width: 16px;
-        height: 16px;
-    }
-    
-    .alert-success {
-        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-        border-left: 5px solid #10b981;
-        color: #065f46;
-        padding: 16px 20px;
-        border-radius: 12px;
-        margin-bottom: 25px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-weight: 600;
-        animation: slideDown 0.3s ease-out;
-    }
-    
-    .alert-error {
-        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-        border-left: 5px solid #ef4444;
-        color: #991b1b;
-        padding: 16px 20px;
-        border-radius: 12px;
-        margin-bottom: 25px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-weight: 600;
-        animation: slideDown 0.3s ease-out;
-    }
-    
-    @keyframes slideDown {
-        from {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 20px;
-        margin-bottom: 30px;
-    }
-    
-    .stat-card {
-        background: white;
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        border: 2px solid #e5e7eb;
-        transition: all 0.3s;
-    }
-    
-    .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-        border-color: #2b6cb0;
-    }
-    
-    .stat-header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 12px;
-    }
-    
-    .stat-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-    }
-    
-    .stat-icon.blue {
-        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-    }
-    
-    .stat-icon.green {
-        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-    }
-    
-    .stat-icon.purple {
-        background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);
-    }
-    
-    .stat-value {
-        font-size: 32px;
-        font-weight: 700;
-        color: #1e293b;
-        line-height: 1;
-    }
-    
-    .stat-label {
-        color: #64748b;
-        font-size: 14px;
-        font-weight: 500;
-        margin-top: 4px;
-    }
-    
-    .groups-grid {
-        display: grid;
-        gap: 20px;
-    }
-    
-    .group-card {
-        background: white;
-        border: 2px solid #e5e7eb;
-        border-radius: 15px;
-        padding: 20px;
-        transition: all 0.3s;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .group-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 5px;
-        height: 100%;
-        background: linear-gradient(135deg, #2b6cb0 0%, #1e5a9e 100%);
-    }
-    
-    .group-card:hover {
-        border-color: #2b6cb0;
-        box-shadow: 0 8px 20px rgba(43, 108, 176, 0.1);
-        transform: translateY(-2px);
-    }
-    
-    .group-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: start;
-        gap: 15px;
-    }
-    
-    .group-info {
-        flex: 1;
-        display: flex;
-        align-items: start;
-        gap: 15px;
-    }
-    
-    .group-number {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 45px;
-        height: 45px;
-        background: linear-gradient(135deg, #2b6cb0 0%, #1e5a9e 100%);
-        color: white;
-        border-radius: 10px;
-        font-weight: 700;
-        font-size: 18px;
-        flex-shrink: 0;
-    }
-    
-    .group-content {
-        flex: 1;
-    }
-    
-    .group-name {
-        font-size: 16px;
-        font-weight: 600;
-        color: #1e293b;
-        margin-bottom: 10px;
-        line-height: 1.4;
-    }
-    
-    .group-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-    
-    .meta-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-    }
-    
-    .badge-psi {
-        background: #dbeafe;
-        color: #1e40af;
-    }
-    
-    .badge-pu {
-        background: #d1fae5;
-        color: #065f46;
-    }
-    
-    .badge-questions {
-        background: #f3f4f6;
-        color: #374151;
-    }
-    
-    .badge-video {
-        background: #ede9fe;
-        color: #7c3aed;
-        text-decoration: none;
-        transition: all 0.3s;
-    }
-    
-    .badge-video:hover {
-        transform: scale(1.05);
-    }
-    
-    .group-actions {
-        display: flex;
-        gap: 8px;
-    }
-    
-    .btn-action {
-        width: 38px;
-        height: 38px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s;
-        text-decoration: none;
-    }
-    
-    .btn-edit {
-        background: #10b981;
-        color: white;
-    }
-    
-    .btn-edit:hover {
-        background: #059669;
-        transform: scale(1.05);
-    }
-    
-    .btn-delete {
-        background: #ef4444;
-        color: white;
-    }
-    
-    .btn-delete:hover {
-        background: #dc2626;
-        transform: scale(1.05);
-    }
-    
-    .empty-state {
-        text-align: center;
-        padding: 60px 20px;
-        background: white;
-        border-radius: 15px;
-        border: 2px dashed #cbd5e1;
-    }
-    
-    .empty-icon {
-        width: 80px;
-        height: 80px;
-        margin: 0 auto 20px;
-        color: #cbd5e1;
-    }
-    
-    .empty-title {
-        font-size: 20px;
-        font-weight: 600;
-        color: #64748b;
-        margin-bottom: 10px;
-    }
-    
-    .empty-text {
-        color: #94a3b8;
-        font-size: 14px;
-        margin-bottom: 20px;
-        line-height: 1.6;
-    }
-    
-    .pagination-wrapper {
-        display: flex;
-        justify-content: center;
-        margin-top: 30px;
-    }
-    
-    @media (max-width: 768px) {
+    <style>
         .groups-container {
-            padding: 15px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
-        
-        .stats-grid {
-            grid-template-columns: 1fr;
-        }
-        
-        .group-header {
-            flex-direction: column;
-        }
-        
-        .group-info {
-            flex-direction: column;
-        }
-        
-        .group-actions {
-            width: 100%;
+
+        .header-section {
+            display: flex;
             justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 20px;
         }
-    }
-    /* =========================================
-   RESPONSIVE TABLET
-========================================= */
-@media (max-width: 992px) {
 
-    .groups-container {
-        padding: 16px;
-    }
+        .btn-add-new {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fbbf24;
+            color: #1e293b;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
 
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-    }
+        .btn-add-new:hover {
+            background: #f59e0b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+            color: #1e293b;
+        }
 
-    .group-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+        .btn-icon {
+            width: 16px;
+            height: 16px;
+        }
 
-    .group-actions {
-        width: 100%;
-        justify-content: flex-end;
-        margin-top: 12px;
-    }
+        .alert-success {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-left: 5px solid #10b981;
+            color: #065f46;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            animation: slideDown 0.3s ease-out;
+        }
 
-    .group-info {
-        width: 100%;
-    }
+        .alert-error {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-left: 5px solid #ef4444;
+            color: #991b1b;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            animation: slideDown 0.3s ease-out;
+        }
 
-    .group-content {
-        width: 100%;
-    }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
 
-    .group-name {
-        word-break: break-word;
-    }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    .group-meta {
-        gap: 8px;
-    }
-}
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
 
-/* =========================================
-   RESPONSIVE MOBILE
-========================================= */
-@media (max-width: 768px) {
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s;
+        }
 
-    .groups-container {
-        padding: 12px;
-    }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            border-color: #2b6cb0;
+        }
 
-    .header-section {
-        justify-content: stretch;
-    }
+        .stat-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
 
-    .btn-add-new {
-        width: 100%;
-        justify-content: center;
-    }
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
 
-    .stats-grid {
-        grid-template-columns: 1fr;
-        gap: 14px;
-    }
+        .stat-icon.blue {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        }
 
-    .stat-card {
-        padding: 18px;
-        border-radius: 14px;
-    }
+        .stat-icon.green {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        }
 
-    .stat-value {
-        font-size: 28px;
-    }
+        .stat-icon.purple {
+            background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);
+        }
 
-    .group-card {
-        padding: 16px;
-        border-radius: 14px;
-    }
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1;
+        }
 
-    .group-header {
-        flex-direction: column;
-        gap: 16px;
-    }
+        .stat-label {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 4px;
+        }
 
-    .group-info {
-        flex-direction: row;
-        align-items: flex-start;
-        gap: 14px;
-        width: 100%;
-    }
+        .groups-grid {
+            display: grid;
+            gap: 20px;
+        }
 
-    .group-number {
-        min-width: 42px;
-        height: 42px;
-        font-size: 16px;
-    }
+        .group-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
 
-    .group-content {
-        width: 100%;
-    }
+        .group-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(135deg, #2b6cb0 0%, #1e5a9e 100%);
+        }
 
-    .group-name {
-        font-size: 15px;
-        line-height: 1.5;
-        word-break: break-word;
-    }
+        .group-card:hover {
+            border-color: #2b6cb0;
+            box-shadow: 0 8px 20px rgba(43, 108, 176, 0.1);
+            transform: translateY(-2px);
+        }
 
-    .group-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 15px;
+        }
 
-    .meta-badge {
-        font-size: 11px;
-        padding: 6px 10px;
-    }
+        .group-info {
+            flex: 1;
+            display: flex;
+            align-items: start;
+            gap: 15px;
+        }
 
-    .group-actions {
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-        gap: 8px;
-        margin-top: 6px;
-    }
+        .group-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #2b6cb0 0%, #1e5a9e 100%);
+            color: white;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
 
-    .btn-action {
-        width: 40px;
-        height: 40px;
-        flex-shrink: 0;
-    }
+        .group-content {
+            flex: 1;
+        }
 
-    .alert-success,
-    .alert-error {
-        padding: 14px 16px;
-        font-size: 14px;
-        border-radius: 10px;
-    }
+        .group-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
 
-    .empty-state {
-        padding: 40px 20px;
-    }
+        .group-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
 
-    .empty-title {
-        font-size: 18px;
-    }
+        .meta-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
 
-    .empty-text {
-        font-size: 13px;
-    }
-}
+        .badge-psi {
+            background: #dbeafe;
+            color: #1e40af;
+        }
 
-/* =========================================
-   EXTRA SMALL MOBILE
-========================================= */
-@media (max-width: 480px) {
+        .badge-pu {
+            background: #d1fae5;
+            color: #065f46;
+        }
 
-    .groups-container {
-        padding: 10px;
-    }
+        .badge-questions {
+            background: #f3f4f6;
+            color: #374151;
+        }
 
-    .group-card {
-        padding: 14px;
-    }
+        .badge-video {
+            background: #ede9fe;
+            color: #7c3aed;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
 
-    .group-info {
-        gap: 12px;
-    }
+        .badge-video:hover {
+            transform: scale(1.05);
+        }
 
-    .group-number {
-        min-width: 38px;
-        height: 38px;
-        font-size: 14px;
-        border-radius: 8px;
-    }
+        .group-actions {
+            display: flex;
+            gap: 8px;
+        }
 
-    .group-name {
-        font-size: 14px;
-    }
+        .btn-action {
+            width: 38px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
 
-    .meta-badge {
-        width: fit-content;
-        max-width: 100%;
-        word-break: break-word;
-    }
+        .btn-edit {
+            background: #10b981;
+            color: white;
+        }
 
-    .group-actions {
-        justify-content: flex-start;
-        flex-wrap: wrap;
-    }
+        .btn-edit:hover {
+            background: #059669;
+            transform: scale(1.05);
+        }
 
-    .btn-action {
-        width: 38px;
-        height: 38px;
-    }
+        .btn-delete {
+            background: #ef4444;
+            color: white;
+        }
 
-    .stat-value {
-        font-size: 24px;
-    }
+        .btn-delete:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
 
-    .stat-label {
-        font-size: 13px;
-    }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 15px;
+            border: 2px dashed #cbd5e1;
+        }
 
-    .btn-add-new {
-        font-size: 13px;
-        padding: 10px 14px;
-    }
-}
-</style>
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            color: #cbd5e1;
+        }
 
-<div class="groups-container">
-    <!-- Header Section -->
-    <div class="header-section">
-        <a href="{{ route('admin.question-groups.create') }}" class="btn-add-new">
-            <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-            </svg>
-            Tambah Kelompok
-        </a>
-    </div>
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
 
-    <!-- Alerts -->
-    @if(session('success'))
-    <div class="alert-success">
-        <svg style="width: 24px; height: 24px;" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-        </svg>
-        <span>{{ session('success') }}</span>
-    </div>
-    @endif
+        .empty-text {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
 
-    @if(session('error'))
-    <div class="alert-error">
-        <svg style="width: 24px; height: 24px;" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-        </svg>
-        <span>{{ session('error') }}</span>
-    </div>
-    @endif
+        .pagination-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
 
-    <!-- Statistics -->
-    @if(!$groups->isEmpty())
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-header">
-                <div class="stat-icon blue">📁</div>
-            </div>
-            <div class="stat-value">{{ $groups->total() }}</div>
-            <div class="stat-label">Total Kelompok</div>
+        @media (max-width: 768px) {
+            .groups-container {
+                padding: 15px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .group-header {
+                flex-direction: column;
+            }
+
+            .group-info {
+                flex-direction: column;
+            }
+
+            .group-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+
+        /* =========================================
+       RESPONSIVE TABLET
+    ========================================= */
+        @media (max-width: 992px) {
+
+            .groups-container {
+                padding: 16px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .group-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .group-actions {
+                width: 100%;
+                justify-content: flex-end;
+                margin-top: 12px;
+            }
+
+            .group-info {
+                width: 100%;
+            }
+
+            .group-content {
+                width: 100%;
+            }
+
+            .group-name {
+                word-break: break-word;
+            }
+
+            .group-meta {
+                gap: 8px;
+            }
+        }
+
+        /* =========================================
+       RESPONSIVE MOBILE
+    ========================================= */
+        @media (max-width: 768px) {
+
+            .groups-container {
+                padding: 12px;
+            }
+
+            .header-section {
+                justify-content: stretch;
+            }
+
+            .btn-add-new {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .stat-card {
+                padding: 18px;
+                border-radius: 14px;
+            }
+
+            .stat-value {
+                font-size: 28px;
+            }
+
+            .group-card {
+                padding: 16px;
+                border-radius: 14px;
+            }
+
+            .group-header {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .group-info {
+                flex-direction: row;
+                align-items: flex-start;
+                gap: 14px;
+                width: 100%;
+            }
+
+            .group-number {
+                min-width: 42px;
+                height: 42px;
+                font-size: 16px;
+            }
+
+            .group-content {
+                width: 100%;
+            }
+
+            .group-name {
+                font-size: 15px;
+                line-height: 1.5;
+                word-break: break-word;
+            }
+
+            .group-meta {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .meta-badge {
+                font-size: 11px;
+                padding: 6px 10px;
+            }
+
+            .group-actions {
+                width: 100%;
+                display: flex;
+                justify-content: flex-end;
+                gap: 8px;
+                margin-top: 6px;
+            }
+
+            .btn-action {
+                width: 40px;
+                height: 40px;
+                flex-shrink: 0;
+            }
+
+            .alert-success,
+            .alert-error {
+                padding: 14px 16px;
+                font-size: 14px;
+                border-radius: 10px;
+            }
+
+            .empty-state {
+                padding: 40px 20px;
+            }
+
+            .empty-title {
+                font-size: 18px;
+            }
+
+            .empty-text {
+                font-size: 13px;
+            }
+        }
+
+        /* =========================================
+       EXTRA SMALL MOBILE
+    ========================================= */
+        @media (max-width: 480px) {
+
+            .groups-container {
+                padding: 10px;
+            }
+
+            .group-card {
+                padding: 14px;
+            }
+
+            .group-info {
+                gap: 12px;
+            }
+
+            .group-number {
+                min-width: 38px;
+                height: 38px;
+                font-size: 14px;
+                border-radius: 8px;
+            }
+
+            .group-name {
+                font-size: 14px;
+            }
+
+            .meta-badge {
+                width: fit-content;
+                max-width: 100%;
+                word-break: break-word;
+            }
+
+            .group-actions {
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .btn-action {
+                width: 38px;
+                height: 38px;
+            }
+
+            .stat-value {
+                font-size: 24px;
+            }
+
+            .stat-label {
+                font-size: 13px;
+            }
+
+            .btn-add-new {
+                font-size: 13px;
+                padding: 10px 14px;
+            }
+        }
+    </style>
+
+    <div class="groups-container">
+        <!-- Header Section -->
+        <div class="header-section">
+            <a href="{{ route('admin.question-groups.create') }}" class="btn-add-new">
+                <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Tambah Kelompok
+            </a>
         </div>
-        
-        <div class="stat-card">
-            <div class="stat-header">
-                <div class="stat-icon green">📝</div>
-            </div>
-            <div class="stat-value">{{ $groups->sum(fn($g) => $g->questions()->count()) }}</div>
-            <div class="stat-label">Total Soal</div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-header">
-                <div class="stat-icon purple">🎥</div>
-            </div>
-            <div class="stat-value">
-    {{ $groups->filter(fn($g) => $g->questions()->whereNotNull('video_tutorial')->exists())->count() }}
-</div>
-            <div class="stat-label">Dengan Video</div>
-        </div>
-    </div>
-    @endif
 
-    <!-- Groups Grid -->
-    <div class="groups-grid">
-        @forelse($groups as $index => $group)
-        <div class="group-card">
-            <div class="group-header">
-                <div class="group-info">
-                    <div class="group-number">{{ $groups->firstItem() + $index }}</div>
-                    <div class="group-content">
-                        <h3 class="group-name">{{ $group->name }}</h3>
-                        
-                        <div class="group-meta">
-                            <span class="meta-badge {{ $group->type == 'PSI' ? 'badge-psi' : 'badge-pu' }}">
-                                <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+        <!-- Alerts -->
+        @if (session('success'))
+            <div class="alert-success">
+                <svg style="width: 24px; height: 24px;" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd" />
+                </svg>
+                <span>{{ session('success') }}</span>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert-error">
+                <svg style="width: 24px; height: 24px;" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd" />
+                </svg>
+                <span>{{ session('error') }}</span>
+            </div>
+        @endif
+
+        <!-- Statistics -->
+        @if (!$groups->isEmpty())
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon blue">📁</div>
+                    </div>
+                    <div class="stat-value">{{ $groups->total() }}</div>
+                    <div class="stat-label">Total Kelompok</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green">📝</div>
+                    </div>
+                    <div class="stat-value">{{ $groups->sum(fn($g) => $g->questions()->count()) }}</div>
+                    <div class="stat-label">Total Soal</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon purple">🎥</div>
+                    </div>
+                    <div class="stat-value">
+                        {{ $groups->filter(fn($g) => $g->questions()->whereNotNull('video_tutorial')->exists())->count() }}
+                    </div>
+                    <div class="stat-label">Dengan Video</div>
+                </div>
+            </div>
+        @endif
+
+        <!-- Groups Grid -->
+        <div class="groups-grid">
+            @forelse($groups as $index => $group)
+                <div class="group-card">
+                    <div class="group-header">
+                        <div class="group-info">
+                            <div class="group-number">{{ $groups->firstItem() + $index }}</div>
+                            <div class="group-content">
+                                <h3 class="group-name">{{ $group->name }}</h3>
+
+                                <div class="group-meta">
+                                    <span class="meta-badge {{ $group->type == 'PSI' ? 'badge-psi' : 'badge-pu' }}">
+                                        <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        {{ $group->type }}
+                                    </span>
+
+                                    <span class="meta-badge badge-questions">
+                                        <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                                            <path fill-rule="evenodd"
+                                                d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        {{ $group->questions()->count() }} Soal
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{{ route('admin.questions.index', ['group_id' => $group->id]) }}" class="btn-action"
+                            title="Lihat Soal" style="background: #3b82f6; color: white;">
+                            <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5
+                 c4.477 0 8.268 2.943 9.542 7
+                 -1.274 4.057-5.065 7-9.542 7
+                 -4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </a>
+
+                        <div class="group-actions">
+                            <a href="{{ route('admin.question-groups.edit', $group->id) }}" class="btn-action btn-edit"
+                                title="Edit Kelompok">
+                                <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                 </svg>
-                                {{ $group->type }}
-                            </span>
-                            
-                            <span class="meta-badge badge-questions">
-                                <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
-                                    <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
-                                </svg>
-                                {{ $group->questions()->count() }} Soal
-                            </span>
+                            </a>
+
+                            <form action="{{ route('admin.question-groups.destroy', $group->id) }}" method="POST"
+                                style="display: inline;"
+                                onsubmit="return confirm('Yakin ingin menghapus kelompok \"{{ $group->name }}\"?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-action btn-delete" title="Hapus Kelompok">
+                                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <a href="{{ route('admin.questions.index', ['group_id' => $group->id]) }}"
-   class="btn-action"
-title="Lihat Soal"
-style="background: #3b82f6; color: white;">
-<svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M2.458 12C3.732 7.943 7.523 5 12 5
-             c4.477 0 8.268 2.943 9.542 7
-             -1.274 4.057-5.065 7-9.542 7
-             -4.477 0-8.268-2.943-9.542-7z"/>
-</svg>
-</a>
-                
-                <div class="group-actions">
-                    <a href="{{ route('admin.question-groups.edit', $group->id) }}" class="btn-action btn-edit" title="Edit Kelompok">
-                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+            @empty
+                <div class="empty-state">
+                    <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                    </svg>
+                    <h2 class="empty-title">Belum Ada Kelompok Soal</h2>
+                    <p class="empty-text">Mulai kelompokkan soal-soal kamu berdasarkan tipe atau kategori<br>untuk
+                        memudahkan pengelolaan bank soal.</p>
+                    <a href="{{ route('admin.question-groups.create') }}" class="btn-add-new">
+                        <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
+                        Buat Kelompok Pertama
                     </a>
-                    
-                    <form action="{{ route('admin.question-groups.destroy', $group->id) }}" 
-                          method="POST" 
-                          style="display: inline;"
-                          onsubmit="return confirm('Yakin ingin menghapus kelompok \"{{ $group->name }}\"?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn-action btn-delete" title="Hapus Kelompok">
-                            <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                            </svg>
-                        </button>
-                    </form>
                 </div>
+            @endforelse
+        </div>
+
+        <!-- Pagination -->
+        @if ($groups->hasPages())
+            <div class="pagination-wrapper">
+                {{ $groups->links() }}
             </div>
-        </div>
-        @empty
-        <div class="empty-state">
-            <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
-            </svg>
-            <h2 class="empty-title">Belum Ada Kelompok Soal</h2>
-            <p class="empty-text">Mulai kelompokkan soal-soal kamu berdasarkan tipe atau kategori<br>untuk memudahkan pengelolaan bank soal.</p>
-            <a href="{{ route('admin.question-groups.create') }}" class="btn-add-new">
-                <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                </svg>
-                Buat Kelompok Pertama
-            </a>
-        </div>
-        @endforelse
+        @endif
     </div>
 
-    <!-- Pagination -->
-    @if($groups->hasPages())
-    <div class="pagination-wrapper">
-        {{ $groups->links() }}
-    </div>
-    @endif
-</div>
-
-<script>
-// Auto hide alerts after 5 seconds
-setTimeout(() => {
-    const alerts = document.querySelectorAll('.alert-success, .alert-error');
-    alerts.forEach(alert => {
-        alert.style.transition = 'all 0.3s ease-out';
-        alert.style.opacity = '0';
-        alert.style.transform = 'translateY(-20px)';
-        setTimeout(() => alert.remove(), 300);
-    });
-}, 5000);
-</script>
+    <script>
+        // Auto hide alerts after 5 seconds
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert-success, .alert-error');
+            alerts.forEach(alert => {
+                alert.style.transition = 'all 0.3s ease-out';
+                alert.style.opacity = '0';
+                alert.style.transform = 'translateY(-20px)';
+                setTimeout(() => alert.remove(), 300);
+            });
+        }, 5000);
+    </script>
 
 @endsection

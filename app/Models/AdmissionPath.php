@@ -12,7 +12,7 @@ class AdmissionPath extends Model
     protected $table = 'admission_paths';
     protected $primaryKey = 'id_path';
     protected $fillable = [
-        'id_user',     // ubah dari id_user ke user_id
+        'id_user',
         'path_name',
     ];
 

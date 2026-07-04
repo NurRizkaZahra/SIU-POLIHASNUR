@@ -24,20 +24,20 @@ class AdminRegistrationController extends Controller
     public function index()
     {
         $camaba = User::role('camaba')
-    ->with([
-        'personalData',
-        'educationData',
-        'familyData',
-        'admissionPath',
-        'programSelection.program1',
-        'programSelection.program2',
-    ])
-    ->get();
+            ->with([
+                'personalData',
+                'educationData',
+                'familyData',
+                'admissionPath',
+                'programSelection.program1',
+                'programSelection.program2',
+            ])
+            ->get();
 
         return view('admin.registration-admin', compact('camaba'));
     }
 
-   public function show($id)
+    public function show($id)
     {
 
         $camaba = \App\Models\User::with([
@@ -54,18 +54,18 @@ class AdminRegistrationController extends Controller
     }
 
     public function downloadPdf($id)
-{
-    $camaba = User::with([
-        'personalData',
-        'educationData',
-        'familyData',
-        'admissionPath',
-        'programSelection.program1',
-        'programSelection.program2'
-    ])->findOrFail($id);
+    {
+        $camaba = User::with([
+            'personalData',
+            'educationData',
+            'familyData',
+            'admissionPath',
+            'programSelection.program1',
+            'programSelection.program2'
+        ])->findOrFail($id);
 
-    $pdf = Pdf::loadView('admin.pdf-detail', compact('camaba'));
+        $pdf = Pdf::loadView('admin.pdf-detail', compact('camaba'));
 
-    return $pdf->download('detail-pendaftar.pdf');
-}
+        return $pdf->download('detail-pendaftar.pdf');
+    }
 }

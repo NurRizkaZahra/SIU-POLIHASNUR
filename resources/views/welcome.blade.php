@@ -1,24 +1,45 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Politeknik Hasnur - SIU</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700,800" rel="stylesheet" /> 
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700,800" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <style>
         /* Gaya Kustom Utama */
-        html, body { overflow-x: hidden; max-width: 100%; }
-        body { font-family: 'Instrument Sans', sans-serif; background-color: #FDFDFC; }
-        .text-polihasnur-blue { color: #1A56A8; }
-        .bg-polihasnur-blue { background-color: #1A56A8; }
-        .border-polihasnur-blue { border-color: #1A56A8; }
-        .bg-dark-blue { background-color: #1A56A8; }
+        html,
+        body {
+            overflow-x: hidden;
+            max-width: 100%;
+        }
+
+        body {
+            font-family: 'Instrument Sans', sans-serif;
+            background-color: #FDFDFC;
+        }
+
+        .text-polihasnur-blue {
+            color: #1A56A8;
+        }
+
+        .bg-polihasnur-blue {
+            background-color: #1A56A8;
+        }
+
+        .border-polihasnur-blue {
+            border-color: #1A56A8;
+        }
+
+        .bg-dark-blue {
+            background-color: #1A56A8;
+        }
 
         /* ── NAVBAR ── */
         .mobile-menu {
@@ -29,7 +50,11 @@
             border-top: 1px solid #e5e7eb;
             padding: 8px 0;
         }
-        .mobile-menu.open { display: flex; }
+
+        .mobile-menu.open {
+            display: flex;
+        }
+
         .mobile-menu a {
             padding: 12px 16px;
             font-weight: 500;
@@ -37,13 +62,18 @@
             font-size: 0.95rem;
             border-bottom: 1px solid #f3f4f6;
         }
-        .mobile-menu a:last-child { border-bottom: none; }
+
+        .mobile-menu a:last-child {
+            border-bottom: none;
+        }
+
         .mobile-menu .mobile-auth {
             display: flex;
             gap: 10px;
             padding: 12px 16px;
             flex-wrap: wrap;
         }
+
         .mobile-menu .mobile-auth a {
             flex: 1;
             text-align: center;
@@ -53,6 +83,7 @@
             font-size: 0.9rem;
             font-weight: 600;
         }
+
         .hamburger-btn {
             display: none;
             background: none;
@@ -60,60 +91,81 @@
             cursor: pointer;
             padding: 4px;
         }
+
         @media (max-width: 767px) {
-            .hamburger-btn { display: block; }
-            .desktop-nav   { display: none !important; }
-            .desktop-auth  { display: none !important; }
+            .hamburger-btn {
+                display: block;
+            }
+
+            .desktop-nav {
+                display: none !important;
+            }
+
+            .desktop-auth {
+                display: none !important;
+            }
         }
 
         /* ── HERO ── */
-        .bg-gradient-hero{
-    position:relative;
-    overflow:hidden;
-    min-height:500px;
-}
-        .hero-building-image{
-    position:absolute;
-    left:0;
-    bottom:0;
+        .bg-gradient-hero {
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
+        }
 
-    width:100%;
-    height:100%;
+        .hero-building-image {
+            position: absolute;
+            left: 0;
+            bottom: 0;
 
-    object-fit:cover;
-    object-position:bottom center;
+            width: 100%;
+            height: 100%;
 
-    opacity:.45;
-    z-index:0;
-}
+            object-fit: cover;
+            object-position: bottom center;
+
+            opacity: .45;
+            z-index: 0;
+        }
+
         .hero-content {
             position: relative;
             z-index: 10;
             padding-bottom: 180px;
         }
+
         .campus-badge {
             background-color: #FFFFFF;
             color: #1A56A8;
             font-weight: 800;
             padding: 1rem 1.5rem;
             border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transform: rotate(7deg);
             position: absolute;
             top: 50px;
             right: 50px;
             z-index: 15;
         }
+
         .campus-badge::before {
             content: '';
             position: absolute;
-            top: -10px; left: -10px; right: -10px; bottom: -10px;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
             background: linear-gradient(45deg, #FFA0B0, #FFE6D6);
             z-index: -1;
             border-radius: 0.75rem;
             filter: blur(8px);
         }
-        .campus-badge span { position: relative; z-index: 1; display: block; }
+
+        .campus-badge span {
+            position: relative;
+            z-index: 1;
+            display: block;
+        }
 
         /* ── PROGRAM STUDI CARD ── */
         .study-card {
@@ -129,13 +181,18 @@
             color: white;
             transition: transform 0.3s ease;
         }
+
         .study-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 50%);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 50%);
         }
-        .study-card:hover { transform: translateY(-5px); }
+
+        .study-card:hover {
+            transform: translateY(-5px);
+        }
+
         .study-card-content {
             position: relative;
             z-index: 20;
@@ -146,15 +203,25 @@
         }
 
         /* hide scrollbar */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
 
         /* ── CAROUSEL ── */
         .carousel-wrapper {
             display: flex;
             transition: transform 0.3s ease-in-out;
         }
-        .carousel-item { flex-shrink: 0; width: 100%; }
+
+        .carousel-item {
+            flex-shrink: 0;
+            width: 100%;
+        }
 
         /* ── JALUR MASUK SLIDER ── */
         .jalur-slider-container {
@@ -162,21 +229,24 @@
             overflow: hidden;
             padding: 0 60px;
         }
+
         .jalur-slider-wrapper {
             display: flex;
             transition: transform 0.5s ease;
             gap: 20px;
         }
+
         .jalur-card {
             min-width: calc(25% - 15px);
             background: white;
             border-radius: 15px;
             padding: 30px 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
             display: flex;
             flex-direction: column;
             height: 280px;
         }
+
         .jalur-card-header {
             background: #1e5a96;
             color: white;
@@ -187,6 +257,7 @@
             font-weight: 600;
             margin-bottom: 20px;
         }
+
         .jalur-card-content {
             color: #1e5a96;
             line-height: 1.6;
@@ -197,6 +268,7 @@
             align-items: center;
             justify-content: center;
         }
+
         .jalur-nav-btn {
             position: absolute;
             top: 50%;
@@ -210,31 +282,49 @@
             font-size: 1.8rem;
             color: #1e5a96;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             z-index: 10;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .jalur-nav-btn:hover  { background: #f0f0f0; transform: translateY(-50%) scale(1.1); }
-        .jalur-nav-btn:active { transform: translateY(-50%) scale(0.95); }
-        .jalur-nav-btn.prev   { left: 5px; }
-        .jalur-nav-btn.next   { right: 5px; }
+
+        .jalur-nav-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .jalur-nav-btn:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .jalur-nav-btn.prev {
+            left: 5px;
+        }
+
+        .jalur-nav-btn.next {
+            right: 5px;
+        }
+
         .jalur-dots {
             display: flex;
             justify-content: center;
             gap: 8px;
             margin-top: 25px;
         }
+
         .jalur-dot {
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: rgba(30,90,150,0.3);
+            background: rgba(30, 90, 150, 0.3);
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        .jalur-dot.active { background: #1e5a96; }
+
+        .jalur-dot.active {
+            background: #1e5a96;
+        }
 
         /* ── PROGRAM STUDI NAV BUTTON ── */
         .prog-nav-btn {
@@ -249,17 +339,29 @@
             cursor: pointer;
             font-size: 1.5rem;
             color: #1A56A8;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             z-index: 20;
             align-items: center;
             justify-content: center;
         }
-        .prog-nav-btn.prev { left: 8px; }
-        .prog-nav-btn.next { right: 8px; }
+
+        .prog-nav-btn.prev {
+            left: 8px;
+        }
+
+        .prog-nav-btn.next {
+            right: 8px;
+        }
 
         /* ── FOOTER LINK ── */
-        .footer-link { color: rgba(255,255,255,0.8); transition: color 0.2s; }
-        .footer-link:hover { color: white; }
+        .footer-link {
+            color: rgba(255, 255, 255, 0.8);
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: white;
+        }
 
         /* ════════════════════════════
            RESPONSIVE BREAKPOINTS
@@ -272,16 +374,27 @@
                 right: 24px;
                 padding: 0.75rem 1rem;
             }
-            .campus-badge span.text-xl  { font-size: 1rem; }
-            .campus-badge span.text-3xl { font-size: 1.5rem; }
-            .campus-badge span.text-lg  { font-size: 0.9rem; }
+
+            .campus-badge span.text-xl {
+                font-size: 1rem;
+            }
+
+            .campus-badge span.text-3xl {
+                font-size: 1.5rem;
+            }
+
+            .campus-badge span.text-lg {
+                font-size: 0.9rem;
+            }
         }
 
         /* Mobile — sm (640px) */
         @media (max-width: 767px) {
 
             /* Hero */
-            .bg-gradient-hero { min-height: 340px; }
+            .bg-gradient-hero {
+                min-height: 340px;
+            }
 
             .hero-content {
                 padding-bottom: 120px !important;
@@ -307,7 +420,7 @@
                dengan asumsi layout horizontal. Setelah diubah jadi column di atas,
                margin-left itu masih nempel dan bikin tombol kedua overflow ke kanan.
                Reset di sini supaya tidak konflik. */
-            .hero-content .flex.space-x-4 > * {
+            .hero-content .flex.space-x-4>* {
                 margin-left: 0 !important;
             }
 
@@ -319,65 +432,120 @@
             }
 
             /* Badge kampus — sembunyikan di layar kecil agar tidak menimpa teks */
-            .campus-badge { display: none; }
+            .campus-badge {
+                display: none;
+            }
 
             /* Visi Misi */
-            .p-8.mt-6 { padding: 1.25rem !important; }
-            .p-8.mt-6 h2 { font-size: 1.1rem !important; }
+            .p-8.mt-6 {
+                padding: 1.25rem !important;
+            }
+
+            .p-8.mt-6 h2 {
+                font-size: 1.1rem !important;
+            }
+
             .p-8.mt-6 p,
-            .p-8.mt-6 li { font-size: 0.88rem !important; }
+            .p-8.mt-6 li {
+                font-size: 0.88rem !important;
+            }
 
             /* Program Studi */
-            .study-card { height: 230px; }
-            .prog-nav-btn { display: none !important; }
+            .study-card {
+                height: 230px;
+            }
+
+            .prog-nav-btn {
+                display: none !important;
+            }
 
             /* Carousel galeri */
-            .carousel-container { height: 240px !important; }
+            .carousel-container {
+                height: 240px !important;
+            }
 
             /* Jalur Masuk */
-            .jalur-slider-container { padding: 0 50px; }
+            .jalur-slider-container {
+                padding: 0 50px;
+            }
+
             .jalur-card {
                 min-width: calc(100% - 0px);
                 height: auto;
                 min-height: 220px;
                 padding: 20px 18px;
             }
+
             .jalur-card-header {
                 font-size: 1rem;
                 padding: 10px 15px;
             }
-            .jalur-card-content { font-size: 0.88rem; }
-            .jalur-nav-btn { width: 38px; height: 38px; font-size: 1.5rem; }
+
+            .jalur-card-content {
+                font-size: 0.88rem;
+            }
+
+            .jalur-nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1.5rem;
+            }
 
             /* Footer grid */
-            footer .grid { grid-template-columns: 1fr 1fr !important; gap: 1.5rem !important; }
+            footer .grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 1.5rem !important;
+            }
         }
 
         @media (max-width: 480px) {
+
             /* Hero */
-            .hero-content h1 { font-size: 1.35rem !important; }
-            .bg-gradient-hero { min-height: 300px; }
-            .hero-building-image { width: 160%; opacity: 0.35; }
+            .hero-content h1 {
+                font-size: 1.35rem !important;
+            }
+
+            .bg-gradient-hero {
+                min-height: 300px;
+            }
+
+            .hero-building-image {
+                width: 160%;
+                opacity: 0.35;
+            }
 
             /* Visi Misi full padding */
-            .p-8.mt-6 { padding: 1rem !important; }
+            .p-8.mt-6 {
+                padding: 1rem !important;
+            }
 
             /* Jalur */
-            .jalur-card { min-width: calc(100%); }
+            .jalur-card {
+                min-width: calc(100%);
+            }
 
             /* Footer single column */
-            footer .grid { grid-template-columns: 1fr !important; }
+            footer .grid {
+                grid-template-columns: 1fr !important;
+            }
         }
 
         /* Fix: tablet 768–1024 jalur masuk */
         @media (min-width: 769px) and (max-width: 1200px) {
-            .jalur-card { min-width: calc(33.333% - 14px); }
+            .jalur-card {
+                min-width: calc(33.333% - 14px);
+            }
         }
+
         @media (min-width: 481px) and (max-width: 768px) {
-            .jalur-card { min-width: calc(50% - 10px); height: 260px; }
+            .jalur-card {
+                min-width: calc(50% - 10px);
+                height: 260px;
+            }
         }
     </style>
 </head>
+
 <body class="bg-[#FDFDFC] text-[#1b1b18] min-h-screen">
 
     {{-- ══════════════════════════════
@@ -401,14 +569,17 @@
 
             {{-- Desktop auth --}}
             <div class="flex items-center space-x-3 text-sm desktop-auth">
-                <a href="{{ route('login') }}" class="px-5 py-2 font-semibold transition-all border rounded-md border-polihasnur-blue text-polihasnur-blue hover:bg-polihasnur-blue">Login</a>
-                <a href="{{ route('register') }}" class="px-5 py-2 font-semibold text-white transition-all border rounded-md bg-polihasnur-blue border-polihasnur-blue hover:bg-blue-700">Register</a>
+                <a href="{{ route('login') }}"
+                    class="px-5 py-2 font-semibold transition-all border rounded-md border-polihasnur-blue text-polihasnur-blue hover:bg-polihasnur-blue">Login</a>
+                <a href="{{ route('register') }}"
+                    class="px-5 py-2 font-semibold text-white transition-all border rounded-md bg-polihasnur-blue border-polihasnur-blue hover:bg-blue-700">Register</a>
             </div>
 
             {{-- Hamburger (mobile only) --}}
             <button class="hamburger-btn" id="hamburgerBtn" aria-label="Buka menu">
-                <svg id="hamburgerIcon" class="text-gray-700 w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                <svg id="hamburgerIcon" class="text-gray-700 w-7 h-7" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
         </div>
@@ -420,10 +591,8 @@
             <a href="#">Program Studi</a>
             <a href="#">About Us</a>
             <div class="mobile-auth">
-                <a href="{{ route('login') }}"
-                   style="border: 2px solid #1A56A8; color: #1A56A8;">Log In</a>
-                <a href="{{ route('register') }}"
-                   style="background: #1A56A8; color: white;">Register</a>
+                <a href="{{ route('login') }}" style="border: 2px solid #1A56A8; color: #1A56A8;">Log In</a>
+                <a href="{{ route('register') }}" style="background: #1A56A8; color: white;">Register</a>
             </div>
         </div>
     </nav>
@@ -446,20 +615,22 @@
                         Selamat Datang di<br> Sistem Informasi Ujian Politeknik Hasnur<br>(SIU-POLIHASNUR)
                     </h1>
                     <p class="max-w-lg mb-8 text-base text-gray-700">
-                        Melalui sistem ini, calon mahasiswa dapat melakukan pendaftaran dan mengikuti tes secara praktis dalam satu tempat. Mari mulai perjalananmu bersama Politeknik Hasnur dan raih cita-cita melalui pendidikan vokasi terbaik.
+                        Melalui sistem ini, calon mahasiswa dapat melakukan pendaftaran dan mengikuti tes secara praktis
+                        dalam satu tempat. Mari mulai perjalananmu bersama Politeknik Hasnur dan raih cita-cita melalui
+                        pendidikan vokasi terbaik.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="{{ route('register') }}" class="inline-block px-8 py-3 text-base font-semibold text-white transition-all rounded-md bg-polihasnur-blue hover:bg-blue-700">Daftar Sekarang</a>
-                        <a href="#" class="inline-block px-8 py-3 text-base font-semibold transition-all border rounded-md border-polihasnur-blue text-polihasnur-blue hover:bg-blue-50">Pelajari Lebih Lanjut</a>
+                        <a href="{{ route('register') }}"
+                            class="inline-block px-8 py-3 text-base font-semibold text-white transition-all rounded-md bg-polihasnur-blue hover:bg-blue-700">Daftar
+                            Sekarang</a>
+                        <a href="#"
+                            class="inline-block px-8 py-3 text-base font-semibold transition-all border rounded-md border-polihasnur-blue text-polihasnur-blue hover:bg-blue-50">Pelajari
+                            Lebih Lanjut</a>
                     </div>
                 </div>
             </div>
 
-            <img
-                src="{{ asset('images/proyek 3.png') }}"
-                alt="Gedung Politeknik Hasnur"
-                class="hero-building-image"
-            />
+            <img src="{{ asset('images/proyek 3.png') }}" alt="Gedung Politeknik Hasnur" class="hero-building-image" />
         </div>
 
         {{-- ══════════════════════════════
@@ -469,18 +640,26 @@
             <div class="mb-8 text-center">
                 <h2 class="mb-1 text-xl font-bold text-polihasnur-blue">VISI</h2>
                 <p class="max-w-4xl mx-auto text-base text-gray-700">
-                    Menjadikan Politeknik yang Unggul Berbasis Kompetensi Kerja dan Berkarakter Kewirausahaan serta Profesional di Bidangnya.
+                    Menjadikan Politeknik yang Unggul Berbasis Kompetensi Kerja dan Berkarakter Kewirausahaan serta
+                    Profesional di Bidangnya.
                 </p>
             </div>
             <hr class="my-6 border-gray-200">
             <div>
                 <h2 class="mb-4 text-xl font-bold text-center text-polihasnur-blue">MISI</h2>
-                <p class="mb-4 text-base text-gray-700">Untuk mewujudkan visi Polihasnur, ditetapkan misi sebagai berikut :</p>
+                <p class="mb-4 text-base text-gray-700">Untuk mewujudkan visi Polihasnur, ditetapkan misi sebagai
+                    berikut :</p>
                 <ol class="pl-4 space-y-3 text-base text-gray-700 list-decimal list-inside">
-                    <li>Menyelenggarakan program pendidikan vokasi integrative dan bermutu, memiliki relevansi kompetensi kerja yang sesuai kebutuhan dunia usaha maupan industri serta didukung oleh leadership, managerial skills, entrepreneurship.</li>
-                    <li>Melaksankan penelitian terapan maupun risert inovasi IPTEKS dalam produk atau konsep yang berdaya guna untuk kegiatan produktif lembaga, pengembangan keilmuan, peningkatan mutu perekonomian masyarakat serta industri.</li>
-                    <li>Berperan aktif dalam program pengabdian masyarakat dengan memberikan solusi dari segi kepraktisan dan kemanfaatan, untuk mendorong daya saing.</li>
-                    <li>Meningkatkan mutu lembaga secara berkelanjutan dengan system tata kelola yang baik (good governance) melalui standarisasi secara internal dan eksternal.</li>
+                    <li>Menyelenggarakan program pendidikan vokasi integrative dan bermutu, memiliki relevansi
+                        kompetensi kerja yang sesuai kebutuhan dunia usaha maupan industri serta didukung oleh
+                        leadership, managerial skills, entrepreneurship.</li>
+                    <li>Melaksankan penelitian terapan maupun risert inovasi IPTEKS dalam produk atau konsep yang
+                        berdaya guna untuk kegiatan produktif lembaga, pengembangan keilmuan, peningkatan mutu
+                        perekonomian masyarakat serta industri.</li>
+                    <li>Berperan aktif dalam program pengabdian masyarakat dengan memberikan solusi dari segi
+                        kepraktisan dan kemanfaatan, untuk mendorong daya saing.</li>
+                    <li>Meningkatkan mutu lembaga secara berkelanjutan dengan system tata kelola yang baik (good
+                        governance) melalui standarisasi secara internal dan eksternal.</li>
                 </ol>
             </div>
         </div>
@@ -495,72 +674,108 @@
                 <button id="progPrev" aria-label="Prev program" class="hidden prog-nav-btn md:flex" style="left: 8px;">
                     ‹
                 </button>
-                <button id="progNext" aria-label="Next program" class="hidden prog-nav-btn md:flex" style="right: 8px;">
+                <button id="progNext" aria-label="Next program" class="hidden prog-nav-btn md:flex"
+                    style="right: 8px;">
                     ›
                 </button>
 
                 <div id="programViewport" class="px-4 overflow-x-auto scroll-smooth no-scrollbar md:px-6">
                     <div id="programSlider" class="flex items-stretch gap-6 py-4">
 
-                        <a href="#" class="study-card min-w-[320px] md:min-w-[320px] lg:min-w-[320px]" style="background-image: url('{{ asset('images/TO.jpg') }}');">
+                        <a href="#" class="study-card min-w-[320px] md:min-w-[320px] lg:min-w-[320px]"
+                            style="background-image: url('{{ asset('images/TO.jpg') }}');">
                             <div class="study-card-content">
                                 <span class="text-xl font-semibold">Teknik Otomotif</span>
-                                <div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                <div
+                                    class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7"></path>
+                                    </svg>
                                 </div>
                             </div>
                         </a>
 
-                        <a href="#" class="study-card min-w-[320px]" style="background-image: url('{{ asset('images/btp.jpg') }}');">
+                        <a href="#" class="study-card min-w-[320px]"
+                            style="background-image: url('{{ asset('images/btp.jpg') }}');">
                             <div class="study-card-content">
                                 <span class="text-xl font-semibold">Budidaya Tanaman Perkebunan</span>
-                                <div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                <div
+                                    class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7"></path>
+                                    </svg>
                                 </div>
                             </div>
                         </a>
 
-                        <a href="#" class="study-card min-w-[320px]" style="background-image: url('{{ asset('images/TI.jpg') }}');">
+                        <a href="#" class="study-card min-w-[320px]"
+                            style="background-image: url('{{ asset('images/TI.jpg') }}');">
                             <div class="study-card-content">
                                 <span class="text-xl font-semibold">Teknik Informatika</span>
-                                <div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                <div
+                                    class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7"></path>
+                                    </svg>
                                 </div>
                             </div>
                         </a>
 
-                        <a href="#" class="study-card min-w-[320px]" style="background-image: url('{{ asset('images/BD.jpg') }}');">
+                        <a href="#" class="study-card min-w-[320px]"
+                            style="background-image: url('{{ asset('images/BD.jpg') }}');">
                             <div class="study-card-content">
                                 <span class="text-xl font-semibold">Bisnis Digital</span>
-                                <div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                <div
+                                    class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7"></path>
+                                    </svg>
                                 </div>
                             </div>
                         </a>
 
-                        <a href="#" class="study-card min-w-[320px]" style="background-image: url('{{ asset('images/ABD.jpg') }}');">
+                        <a href="#" class="study-card min-w-[320px]"
+                            style="background-image: url('{{ asset('images/ABD.jpg') }}');">
                             <div class="study-card-content">
                                 <span class="text-xl font-semibold">Akuntansi Bisnis Digital</span>
-                                <div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                <div
+                                    class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7"></path>
+                                    </svg>
                                 </div>
                             </div>
                         </a>
 
-                        <a href="#" class="study-card min-w-[320px]" style="background-image: url('{{ asset('images/MPI.jpg') }}');">
+                        <a href="#" class="study-card min-w-[320px]"
+                            style="background-image: url('{{ asset('images/MPI.jpg') }}');">
                             <div class="study-card-content">
                                 <span class="text-xl font-semibold">Manajemen Pemasaran Internasional</span>
-                                <div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                <div
+                                    class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7"></path>
+                                    </svg>
                                 </div>
                             </div>
                         </a>
 
-                        <a href="#" class="study-card min-w-[320px]" style="background-image: url('{{ asset('images/TRM.jpg') }}');">
+                        <a href="#" class="study-card min-w-[320px]"
+                            style="background-image: url('{{ asset('images/TRM.jpg') }}');">
                             <div class="study-card-content">
                                 <span class="text-xl font-semibold">Teknologi Rekayasa Multimedia</span>
-                                <div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                <div
+                                    class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-polihasnur-blue">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7"></path>
+                                    </svg>
                                 </div>
                             </div>
                         </a>
@@ -584,25 +799,29 @@
                     <div class="jalur-card">
                         <div class="jalur-card-header">Mandiri</div>
                         <div class="jalur-card-content">
-                            Jalur masuk dengan biaya kuliah sesuai dengan ketentuan, dan biaya pendidikan dapat diangsur dalam beberapa kali pembayaran.
+                            Jalur masuk dengan biaya kuliah sesuai dengan ketentuan, dan biaya pendidikan dapat diangsur
+                            dalam beberapa kali pembayaran.
                         </div>
                     </div>
                     <div class="jalur-card">
                         <div class="jalur-card-header">Beasiswa Unggulan</div>
                         <div class="jalur-card-content">
-                            Jalur masuk dengan biaya kuliah sesuai dengan ketentuan, dan biaya pendidikan dapat diangsur dalam beberapa kali pembayaran.
+                            Jalur masuk dengan biaya kuliah sesuai dengan ketentuan, dan biaya pendidikan dapat diangsur
+                            dalam beberapa kali pembayaran.
                         </div>
                     </div>
                     <div class="jalur-card">
                         <div class="jalur-card-header">Berdikari</div>
                         <div class="jalur-card-content">
-                            Jalur masuk dengan biaya kuliah sesuai dengan ketentuan, dan biaya pendidikan dapat diangsur dalam beberapa kali pembayaran.
+                            Jalur masuk dengan biaya kuliah sesuai dengan ketentuan, dan biaya pendidikan dapat diangsur
+                            dalam beberapa kali pembayaran.
                         </div>
                     </div>
                     <div class="jalur-card">
                         <div class="jalur-card-header">KIP Kuliah</div>
                         <div class="jalur-card-content">
-                            Jalur masuk dengan biaya kuliah sesuai dengan ketentuan, dan biaya pendidikan dapat diangsur dalam beberapa kali pembayaran.
+                            Jalur masuk dengan biaya kuliah sesuai dengan ketentuan, dan biaya pendidikan dapat diangsur
+                            dalam beberapa kali pembayaran.
                         </div>
                     </div>
                 </div>
@@ -620,30 +839,41 @@
     ══════════════════════════════ --}}
     <section class="mb-12">
         <div class="relative w-full px-4 mx-auto max-w-7xl">
-            <div
-                x-data="{ activeSlide: 0, totalSlides: 3,
-                            next() { this.activeSlide = (this.activeSlide + 1) % this.totalSlides },
-                            prev() { this.activeSlide = (this.activeSlide - 1 + this.totalSlides) % this.totalSlides } }"
-                class="overflow-hidden rounded-lg shadow-xl carousel-container"
+            <div x-data="{
+                activeSlide: 0,
+                totalSlides: 3,
+                next() { this.activeSlide = (this.activeSlide + 1) % this.totalSlides },
+                prev() { this.activeSlide = (this.activeSlide - 1 + this.totalSlides) % this.totalSlides }
+            }" class="overflow-hidden rounded-lg shadow-xl carousel-container"
                 style="height: 450px;">
 
                 <div class="h-full carousel-wrapper" :style="`transform: translateX(-${activeSlide * 100}%)`">
-                    <div class="h-full carousel-item"><img src="{{ asset('images/Polihasnur_1.png') }}" alt="Acara Politeknik Hasnur 1" class="object-cover w-full h-full" /></div>
-                    <div class="h-full carousel-item"><img src="{{ asset('images/DiesNatalis.png') }}" alt="Acara Politeknik Hasnur 2" class="object-cover w-full h-full" /></div>
-                    <div class="h-full carousel-item"><img src="{{ asset('images/Leadership.jpg') }}" alt="Acara Politeknik Hasnur 3" class="object-cover w-full h-full" /></div>
+                    <div class="h-full carousel-item"><img src="{{ asset('images/Polihasnur_1.png') }}"
+                            alt="Acara Politeknik Hasnur 1" class="object-cover w-full h-full" /></div>
+                    <div class="h-full carousel-item"><img src="{{ asset('images/DiesNatalis.png') }}"
+                            alt="Acara Politeknik Hasnur 2" class="object-cover w-full h-full" /></div>
+                    <div class="h-full carousel-item"><img src="{{ asset('images/Leadership.jpg') }}"
+                            alt="Acara Politeknik Hasnur 3" class="object-cover w-full h-full" /></div>
                 </div>
 
-                <button @click="prev()" class="absolute z-20 p-2 text-white transition-all transform -translate-y-1/2 bg-white rounded-full top-1/2 left-4 bg-opacity-30 hover:bg-opacity-50">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                <button @click="prev()"
+                    class="absolute z-20 p-2 text-white transition-all transform -translate-y-1/2 bg-white rounded-full top-1/2 left-4 bg-opacity-30 hover:bg-opacity-50">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
+                        </path>
+                    </svg>
                 </button>
-                <button @click="next()" class="absolute z-20 p-2 text-white transition-all transform -translate-y-1/2 bg-white rounded-full top-1/2 right-4 bg-opacity-30 hover:bg-opacity-50">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                <button @click="next()"
+                    class="absolute z-20 p-2 text-white transition-all transform -translate-y-1/2 bg-white rounded-full top-1/2 right-4 bg-opacity-30 hover:bg-opacity-50">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                        </path>
+                    </svg>
                 </button>
 
                 <div class="absolute left-0 right-0 z-20 flex justify-center space-x-2 bottom-4">
                     <template x-for="i in totalSlides" :key="i">
-                        <span
-                            @click="activeSlide = i - 1"
+                        <span @click="activeSlide = i - 1"
                             :class="{ 'opacity-100': activeSlide === i - 1, 'opacity-50': activeSlide !== i - 1 }"
                             class="w-3 h-3 transition-opacity bg-white rounded-full cursor-pointer">
                         </span>
@@ -663,13 +893,18 @@
                 <div class="pr-4">
                     <h3 class="mb-4 text-base font-bold">Follow</h3>
                     <p class="mb-4 text-white text-opacity-80">
-                        We believe every challenge is a chance to innovate, inspire, and create a brighter future for education.
+                        We believe every challenge is a chance to innovate, inspire, and create a brighter future for
+                        education.
                     </p>
                     <div class="flex space-x-3">
-                        <a href="https://facebook.com/polihasnur" target="_blank" class="flex items-center justify-center w-8 h-8 bg-white rounded-full bg-opacity-20 hover:bg-opacity-40">F</a>
-                        <a href="https://twitter.com/polihasnur_" target="_blank" class="flex items-center justify-center w-8 h-8 bg-white rounded-full bg-opacity-20 hover:bg-opacity-40">T</a>
-                        <a href="https://instagram.com/polihasnur" target="_blank" class="flex items-center justify-center w-8 h-8 bg-white rounded-full bg-opacity-20 hover:bg-opacity-40">I</a>
-                        <a href="https://youtube.com/@politeknikhasnur" target="_blank" class="flex items-center justify-center w-8 h-8 bg-white rounded-full bg-opacity-20 hover:bg-opacity-40">Y</a>
+                        <a href="https://facebook.com/polihasnur" target="_blank"
+                            class="flex items-center justify-center w-8 h-8 bg-white rounded-full bg-opacity-20 hover:bg-opacity-40">F</a>
+                        <a href="https://twitter.com/polihasnur_" target="_blank"
+                            class="flex items-center justify-center w-8 h-8 bg-white rounded-full bg-opacity-20 hover:bg-opacity-40">T</a>
+                        <a href="https://instagram.com/polihasnur" target="_blank"
+                            class="flex items-center justify-center w-8 h-8 bg-white rounded-full bg-opacity-20 hover:bg-opacity-40">I</a>
+                        <a href="https://youtube.com/@politeknikhasnur" target="_blank"
+                            class="flex items-center justify-center w-8 h-8 bg-white rounded-full bg-opacity-20 hover:bg-opacity-40">Y</a>
                     </div>
                 </div>
 
@@ -689,9 +924,11 @@
                 <div class="pr-4">
                     <h3 class="mb-4 text-base font-bold">Lokasi</h3>
                     <p class="mb-2 font-semibold">Kampus 1</p>
-                    <p class="mb-4 text-white text-opacity-80">Jl. Brigjen H. Hasan Basri, Handil Bakti, Ray 5, Kec. Alalak, Kab. Barito Kuala, Prov. Kalimantan Selatan</p>
+                    <p class="mb-4 text-white text-opacity-80">Jl. Brigjen H. Hasan Basri, Handil Bakti, Ray 5, Kec.
+                        Alalak, Kab. Barito Kuala, Prov. Kalimantan Selatan</p>
                     <p class="mb-2 font-semibold">Kampus 2</p>
-                    <p class="text-white text-opacity-80">Jl. Jend. Ahmad Yani KM.3,5 No.115A, Kota Banjarmasin, Kalimantan Selatan 70234</p>
+                    <p class="text-white text-opacity-80">Jl. Jend. Ahmad Yani KM.3,5 No.115A, Kota Banjarmasin,
+                        Kalimantan Selatan 70234</p>
                 </div>
 
                 <div>
@@ -711,96 +948,109 @@
     </footer>
 
     <script>
-    /* ── HAMBURGER ── */
-    const hamburgerBtn  = document.getElementById('hamburgerBtn');
-    const mobileMenu    = document.getElementById('mobileMenu');
-    const hamburgerIcon = document.getElementById('hamburgerIcon');
+        /* ── HAMBURGER ── */
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const hamburgerIcon = document.getElementById('hamburgerIcon');
 
-    hamburgerBtn.addEventListener('click', () => {
-        const isOpen = mobileMenu.classList.toggle('open');
-        hamburgerIcon.innerHTML = isOpen
-            ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>'
-            : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>';
-    });
-
-    /* ── PROGRAM STUDI SLIDER (prev/next di desktop) ── */
-    const programViewport = document.getElementById('programViewport');
-    const progPrevBtn = document.getElementById('progPrev');
-    const progNextBtn = document.getElementById('progNext');
-    if (programViewport && progPrevBtn && progNextBtn) {
-        const scrollAmount = 340;
-        progPrevBtn.addEventListener('click', () => {
-            programViewport.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        hamburgerBtn.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('open');
+            hamburgerIcon.innerHTML = isOpen ?
+                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>' :
+                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>';
         });
-        progNextBtn.addEventListener('click', () => {
-            programViewport.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-        });
-    }
 
-    /* ── JALUR MASUK SLIDER ── */
-    const jalurSlider          = document.getElementById('jalurSlider');
-    const jalurPrevBtn         = document.getElementById('jalurPrevBtn');
-    const jalurNextBtn         = document.getElementById('jalurNextBtn');
-    const jalurDotsContainer   = document.getElementById('jalurDots');
-    const jalurCards           = jalurSlider.querySelectorAll('.jalur-card');
-
-    let jalurCurrentIndex  = 0;
-    let jalurCardsToShow   = 4;
-
-    function updateJalurCardsToShow() {
-        if      (window.innerWidth <= 480)  jalurCardsToShow = 1;
-        else if (window.innerWidth <= 768)  jalurCardsToShow = 2;
-        else if (window.innerWidth <= 1200) jalurCardsToShow = 3;
-        else                                jalurCardsToShow = 4;
-        jalurCurrentIndex = 0;
-        updateJalurSlider();
-        createJalurDots();
-    }
-
-    function createJalurDots() {
-        const totalDots = Math.max(1, jalurCards.length - jalurCardsToShow + 1);
-        jalurDotsContainer.innerHTML = '';
-        for (let i = 0; i < totalDots; i++) {
-            const dot = document.createElement('div');
-            dot.classList.add('jalur-dot');
-            if (i === jalurCurrentIndex) dot.classList.add('active');
-            dot.addEventListener('click', () => goToJalurSlide(i));
-            jalurDotsContainer.appendChild(dot);
+        /* ── PROGRAM STUDI SLIDER (prev/next di desktop) ── */
+        const programViewport = document.getElementById('programViewport');
+        const progPrevBtn = document.getElementById('progPrev');
+        const progNextBtn = document.getElementById('progNext');
+        if (programViewport && progPrevBtn && progNextBtn) {
+            const scrollAmount = 340;
+            progPrevBtn.addEventListener('click', () => {
+                programViewport.scrollBy({
+                    left: -scrollAmount,
+                    behavior: 'smooth'
+                });
+            });
+            progNextBtn.addEventListener('click', () => {
+                programViewport.scrollBy({
+                    left: scrollAmount,
+                    behavior: 'smooth'
+                });
+            });
         }
-    }
 
-    function updateJalurDots() {
-        const dots = jalurDotsContainer.querySelectorAll('.jalur-dot');
-        dots.forEach((dot, index) => dot.classList.toggle('active', index === jalurCurrentIndex));
-    }
+        /* ── JALUR MASUK SLIDER ── */
+        const jalurSlider = document.getElementById('jalurSlider');
+        const jalurPrevBtn = document.getElementById('jalurPrevBtn');
+        const jalurNextBtn = document.getElementById('jalurNextBtn');
+        const jalurDotsContainer = document.getElementById('jalurDots');
+        const jalurCards = jalurSlider.querySelectorAll('.jalur-card');
 
-    function updateJalurSlider() {
-        const cardWidth = jalurCards[0].offsetWidth;
-        const gap       = 20;
-        const offset    = -(jalurCurrentIndex * (cardWidth + gap));
-        jalurSlider.style.transform = `translateX(${offset}px)`;
-        updateJalurDots();
-    }
+        let jalurCurrentIndex = 0;
+        let jalurCardsToShow = 4;
 
-    function goToJalurSlide(index) {
-        const maxIndex    = Math.max(0, jalurCards.length - jalurCardsToShow);
-        jalurCurrentIndex = Math.max(0, Math.min(index, maxIndex));
-        updateJalurSlider();
-    }
+        function updateJalurCardsToShow() {
+            if (window.innerWidth <= 480) jalurCardsToShow = 1;
+            else if (window.innerWidth <= 768) jalurCardsToShow = 2;
+            else if (window.innerWidth <= 1200) jalurCardsToShow = 3;
+            else jalurCardsToShow = 4;
+            jalurCurrentIndex = 0;
+            updateJalurSlider();
+            createJalurDots();
+        }
 
-    function nextJalurSlide() {
-        const maxIndex = Math.max(0, jalurCards.length - jalurCardsToShow);
-        if (jalurCurrentIndex < maxIndex) { jalurCurrentIndex++; updateJalurSlider(); }
-    }
+        function createJalurDots() {
+            const totalDots = Math.max(1, jalurCards.length - jalurCardsToShow + 1);
+            jalurDotsContainer.innerHTML = '';
+            for (let i = 0; i < totalDots; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('jalur-dot');
+                if (i === jalurCurrentIndex) dot.classList.add('active');
+                dot.addEventListener('click', () => goToJalurSlide(i));
+                jalurDotsContainer.appendChild(dot);
+            }
+        }
 
-    function prevJalurSlide() {
-        if (jalurCurrentIndex > 0) { jalurCurrentIndex--; updateJalurSlider(); }
-    }
+        function updateJalurDots() {
+            const dots = jalurDotsContainer.querySelectorAll('.jalur-dot');
+            dots.forEach((dot, index) => dot.classList.toggle('active', index === jalurCurrentIndex));
+        }
 
-    jalurPrevBtn.addEventListener('click', prevJalurSlide);
-    jalurNextBtn.addEventListener('click', nextJalurSlide);
-    window.addEventListener('resize', updateJalurCardsToShow);
-    updateJalurCardsToShow();
+        function updateJalurSlider() {
+            const cardWidth = jalurCards[0].offsetWidth;
+            const gap = 20;
+            const offset = -(jalurCurrentIndex * (cardWidth + gap));
+            jalurSlider.style.transform = `translateX(${offset}px)`;
+            updateJalurDots();
+        }
+
+        function goToJalurSlide(index) {
+            const maxIndex = Math.max(0, jalurCards.length - jalurCardsToShow);
+            jalurCurrentIndex = Math.max(0, Math.min(index, maxIndex));
+            updateJalurSlider();
+        }
+
+        function nextJalurSlide() {
+            const maxIndex = Math.max(0, jalurCards.length - jalurCardsToShow);
+            if (jalurCurrentIndex < maxIndex) {
+                jalurCurrentIndex++;
+                updateJalurSlider();
+            }
+        }
+
+        function prevJalurSlide() {
+            if (jalurCurrentIndex > 0) {
+                jalurCurrentIndex--;
+                updateJalurSlider();
+            }
+        }
+
+        jalurPrevBtn.addEventListener('click', prevJalurSlide);
+        jalurNextBtn.addEventListener('click', nextJalurSlide);
+        window.addEventListener('resize', updateJalurCardsToShow);
+        updateJalurCardsToShow();
     </script>
 </body>
+
 </html>

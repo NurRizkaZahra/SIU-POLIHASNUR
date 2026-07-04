@@ -15,7 +15,7 @@ class Notification extends Model
         'title',
         'message',
         'exam_schedule_id',
-        'exam_id',   
+        'exam_id',
         'is_read',
     ];
 
@@ -39,14 +39,13 @@ class Notification extends Model
     public function examSchedule()
     {
         // return $this->belongsTo(ExamSchedule::class);
-    return $this->belongsTo(ExamSchedule::class, 'exam_schedule_id');
-
+        return $this->belongsTo(ExamSchedule::class, 'exam_schedule_id');
     }
 
     public function exam()
-{
-    return $this->belongsTo(\App\Models\Exam::class);
-}
+    {
+        return $this->belongsTo(\App\Models\Exam::class);
+    }
     /**
      * Scope untuk notif belum dibaca
      */
@@ -75,17 +74,17 @@ class Notification extends Model
      * Buat notif approval jadwal ujian
      */
     public static function createExamApprovedNotification($userId, $examScheduleId, $examId)
-{
-    return self::create([
-        'user_id' => $userId,
-        'type' => 'exam',
-        'title' => 'Exam Request Approved',
-        'message' => 'Your exam request has been approved.',
-        'exam_schedule_id' => $examScheduleId,
-        'exam_id' => $examId,
-        'is_read' => 0,
-    ]);
-}
+    {
+        return self::create([
+            'user_id' => $userId,
+            'type' => 'exam',
+            'title' => 'Exam Request Approved',
+            'message' => 'Your exam request has been approved.',
+            'exam_schedule_id' => $examScheduleId,
+            'exam_id' => $examId,
+            'is_read' => 0,
+        ]);
+    }
 
     /**
      * Notif info umum

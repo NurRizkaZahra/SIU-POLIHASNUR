@@ -4,472 +4,480 @@
 @section('page-title', 'JADWAL UJIAN')
 
 @push('styles')
-<style>
-    .exam-schedule-container {
-        padding: 2rem;
-    }
-
-    .schedule-header {
-        background: white;
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .schedule-header h2 {
-        color: #0d47a1;
-        margin-bottom: 1rem;
-        font-size: 1.5rem;
-        font-weight: 600;
-    }
-
-    .schedule-card {
-        background: white;
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        border-left: 4px solid #0d47a1;
-    }
-
-    .schedule-title {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid #f5f5f5;
-    }
-
-    .schedule-title h3 {
-        color: #0d47a1;
-        font-size: 1.25rem;
-        font-weight: 600;
-        margin: 0;
-    }
-
-    .schedule-actions {
-        display: flex;
-        gap: 0.5rem;
-    }
-
-    .btn-action {
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-        font-size: 0.9rem;
-        font-weight: 500;
-        transition: all 0.3s;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .btn-edit {
-        background: #4caf50;
-        color: white;
-    }
-
-    .btn-edit:hover {
-        background: #45a049;
-    }
-
-    .btn-delete {
-        background: #f44336;
-        color: white;
-    }
-
-    .btn-delete:hover {
-        background: #da190b;
-    }
-
-    .btn-add {
-        background: #0d47a1;
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-        font-size: 1rem;
-        font-weight: 500;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        transition: all 0.3s;
-        text-decoration: none;
-    }
-
-    .btn-add:hover {
-        background: #0b3d91;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
-    }
-
-    .date-range-form {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-    .date-input-group {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .date-input-group label {
-        font-weight: 500;
-        color: #333;
-    }
-
-    .date-input {
-        padding: 0.5rem 1rem;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        font-size: 0.9rem;
-    }
-
-    .btn-save {
-        background: #cddc39;
-        color: #333;
-        padding: 0.5rem 1.5rem;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.3s;
-    }
-
-    .btn-save:hover {
-        background: #c0ca33;
-    }
-
-    .no-schedule {
-        text-align: center;
-        padding: 3rem;
-        color: #999;
-        background: white;
-        border-radius: 12px;
-    }
-
-    .no-schedule i {
-        font-size: 4rem;
-        margin-bottom: 1rem;
-        color: #ddd;
-    }
-
-    .alert {
-        padding: 1rem 1.5rem;
-        border-radius: 8px;
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        animation: slideDown 0.3s ease-out;
-    }
-
-    @keyframes slideDown {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
+    <style>
+        .exam-schedule-container {
+            padding: 2rem;
         }
-        to {
-            opacity: 1;
-            transform: translateY(0);
+
+        .schedule-header {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-    }
 
-    .alert-success {
-        background: #e8f5e9;
-        border-left: 4px solid #4caf50;
-        color: #2e7d32;
-    }
+        .schedule-header h2 {
+            color: #0d47a1;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
 
-    .alert-error {
-        background: #ffebee;
-        border-left: 4px solid #f44336;
-        color: #c62828;
-    }
-    /* =========================
-   TABLET RESPONSIVE
-========================= */
-@media (max-width: 1024px) {
+        .schedule-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #0d47a1;
+        }
 
-    .exam-schedule-container {
-        padding: 1.5rem;
-    }
+        .schedule-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f5f5f5;
+        }
 
-    .schedule-header {
-        padding: 1.25rem;
-    }
+        .schedule-title h3 {
+            color: #0d47a1;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
 
-    .schedule-title {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
+        .schedule-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
 
-    .schedule-actions {
-        width: 100%;
-        flex-wrap: wrap;
-    }
+        .btn-action {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-    .date-range-form {
-        flex-direction: column;
-        align-items: stretch;
-    }
+        .btn-edit {
+            background: #4caf50;
+            color: white;
+        }
 
-    .date-input-group {
-        width: 100%;
-        flex-direction: column;
-        align-items: flex-start;
-    }
+        .btn-edit:hover {
+            background: #45a049;
+        }
 
-    .date-input {
-        width: 100%;
-    }
+        .btn-delete {
+            background: #f44336;
+            color: white;
+        }
 
-    .btn-save {
-        width: 100%;
-    }
-}
+        .btn-delete:hover {
+            background: #da190b;
+        }
 
-/* =========================
-   MOBILE RESPONSIVE
-========================= */
-@media (max-width: 768px) {
+        .btn-add {
+            background: #0d47a1;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
 
-    .exam-schedule-container {
-        padding: 1rem;
-    }
+        .btn-add:hover {
+            background: #0b3d91;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
+        }
 
-    .schedule-header {
-        padding: 1rem;
-        border-radius: 10px;
-    }
+        .date-range-form {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-    .schedule-header > div {
-        flex-direction: column;
-        align-items: stretch !important;
-        gap: 1rem;
-    }
+        .date-input-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-    .schedule-header h2 {
-        font-size: 1.2rem;
-        text-align: center;
-    }
+        .date-input-group label {
+            font-weight: 500;
+            color: #333;
+        }
 
-    .btn-add {
-        width: 100%;
-        justify-content: center;
-        font-size: 0.95rem;
-    }
+        .date-input {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
 
-    .schedule-card {
-        padding: 1rem;
-        border-radius: 10px;
-    }
+        .btn-save {
+            background: #cddc39;
+            color: #333;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
 
-    .schedule-title {
-        gap: 0.8rem;
-        padding-bottom: 0.8rem;
-    }
+        .btn-save:hover {
+            background: #c0ca33;
+        }
 
-    .schedule-title h3 {
-        font-size: 1rem;
-        line-height: 1.5;
-    }
+        .no-schedule {
+            text-align: center;
+            padding: 3rem;
+            color: #999;
+            background: white;
+            border-radius: 12px;
+        }
 
-    .schedule-actions {
-        width: 100%;
-        flex-direction: column;
-    }
+        .no-schedule i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #ddd;
+        }
 
-    .schedule-actions a,
-    .schedule-actions form {
-        width: 100%;
-    }
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: slideDown 0.3s ease-out;
+        }
 
-    .btn-action {
-        width: 100%;
-        justify-content: center;
-    }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
 
-    .date-range-form {
-        gap: 0.8rem;
-    }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    .date-input-group label {
-        font-size: 0.9rem;
-    }
+        .alert-success {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            color: #2e7d32;
+        }
 
-    .date-input {
-        width: 100%;
-        font-size: 0.9rem;
-    }
+        .alert-error {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            color: #c62828;
+        }
 
-    .btn-save {
-        width: 100%;
-        padding: 0.75rem;
-    }
+        /* =========================
+       TABLET RESPONSIVE
+    ========================= */
+        @media (max-width: 1024px) {
 
-    .alert {
-        padding: 0.9rem 1rem;
-        font-size: 0.9rem;
-    }
+            .exam-schedule-container {
+                padding: 1.5rem;
+            }
 
-    .no-schedule {
-        padding: 2rem 1rem;
-    }
+            .schedule-header {
+                padding: 1.25rem;
+            }
 
-    .no-schedule i {
-        font-size: 3rem;
-    }
-}
+            .schedule-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
 
-/* =========================
-   SMALL MOBILE
-========================= */
-@media (max-width: 480px) {
+            .schedule-actions {
+                width: 100%;
+                flex-wrap: wrap;
+            }
 
-    .exam-schedule-container {
-        padding: 0.8rem;
-    }
+            .date-range-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
 
-    .schedule-header h2 {
-        font-size: 1.05rem;
-    }
+            .date-input-group {
+                width: 100%;
+                flex-direction: column;
+                align-items: flex-start;
+            }
 
-    .schedule-title h3 {
-        font-size: 0.95rem;
-    }
+            .date-input {
+                width: 100%;
+            }
 
-    .btn-add,
-    .btn-action,
-    .btn-save {
-        min-height: 44px;
-        font-size: 0.85rem;
-    }
+            .btn-save {
+                width: 100%;
+            }
+        }
 
-    .date-input {
-        padding: 0.65rem 0.8rem;
-    }
+        /* =========================
+       MOBILE RESPONSIVE
+    ========================= */
+        @media (max-width: 768px) {
 
-    .alert {
-        font-size: 0.85rem;
-    }
-}
+            .exam-schedule-container {
+                padding: 1rem;
+            }
 
-/* =========================
-   FIX OVERFLOW
-========================= */
-body {
-    overflow-x: hidden;
-}
+            .schedule-header {
+                padding: 1rem;
+                border-radius: 10px;
+            }
 
-.exam-schedule-container,
-.schedule-card,
-.schedule-header {
-    min-width: 0;
-}
+            .schedule-header>div {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 1rem;
+            }
 
-.schedule-title h3 {
-    word-break: break-word;
-}
-</style>
+            .schedule-header h2 {
+                font-size: 1.2rem;
+                text-align: center;
+            }
+
+            .btn-add {
+                width: 100%;
+                justify-content: center;
+                font-size: 0.95rem;
+            }
+
+            .schedule-card {
+                padding: 1rem;
+                border-radius: 10px;
+            }
+
+            .schedule-title {
+                gap: 0.8rem;
+                padding-bottom: 0.8rem;
+            }
+
+            .schedule-title h3 {
+                font-size: 1rem;
+                line-height: 1.5;
+            }
+
+            .schedule-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .schedule-actions a,
+            .schedule-actions form {
+                width: 100%;
+            }
+
+            .btn-action {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .date-range-form {
+                gap: 0.8rem;
+            }
+
+            .date-input-group label {
+                font-size: 0.9rem;
+            }
+
+            .date-input {
+                width: 100%;
+                font-size: 0.9rem;
+            }
+
+            .btn-save {
+                width: 100%;
+                padding: 0.75rem;
+            }
+
+            .alert {
+                padding: 0.9rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .no-schedule {
+                padding: 2rem 1rem;
+            }
+
+            .no-schedule i {
+                font-size: 3rem;
+            }
+        }
+
+        /* =========================
+       SMALL MOBILE
+    ========================= */
+        @media (max-width: 480px) {
+
+            .exam-schedule-container {
+                padding: 0.8rem;
+            }
+
+            .schedule-header h2 {
+                font-size: 1.05rem;
+            }
+
+            .schedule-title h3 {
+                font-size: 0.95rem;
+            }
+
+            .btn-add,
+            .btn-action,
+            .btn-save {
+                min-height: 44px;
+                font-size: 0.85rem;
+            }
+
+            .date-input {
+                padding: 0.65rem 0.8rem;
+            }
+
+            .alert {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* =========================
+       FIX OVERFLOW
+    ========================= */
+        body {
+            overflow-x: hidden;
+        }
+
+        .exam-schedule-container,
+        .schedule-card,
+        .schedule-header {
+            min-width: 0;
+        }
+
+        .schedule-title h3 {
+            word-break: break-word;
+        }
+    </style>
 @endpush
 
 @section('content')
-<div class="exam-schedule-container">
+    <div class="exam-schedule-container">
 
-     @if(session('error'))
-    <div class="alert alert-error">
-        <i class="fas fa-exclamation-circle"></i>
-        <span>{{ session('error') }}</span>
-    </div>
-    @endif
+        @if (session('error'))
+            <div class="alert alert-error">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>{{ session('error') }}</span>
+            </div>
+        @endif
 
-    @if(session('success'))
-    <div class="alert alert-success">
-        <i class="fas fa-check-circle"></i>
-        <span>{{ session('success') }}</span>
-    </div>
-    @endif
+        @if (session('success'))
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i>
+                <span>{{ session('success') }}</span>
+            </div>
+        @endif
 
-    @if($errors->any())
-    <div class="alert alert-error">
-        <i class="fas fa-exclamation-circle"></i>
-        <span>{{ $errors->first() }}</span>
-    </div>
-    @endif
+        @if ($errors->any())
+            <div class="alert alert-error">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>{{ $errors->first() }}</span>
+            </div>
+        @endif
 
-    <div class="schedule-header">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h2>Manage Exam Schedules</h2>
-            <a href="{{ route('admin.exam-schedule-create') }}" class="btn-add">
-                <i class="fas fa-plus"></i> Add Exam Schedule
-            </a>
-        </div>
-    </div>
-
-    @forelse($examSchedules as $schedule)
-    <div class="schedule-card">
-        <div class="schedule-title">
-            <h3>{{ $schedule->wave_name }} ({{ $schedule->start_date->format('d M Y') }} - {{ $schedule->end_date->format('d M Y') }})</h3>
-            <div class="schedule-actions">
-                <a href="{{ route('admin.exam-schedule-edit', $schedule->id) }}" class="btn-action btn-edit">
-                    <i class="fas fa-edit"></i> Edit
+        <div class="schedule-header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>Manage Exam Schedules</h2>
+                <a href="{{ route('admin.exam-schedule-create') }}" class="btn-add">
+                    <i class="fas fa-plus"></i> Add Exam Schedule
                 </a>
-                <form action="{{ route('admin.exam-schedule-destroy', $schedule->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this schedule?')">
+            </div>
+        </div>
+
+        @forelse($examSchedules as $schedule)
+            <div class="schedule-card">
+                <div class="schedule-title">
+                    <h3>{{ $schedule->wave_name }} ({{ $schedule->start_date->format('d M Y') }} -
+                        {{ $schedule->end_date->format('d M Y') }})</h3>
+                    <div class="schedule-actions">
+                        <a href="{{ route('admin.exam-schedule-edit', $schedule->id) }}" class="btn-action btn-edit">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <form action="{{ route('admin.exam-schedule-destroy', $schedule->id) }}" method="POST"
+                            style="display: inline;"
+                            onsubmit="return confirm('Are you sure you want to delete this schedule?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-action btn-delete">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <form action="{{ route('admin.exam-schedule-update', $schedule->id) }}" method="POST"
+                    class="date-range-form">
                     @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn-action btn-delete">
-                        <i class="fas fa-trash"></i> Delete
-                    </button>
+                    @method('PUT')
+                    <div class="date-input-group">
+                        <label>Exam Date:</label>
+                        <input type="date" class="date-input" name="start_date"
+                            value="{{ $schedule->start_date->format('Y-m-d') }}" required>
+                    </div>
+                    <span style="color: #999;">to</span>
+                    <div class="date-input-group">
+                        <input type="date" class="date-input" name="end_date"
+                            value="{{ $schedule->end_date->format('Y-m-d') }}" required>
+                    </div>
+                    <input type="hidden" name="wave_name" value="{{ $schedule->wave_name }}">
+                    <input type="hidden" name="participant_quota" value="{{ $schedule->participant_quota }}">
+                    <input type="hidden" name="status" value="{{ $schedule->status }}">
+                    <button type="submit" class="btn-save">Save</button>
                 </form>
             </div>
-        </div>
-        
-        <form action="{{ route('admin.exam-schedule-update', $schedule->id) }}" method="POST" class="date-range-form">
-            @csrf
-            @method('PUT')
-            <div class="date-input-group">
-                <label>Exam Date:</label>
-                <input type="date" class="date-input" name="start_date" value="{{ $schedule->start_date->format('Y-m-d') }}" required>
+
+        @empty
+            <div class="no-schedule">
+                <i class="fas fa-calendar-times"></i>
+                <p>No exam schedule found. Click "Add Exam Schedule" to create a new one.</p>
             </div>
-            <span style="color: #999;">to</span>
-            <div class="date-input-group">
-                <input type="date" class="date-input" name="end_date" value="{{ $schedule->end_date->format('Y-m-d') }}" required>
-            </div>
-            <input type="hidden" name="wave_name" value="{{ $schedule->wave_name }}">
-            <input type="hidden" name="participant_quota" value="{{ $schedule->participant_quota }}">
-            <input type="hidden" name="status" value="{{ $schedule->status }}">
-            <button type="submit" class="btn-save">Save</button>
-        </form>
+        @endforelse
     </div>
-    
-    @empty
-    <div class="no-schedule">
-        <i class="fas fa-calendar-times"></i>
-        <p>No exam schedule found. Click "Add Exam Schedule" to create a new one.</p>
-    </div>
-    @endforelse
-</div>
 @endsection
 
 @push('scripts')
-<script>
-// Auto hide alert after 5 seconds
-setTimeout(function() {
-    const alerts = document.querySelectorAll('.alert');
-    alerts.forEach(alert => {
-        alert.style.animation = 'slideUp 0.3s ease-out';
-        setTimeout(() => alert.remove(), 300);
-    });
-}, 5000);
-</script>
+    <script>
+        // Auto hide alert after 5 seconds
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.animation = 'slideUp 0.3s ease-out';
+                setTimeout(() => alert.remove(), 300);
+            });
+        }, 5000);
+    </script>
 @endpush

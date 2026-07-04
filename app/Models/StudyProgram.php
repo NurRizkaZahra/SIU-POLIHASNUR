@@ -18,6 +18,6 @@ class StudyProgram extends Model
     public function programSelections()
     {
         return $this->hasMany(ProgramSelection::class, 'id_program_1')
-                    ->orWhere('id_program_2', $this->id_program);
+            ->orWhere('id_program_2', $this->id_program);
     }
 }

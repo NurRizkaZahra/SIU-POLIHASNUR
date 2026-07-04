@@ -4,421 +4,438 @@
 @section('page-title', 'DETAIL PENDAFTAR')
 
 @section('content')
-<style>
-    .pendaftaran-container {
-        max-width: 1000px;
-        margin: 15px auto;
-        padding: 20px;
-    }
-
-    .form-title {
-        text-align: center;
-        color: #1e5a96;
-        font-size: 32px;
-        font-weight: 700;
-        margin-bottom: 30px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .form-section {
-        background: white;
-        border-radius: 12px;
-        padding: 30px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        border: 2px solid #1e5a96;
-    }
-
-    .section-title {
-        background: #1e5a96;
-        color: white;
-        padding: 12px 20px;
-        margin: -30px -30px 25px -30px;
-        font-weight: 600;
-        font-size: 18px;
-        border-radius: 10px 10px 0 0;
-    }
-
-    .section-divider {
-        border: 0;
-        height: 2px;
-        background: #1e5a96;
-        margin: 30px 0 20px;
-    }
-
-    .data-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        margin-bottom: 12px;
-    }
-
-    .data-item {
-        background: #f8f9fa;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 12px 15px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    .data-item strong {
-        display: block;
-        color: #1e5a96;
-        margin-bottom: 6px;
-        font-size: 14px;
-    }
-
-    .data-item span {
-        color: #333;
-        font-size: 15px;
-    }
-    .profile-photo{
-    width:180px;
-    height:180px;
-    object-fit:cover;
-    border-radius:12px;
-    border:3px solid #1e5a96;
-}
-
-    /* ── Button group ── */
-    .button-group {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 40px;
-        flex-wrap: wrap;
-        gap: 12px;
-    }
-
-    .btn-back {
-        background: #1e5a96;
-        color: white;
-        padding: 10px 25px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-block;
-        transition: all 0.3s;
-    }
-
-    .btn-back:hover {
-        background: #0d3d6b;
-        transform: translateY(-2px);
-        color: white;
-    }
-
-    .btn-download {
-        background: #198754;
-        color: white;
-        padding: 10px 25px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.3s;
-        display: inline-block;
-    }
-
-    .btn-download:hover {
-        background: #146c43;
-        transform: translateY(-2px);
-        color: white;
-    }
-
-    /* ════════════════════════════
-       RESPONSIVE
-    ════════════════════════════ */
-
-    /* Tablet */
-    @media (max-width: 768px) {
+    <style>
         .pendaftaran-container {
-            padding: 14px;
-            margin: 10px auto;
+            max-width: 1000px;
+            margin: 15px auto;
+            padding: 20px;
+        }
+
+        .form-title {
+            text-align: center;
+            color: #1e5a96;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .form-section {
-            padding: 24px 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid #1e5a96;
         }
 
         .section-title {
-            margin: -24px -20px 20px -20px;
-            font-size: 16px;
-            padding: 11px 18px;
+            background: #1e5a96;
+            color: white;
+            padding: 12px 20px;
+            margin: -30px -30px 25px -30px;
+            font-weight: 600;
+            font-size: 18px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .section-divider {
+            border: 0;
+            height: 2px;
+            background: #1e5a96;
+            margin: 30px 0 20px;
         }
 
         .data-row {
-            gap: 14px;
-            margin-bottom: 10px;
-        }
-
-        .data-item strong { font-size: 13px; }
-        .data-item span   { font-size: 14px; }
-    }
-
-    /* Mobile */
-    @media (max-width: 576px) {
-        .pendaftaran-container { padding: 10px; }
-
-        .form-section {
-            padding: 20px 14px;
-            border-radius: 10px;
-        }
-
-        .section-title {
-            margin: -20px -14px 18px -14px;
-            font-size: 14px;
-            padding: 10px 14px;
-            border-radius: 8px 8px 0 0;
-        }
-
-        /* Grid jadi 1 kolom */
-        .data-row {
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-
-        /* Override inline span */
-        .data-item[style*="grid-column"] {
-            grid-column: 1 !important;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 12px;
         }
 
         .data-item {
-            padding: 10px 12px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
-        .data-item strong { font-size: 12.5px; margin-bottom: 4px; }
-        .data-item span   { font-size: 13.5px; }
-
-        /* Section subheadings */
-        h5[style] {
-            font-size: 15px !important;
-            margin-bottom: 12px !important;
-        }
-
-        .section-divider { margin: 22px 0 16px; }
-
-        /* Buttons */
-        .button-group {
-            flex-direction: column;
-            align-items: stretch;
-            gap: 10px;
-            margin-top: 28px;
-        }
-
-        .btn-back,
-        .btn-download {
-            text-align: center;
-            padding: 12px 20px;
+        .data-item strong {
+            display: block;
+            color: #1e5a96;
+            margin-bottom: 6px;
             font-size: 14px;
-            width: 100%;
         }
-    }
 
-    @media (max-width: 380px) {
-        .section-title { font-size: 13px; }
-        .data-item span { font-size: 13px; }
-    }
-</style>
+        .data-item span {
+            color: #333;
+            font-size: 15px;
+        }
 
-<div class="pendaftaran-container">
-    <div class="form-section">
-        <div class="section-title">INFORMASI LENGKAP PENDAFTAR</div>
+        .profile-photo {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 3px solid #1e5a96;
+        }
 
-        {{-- DATA DIRI --}}
-        <h5 style="color:#1e5a96;font-weight:600;margin-bottom:15px;font-size:17px;">Data Diri</h5>
-        
-        <div class="data-row">
-    <div class="data-item" style="grid-column:1 / -1; text-align:center;">
-        @if($camaba->photo)
-            <img src="{{ asset('storage/' . $camaba->photo) }}"
-                 alt="Foto Profil"
-                 class="profile-photo">
-        @endif
+        /* ── Button group ── */
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn-back {
+            background: #1e5a96;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .btn-back:hover {
+            background: #0d3d6b;
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .btn-download {
+            background: #198754;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-download:hover {
+            background: #146c43;
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        /* ════════════════════════════
+           RESPONSIVE
+        ════════════════════════════ */
+
+        /* Tablet */
+        @media (max-width: 768px) {
+            .pendaftaran-container {
+                padding: 14px;
+                margin: 10px auto;
+            }
+
+            .form-section {
+                padding: 24px 20px;
+            }
+
+            .section-title {
+                margin: -24px -20px 20px -20px;
+                font-size: 16px;
+                padding: 11px 18px;
+            }
+
+            .data-row {
+                gap: 14px;
+                margin-bottom: 10px;
+            }
+
+            .data-item strong {
+                font-size: 13px;
+            }
+
+            .data-item span {
+                font-size: 14px;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 576px) {
+            .pendaftaran-container {
+                padding: 10px;
+            }
+
+            .form-section {
+                padding: 20px 14px;
+                border-radius: 10px;
+            }
+
+            .section-title {
+                margin: -20px -14px 18px -14px;
+                font-size: 14px;
+                padding: 10px 14px;
+                border-radius: 8px 8px 0 0;
+            }
+
+            /* Grid jadi 1 kolom */
+            .data-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            /* Override inline span */
+            .data-item[style*="grid-column"] {
+                grid-column: 1 !important;
+            }
+
+            .data-item {
+                padding: 10px 12px;
+            }
+
+            .data-item strong {
+                font-size: 12.5px;
+                margin-bottom: 4px;
+            }
+
+            .data-item span {
+                font-size: 13.5px;
+            }
+
+            /* Section subheadings */
+            h5[style] {
+                font-size: 15px !important;
+                margin-bottom: 12px !important;
+            }
+
+            .section-divider {
+                margin: 22px 0 16px;
+            }
+
+            /* Buttons */
+            .button-group {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                margin-top: 28px;
+            }
+
+            .btn-back,
+            .btn-download {
+                text-align: center;
+                padding: 12px 20px;
+                font-size: 14px;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .section-title {
+                font-size: 13px;
+            }
+
+            .data-item span {
+                font-size: 13px;
+            }
+        }
+    </style>
+
+    <div class="pendaftaran-container">
+        <div class="form-section">
+            <div class="section-title">INFORMASI LENGKAP PENDAFTAR</div>
+
+            {{-- DATA DIRI --}}
+            <h5 style="color:#1e5a96;font-weight:600;margin-bottom:15px;font-size:17px;">Data Diri</h5>
+
+            <div class="data-row">
+                <div class="data-item" style="grid-column:1 / -1; text-align:center;">
+                    @if ($camaba->photo)
+                        <img src="{{ asset('storage/' . $camaba->photo) }}" alt="Foto Profil" class="profile-photo">
+                    @endif
+                </div>
+            </div>
+
+            <div class="data-row">
+                <div class="data-item">
+                    <strong>Nama Lengkap:</strong>
+                    <span>{{ $camaba->personalData->full_name ?? '-' }}</span>
+                </div>
+
+                <div class="data-item">
+                    <strong>NIK:</strong>
+                    <span>{{ $camaba->personalData->nik ?? '-' }}</span>
+                </div>
+            </div>
+
+            <div class="data-row">
+                <div class="data-item">
+                    <strong>Tempat Lahir:</strong>
+                    <span>{{ $camaba->personalData->place_of_birth ?? '-' }}</span>
+                </div>
+                <div class="data-item">
+                    <strong>Tanggal Lahir:</strong>
+                    <span>{{ $camaba->personalData->date_of_birth ?? '-' }}</span>
+                </div>
+            </div>
+
+            <div class="data-row">
+                <div class="data-item">
+                    <strong>Jenis Kelamin:</strong>
+                    <span>{{ $camaba->personalData->gender ?? '-' }}</span>
+                </div>
+                <div class="data-item">
+                    <strong>Agama:</strong>
+                    <span>{{ $camaba->personalData->religion ?? '-' }}</span>
+                </div>
+            </div>
+
+            <div class="data-row">
+                <div class="data-item">
+                    <strong>No. KK:</strong>
+                    <span>{{ $camaba->personalData->kk_number ?? '-' }}</span>
+                </div>
+                <div class="data-item">
+                    <strong>No. Telepon:</strong>
+                    <span>{{ $camaba->personalData->phone ?? '-' }}</span>
+                </div>
+            </div>
+
+            <div class="data-row">
+                <div class="data-item" style="grid-column: 1 / -1;">
+                    <strong>Alamat Lengkap:</strong>
+                    <span>{{ $camaba->personalData->address ?? '-' }}</span>
+                </div>
+            </div>
+
+            <hr class="section-divider">
+
+            {{-- PENDIDIKAN --}}
+            <h5 style="color:#1e5a96;font-weight:600;margin-bottom:15px;font-size:17px;">Pendidikan</h5>
+            <div class="data-row">
+                <div class="data-item">
+                    <strong>Sekolah Asal:</strong>
+                    <span>{{ $camaba->educationData->school_name ?? '-' }}</span>
+                </div>
+                <div class="data-item">
+                    <strong>NPSN:</strong>
+                    <span>{{ $camaba->educationData->school_code ?? '-' }}</span>
+                </div>
+            </div>
+
+            <div class="data-row">
+                <div class="data-item">
+                    <strong>NISN:</strong>
+                    <span>{{ $camaba->educationData->nisn ?? '-' }}</span>
+                </div>
+                <div class="data-item">
+                    <strong>Jurusan:</strong>
+                    <span>{{ $camaba->educationData->major ?? '-' }}</span>
+                </div>
+            </div>
+
+            <div class="data-row">
+                <div class="data-item">
+                    <strong>Tahun Masuk:</strong>
+                    <span>{{ $camaba->educationData->year_of_entry ?? '-' }}</span>
+                </div>
+                <div class="data-item">
+                    <strong>Prestasi:</strong>
+                    <span>{{ $camaba->educationData->achievement ?? '-' }}</span>
+                </div>
+            </div>
+
+            <div class="data-row">
+                <div class="data-item" style="grid-column: 1 / -1;">
+                    <strong>Alamat Sekolah:</strong>
+                    <span>{{ $camaba->educationData->school_address ?? '-' }}</span>
+                </div>
+            </div>
+
+            <hr class="section-divider">
+
+            {{-- KELUARGA --}}
+            <h5 style="color:#1e5a96;font-weight:600;margin-bottom:15px;font-size:17px;">Data Keluarga</h5>
+            <div class="data-row">
+                <div class="data-item">
+                    <strong>Nama Ayah:</strong>
+                    <span>{{ $camaba->familyData->father_name ?? '-' }}</span>
+                </div>
+                <div class="data-item">
+                    <strong>Pekerjaan Ayah:</strong>
+                    <span>{{ $camaba->familyData->father_job ?? '-' }}</span>
+                </div>
+            </div>
+
+            <div class="data-row">
+                <div class="data-item">
+                    <strong>Nama Ibu:</strong>
+                    <span>{{ $camaba->familyData->mother_name ?? '-' }}</span>
+                </div>
+                <div class="data-item">
+                    <strong>Pekerjaan Ibu:</strong>
+                    <span>{{ $camaba->familyData->mother_job ?? '-' }}</span>
+                </div>
+            </div>
+
+            <div class="data-row">
+                <div class="data-item">
+                    <strong>Penghasilan Orang Tua:</strong>
+                    <span>{{ $camaba->familyData->parent_income ?? '-' }}</span>
+                </div>
+                <div class="data-item">
+                    <strong>Nomor HP Orang Tua:</strong>
+                    <span>{{ $camaba->familyData->parent_phone ?? '-' }}</span>
+                </div>
+            </div>
+
+            <div class="data-row">
+                <div class="data-item">
+                    <strong>Jumlah Anak:</strong>
+                    <span>{{ $camaba->familyData->number_of_children ?? '-' }}</span>
+                </div>
+                <div class="data-item">
+                    <strong>Anak Ke:</strong>
+                    <span>{{ $camaba->familyData->child_order ?? '-' }}</span>
+                </div>
+            </div>
+
+            <hr class="section-divider">
+
+            {{-- JALUR MASUK --}}
+            <h5 style="color:#1e5a96;font-weight:600;margin-bottom:15px;font-size:17px;">Jalur Masuk</h5>
+            <div class="data-row">
+                <div class="data-item">
+                    <strong>Jalur Masuk:</strong>
+                    <span>{{ $camaba->admissionPath->path_name ?? '-' }}</span>
+                </div>
+            </div>
+
+            <hr class="section-divider">
+
+            {{-- PROGRAM STUDI --}}
+            <h5 style="color:#1e5a96;font-weight:600;margin-bottom:15px;font-size:17px;">Program Studi</h5>
+            <div class="data-row">
+                <div class="data-item">
+                    <strong>Program Studi Pilihan 1:</strong>
+                    <span>{{ $camaba->programSelection->program1->program_name ?? '-' }}</span>
+                </div>
+                <div class="data-item">
+                    <strong>Program Studi Pilihan 2:</strong>
+                    <span>{{ $camaba->programSelection->program2->program_name ?? '-' }}</span>
+                </div>
+            </div>
+        </div>
+
+        {{-- Tombol --}}
+        <div class="button-group">
+            <a href="{{ route('admin.registration') }}" class="btn-back">← Kembali</a>
+            <a href="{{ route('admin.registration.pdf', $camaba->id) }}" class="btn-download" target="_blank">
+                ⬇ Download PDF
+            </a>
+        </div>
+
     </div>
-</div>
-
-<div class="data-row">
-    <div class="data-item">
-        <strong>Nama Lengkap:</strong>
-        <span>{{ $camaba->personalData->full_name ?? '-' }}</span>
-    </div>
-
-    <div class="data-item">
-        <strong>NIK:</strong>
-        <span>{{ $camaba->personalData->nik ?? '-' }}</span>
-    </div>
-</div>
-
-        <div class="data-row">
-            <div class="data-item">
-                <strong>Tempat Lahir:</strong>
-                <span>{{ $camaba->personalData->place_of_birth ?? '-' }}</span>
-            </div>
-            <div class="data-item">
-                <strong>Tanggal Lahir:</strong>
-                <span>{{ $camaba->personalData->date_of_birth ?? '-' }}</span>
-            </div>
-        </div>
-
-        <div class="data-row">
-            <div class="data-item">
-                <strong>Jenis Kelamin:</strong>
-                <span>{{ $camaba->personalData->gender ?? '-' }}</span>
-            </div>
-            <div class="data-item">
-                <strong>Agama:</strong>
-                <span>{{ $camaba->personalData->religion ?? '-' }}</span>
-            </div>
-        </div>
-
-        <div class="data-row">
-            <div class="data-item">
-                <strong>No. KK:</strong>
-                <span>{{ $camaba->personalData->kk_number ?? '-' }}</span>
-            </div>
-            <div class="data-item">
-                <strong>No. Telepon:</strong>
-                <span>{{ $camaba->personalData->phone ?? '-' }}</span>
-            </div>
-        </div>
-
-        <div class="data-row">
-            <div class="data-item" style="grid-column: 1 / -1;">
-                <strong>Alamat Lengkap:</strong>
-                <span>{{ $camaba->personalData->address ?? '-' }}</span>
-            </div>
-        </div>
-
-        <hr class="section-divider">
-
-        {{-- PENDIDIKAN --}}
-        <h5 style="color:#1e5a96;font-weight:600;margin-bottom:15px;font-size:17px;">Pendidikan</h5>
-        <div class="data-row">
-            <div class="data-item">
-                <strong>Sekolah Asal:</strong>
-                <span>{{ $camaba->educationData->school_name ?? '-' }}</span>
-            </div>
-            <div class="data-item">
-                <strong>NPSN:</strong>
-                <span>{{ $camaba->educationData->school_code ?? '-' }}</span>
-            </div>
-        </div>
-
-        <div class="data-row">
-            <div class="data-item">
-                <strong>NISN:</strong>
-                <span>{{ $camaba->educationData->nisn ?? '-' }}</span>
-            </div>
-            <div class="data-item">
-                <strong>Jurusan:</strong>
-                <span>{{ $camaba->educationData->major ?? '-' }}</span>
-            </div>
-        </div>
-
-        <div class="data-row">
-            <div class="data-item">
-                <strong>Tahun Masuk:</strong>
-                <span>{{ $camaba->educationData->year_of_entry ?? '-' }}</span>
-            </div>
-            <div class="data-item">
-                <strong>Prestasi:</strong>
-                <span>{{ $camaba->educationData->achievement ?? '-' }}</span>
-            </div>
-        </div>
-
-        <div class="data-row">
-            <div class="data-item" style="grid-column: 1 / -1;">
-                <strong>Alamat Sekolah:</strong>
-                <span>{{ $camaba->educationData->school_address ?? '-' }}</span>
-            </div>
-        </div>
-
-        <hr class="section-divider">
-
-        {{-- KELUARGA --}}
-        <h5 style="color:#1e5a96;font-weight:600;margin-bottom:15px;font-size:17px;">Data Keluarga</h5>
-        <div class="data-row">
-            <div class="data-item">
-                <strong>Nama Ayah:</strong>
-                <span>{{ $camaba->familyData->father_name ?? '-' }}</span>
-            </div>
-            <div class="data-item">
-                <strong>Pekerjaan Ayah:</strong>
-                <span>{{ $camaba->familyData->father_job ?? '-' }}</span>
-            </div>
-        </div>
-
-        <div class="data-row">
-            <div class="data-item">
-                <strong>Nama Ibu:</strong>
-                <span>{{ $camaba->familyData->mother_name ?? '-' }}</span>
-            </div>
-            <div class="data-item">
-                <strong>Pekerjaan Ibu:</strong>
-                <span>{{ $camaba->familyData->mother_job ?? '-' }}</span>
-            </div>
-        </div>
-
-        <div class="data-row">
-            <div class="data-item">
-                <strong>Penghasilan Orang Tua:</strong>
-                <span>{{ $camaba->familyData->parent_income ?? '-' }}</span>
-            </div>
-            <div class="data-item">
-                <strong>Nomor HP Orang Tua:</strong>
-                <span>{{ $camaba->familyData->parent_phone ?? '-' }}</span>
-            </div>
-        </div>
-
-        <div class="data-row">
-            <div class="data-item">
-                <strong>Jumlah Anak:</strong>
-                <span>{{ $camaba->familyData->number_of_children ?? '-' }}</span>
-            </div>
-            <div class="data-item">
-                <strong>Anak Ke:</strong>
-                <span>{{ $camaba->familyData->child_order ?? '-' }}</span>
-            </div>
-        </div>
-
-        <hr class="section-divider">
-
-        {{-- JALUR MASUK --}}
-        <h5 style="color:#1e5a96;font-weight:600;margin-bottom:15px;font-size:17px;">Jalur Masuk</h5>
-        <div class="data-row">
-            <div class="data-item">
-                <strong>Jalur Masuk:</strong>
-                <span>{{ $camaba->admissionPath->path_name ?? '-' }}</span>
-            </div>
-        </div>
-
-        <hr class="section-divider">
-
-        {{-- PROGRAM STUDI --}}
-        <h5 style="color:#1e5a96;font-weight:600;margin-bottom:15px;font-size:17px;">Program Studi</h5>
-        <div class="data-row">
-            <div class="data-item">
-                <strong>Program Studi Pilihan 1:</strong>
-                <span>{{ $camaba->programSelection->program1->program_name ?? '-' }}</span>
-            </div>
-            <div class="data-item">
-                <strong>Program Studi Pilihan 2:</strong>
-                <span>{{ $camaba->programSelection->program2->program_name ?? '-' }}</span>
-            </div>
-        </div>
-    </div>
-
-    {{-- Tombol --}}
-    <div class="button-group">
-        <a href="{{ route('admin.registration') }}" class="btn-back">← Kembali</a>
-        <a href="{{ route('admin.registration.pdf', $camaba->id) }}"
-           class="btn-download"
-           target="_blank">
-            ⬇ Download PDF
-        </a>
-    </div>
-
-</div>
 @endsection

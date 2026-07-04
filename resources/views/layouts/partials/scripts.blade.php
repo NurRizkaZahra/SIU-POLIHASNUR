@@ -3,10 +3,10 @@
        SIDEBAR TOGGLE
     ===================== */
     function toggleSidebar() {
-        const sidebar     = document.getElementById('mainSidebar');
-        const overlay     = document.getElementById('sidebarOverlay');
+        const sidebar = document.getElementById('mainSidebar');
+        const overlay = document.getElementById('sidebarOverlay');
         const mainContent = document.querySelector('.main-content');
-        const isMobile    = window.innerWidth <= 768;
+        const isMobile = window.innerWidth <= 768;
 
         if (isMobile) {
             // Mobile: slide in/out dengan overlay backdrop
@@ -25,16 +25,16 @@
     }
 
     // Tutup sidebar otomatis saat klik menu link di mobile
-    document.querySelectorAll('.menu-link').forEach(function (link) {
-        link.addEventListener('click', function () {
+    document.querySelectorAll('.menu-link').forEach(function(link) {
+        link.addEventListener('click', function() {
             if (window.innerWidth <= 768) closeSidebar();
         });
     });
 
     // Bersihkan state yang tidak sesuai saat resize
-    window.addEventListener('resize', function () {
-        const sidebar     = document.getElementById('mainSidebar');
-        const overlay     = document.getElementById('sidebarOverlay');
+    window.addEventListener('resize', function() {
+        const sidebar = document.getElementById('mainSidebar');
+        const overlay = document.getElementById('sidebarOverlay');
         const mainContent = document.querySelector('.main-content');
 
         if (window.innerWidth > 768) {
@@ -56,8 +56,8 @@
     }
 
     // Tutup dropdown saat klik di luar area
-    window.addEventListener('click', function (e) {
-        const dropdown  = document.getElementById('profileDropdown');
+    window.addEventListener('click', function(e) {
+        const dropdown = document.getElementById('profileDropdown');
         const profileBtn = document.querySelector('.profile-dropdown .icon-btn');
 
         if (dropdown && profileBtn &&
